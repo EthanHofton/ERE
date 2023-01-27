@@ -4,11 +4,15 @@
 #include "application.hpp"
 #include <memory>
 
+namespace ere {
+
 /**
 * @brief external create application function to be defined by user
 *
 * @return ere::application a fully initalized ere::application
 */
 extern std::shared_ptr<ere::application> createApplication();
+
+}
 
 #endif
