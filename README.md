@@ -13,7 +13,7 @@ cmake ../
 cmake --build .
 ```
 
-This will create `libere.a` inside the build directory. If `-DBUILD_DOCS` is used, docs will be created in `build/docs`
+This will create `libere.a` inside the build directory. If `-DBUILD_DOCS=ON` is used, docs will be created in `build/docs`
 
 # cmake usage
 
