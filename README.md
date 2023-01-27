@@ -1,6 +1,6 @@
 # ERE
 
-### **_E_**thans **_R_**ender **_E_**ngine
+#### ***E***thans ***R***ender ***E***ngine
 
 # Compilation
 
