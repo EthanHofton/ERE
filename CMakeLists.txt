@@ -18,7 +18,7 @@ set(CONFIG_IN ${CMAKE_CURRENT_SOURCE_DIR}/ereConfig.hpp.in)
 set(CONFIG_OUT ${CMAKE_CURRENT_BINARY_DIR}/ereConfig.hpp)
 
 # build docs option
-option(BUILD_DOCS "Build documentation" ON)
+option(BUILD_DOCS "Build documentation" OFF)
 
 # check if build docs is selected
 if (BUILD_DOCS)
