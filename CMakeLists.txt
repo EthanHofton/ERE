@@ -46,9 +46,14 @@ if (BUILD_DOCS)
     endif(DOXYGEN_FOUND)
 endif(BUILD_DOCS)
 
+# add util subdirectory
+add_subdirectory(lib/util)
+
 # add library target
 add_library(ere ${SOURCES})
 
 # add include directory
 target_include_directories(ere PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(ere PUBLIC ${PROJECT_BINARY_DIR})
+
+target_link_libraries(ere PUBLIC util)
