@@ -49,6 +49,8 @@ endif(BUILD_DOCS)
 # add util subdirectory
 add_subdirectory(lib/util)
 
+configure_file(${CONFIG_IN} ${CONFIG_OUT})
+
 # add library target
 add_library(ere ${SOURCES})
 
