@@ -27,14 +27,9 @@ public:
     *
     * @return a downcasted version of a concreate window impl
     */
-    static std::shared_ptr<windowAPI> createConcreteWindow(const windowProps& t_props);
+    static std::shared_ptr<windowAPI> createConcreteWindowAPI();
 
-    /**
-    * @brief windowAPI constructor. stores the props it gets
-    *
-    * @param t_props the window props needed to construct a window
-    */
-    windowAPI(const windowProps& t_props);
+    virtual ~windowAPI() = default;
 
     /* -- pure virtual functions -- */
     /**
@@ -78,13 +73,13 @@ public:
     *
     * @return the size of the window
     */
-    virtual glm::vec2 getWindowSize() = 0;
+    virtual glm::vec2 getWindowSize() const = 0;
     /**
     * @brief get the window position
     *
     * @return the position of the window
     */
-    virtual glm::vec2 getWindowPos() = 0;
+    virtual glm::vec2 getWindowPos() const = 0;
 
     /**
     * @brief maximize the window
@@ -106,6 +101,22 @@ public:
     /* -- general util functions -- */
     // * TODO: set event function
     // void setEventFunction(eventCallbackFn t_fn);
+    
+    /**
+    * @brief function called before renderng is done
+    */
+    virtual void preRender() = 0;
+    /**
+    * @brief function called after rendering is done
+    */
+    virtual void postRender() = 0;
+
+    /**
+    * @brief set the background color
+    *
+    * @param t_color the color (rgba) of the background
+    */
+    virtual void setBackgroundColor(const glm::vec4& t_color) = 0;
 
 public:
 
@@ -116,8 +127,6 @@ public:
         std::string m_title;
         int m_width;
         int m_height;
-        int m_xpos;
-        int m_ypos;
     };
 
     /**

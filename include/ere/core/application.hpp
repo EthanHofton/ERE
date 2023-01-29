@@ -2,21 +2,42 @@
 #define ERE_CORE_APPLICATION_HPP
 
 #include <util/timer.hpp>
+#include <ere/api/windowAPI.hpp>
 
 namespace ere {
 
 class application {
 public:
 
-    application();
+    application(const windowAPI::windowProps& t_props);
     ~application();
 
     void run();
     void onEvent();
 
+    inline void setFPS(double t_fps) { m_fps = t_fps; }
+
+    /* -- windowAPI -- */
+    void setWindowSize(const glm::vec2& t_size);
+    void setWindowPos(const glm::vec2& t_pos);
+    void setWindowTitle(const std::string& t_title);
+    void setWindowSwapInterval(const int& t_swap);
+    void setBackgroundColor(const glm::vec4& t_color);
+
+    glm::vec2 getWindowSize() const;
+    glm::vec2 getWindowPos() const;
+
+    void maximiseWindow();
+    void minimizeWindow();
+    void restoreWindow();
+    void focusWindow();
+
 private:
 
     util::manual_timer m_timer;
+    std::shared_ptr<windowAPI> m_windowAPI;
+    bool m_running = true;
+    double m_fps = 60.0f;
 
 };
 

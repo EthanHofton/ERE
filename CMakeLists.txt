@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.25.1)
+include(CMakeDependentOption)
 
 # project name and version number
 project(ere VERSION 0.1.0)
@@ -52,6 +53,26 @@ add_subdirectory(lib/util)
 # add glm
 add_subdirectory(lib/glm)
 
+
+# -- WINDOWING API -- #
+option(USE_GLFW "Use GLFW as the windowing libary" ON)
+cmake_dependent_option(USE_COCOA "Use COCOA as the windowing libary" ON "APPLE; NOT USE_GLFW" OFF)
+cmake_dependent_option(USE_WIN32 "Use WIN32 as the windowing libary" ON "WIN32; NOT USE_GLFW" OFF)
+
+if (USE_GLFW)
+    message("-- using GLFW as windowing API")
+    add_subdirectory(lib/glfw)
+    list(APPEND EXTRA_LIBS glfw)
+endif(USE_GLFW)
+
+if (USE_COCOA)
+    message("-- using COCOA as windowing API")
+endif(USE_COCOA)
+
+if (USE_WIN32)
+    message("-- using WIN32 as windowing API")
+endif(USE_WIN32)
+
 configure_file(${CONFIG_IN} ${CONFIG_OUT})
 
 # add library target
@@ -64,3 +85,4 @@ target_include_directories(ere PUBLIC ${PROJECT_BINARY_DIR})
 # link to libaries
 target_link_libraries(ere PUBLIC util)
 target_link_libraries(ere PUBLIC glm)
+target_link_libraries(ere PRIVATE ${EXTRA_LIBS})
