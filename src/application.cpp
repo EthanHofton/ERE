@@ -5,6 +5,7 @@ namespace ere {
 
 application::application(const windowAPI::windowProps& t_props) {
     m_windowAPI = windowAPI::createConcreteWindowAPI();
+    m_windowAPI->setEventFunction(std::bind(&application::onEvent, this, std::placeholders::_1));
     m_windowAPI->createWindow(t_props);
 }
 application::~application() {
@@ -22,12 +23,31 @@ void application::run() {
 
             // * create onUpdate event and propagate
             // * imgui stuff
+            
+            // * send a window updated event
+            updateEvent e(m_timer.getDeltaTime());
+            m_windowAPI->sendEvent(e);
 
             m_windowAPI->postRender();
         }
     }
 }
-void application::onEvent() {}
+
+/* -- Events -- */
+
+void application::onEvent(ereEvent& t_event) {
+    // * dispatch a window closed event to stop the application loop
+    util::event_dispatcher<ereEvents> dispatcher(t_event);
+    dispatcher.dispatch<windowClosedEvent>(std::bind(&application::onWindowClose, this, std::placeholders::_1));
+
+    // * propagate events down the event stack
+}
+
+bool application::onWindowClose(windowClosedEvent& t_event) {
+    m_running = false;
+    return false;
+}
+
 
 /* -- WindowAPI -- */
 

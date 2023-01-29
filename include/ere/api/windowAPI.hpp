@@ -5,6 +5,9 @@
 #include <functional>
 #include <memory>
 #include <glm/glm.hpp>
+#include <ere/events/windowEvents.hpp>
+#include <ere/events/keyEvents.hpp>
+#include <ere/events/mouseEvents.hpp>
 
 namespace ere {
 
@@ -18,8 +21,7 @@ public:
     * @brief forward declare windowProps
     */
     struct windowProps;
-    // * TODO: create event handler
-    // using eventCallbackFn = std::function<void util::event<>>;
+    using eventCallbackFn = std::function<void(ereEvent&)>;
 
     /**
     * @brief public access point for creating a window. each platform specitfic window will implament this API and implament the createWindow function
@@ -99,8 +101,8 @@ public:
     virtual void focusWindow() = 0;
 
     /* -- general util functions -- */
-    // * TODO: set event function
-    // void setEventFunction(eventCallbackFn t_fn);
+    inline void setEventFunction(eventCallbackFn t_fn) { m_driverData.m_eventFn = t_fn; }
+    inline void sendEvent(ereEvent& t_event) { m_driverData.m_eventFn(t_event); }
     
     /**
     * @brief function called before renderng is done
@@ -135,8 +137,7 @@ public:
     struct driverData {
         glm::vec2 m_lastMousePos;
         bool m_firstMouseMove;
-        // * TODO: add event callback to driver data
-        // callbackFn m_eventFn = [](dm3Event&){};
+        eventCallbackFn m_eventFn = [](ereEvent&){};
     };
 
 protected:

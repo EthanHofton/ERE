@@ -43,6 +43,7 @@ void glfwWindowImpl::createWindow(const windowProps& t_props) {
     #endif
 
     /* -- GLFW callbacks -- */
+    glfwSetWindowUserPointer(m_window, &m_driverData);
 
     // * glfw framebuffer size callback
     glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* t_window, int t_w, int t_h) {
@@ -54,6 +55,152 @@ void glfwWindowImpl::createWindow(const windowProps& t_props) {
     // * glfw error callback
     glfwSetErrorCallback([](int t_code, const char* t_msg) {
         ERE_ERROR("GLFW error ({}) with message: {}", t_code, t_msg);
+    });
+
+    // * glfw size callback
+    glfwSetWindowSizeCallback(
+    m_window, [](GLFWwindow *t_window, int t_width, int t_height) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        windowResizeEvent e({t_width, t_height});
+        data.m_eventFn(e);
+    });
+
+    // * window closed
+    glfwSetWindowCloseCallback(m_window, [](GLFWwindow *t_window) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        windowClosedEvent e;
+        data.m_eventFn(e);
+    });
+
+    // * window moved
+    glfwSetWindowPosCallback(
+    m_window, [](GLFWwindow *t_window, int t_x, int t_y) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        windowMovedEvent e({t_x, t_y});
+        data.m_eventFn(e);
+    });
+
+    // * window focus
+    glfwSetWindowFocusCallback(m_window, [](GLFWwindow *t_window, int t_focused) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        if (t_focused) {
+            // * window moved into focus
+            windowFocusEvent e;
+            data.m_eventFn(e);
+        } else {
+            // * window moved out of focus
+            windowLostFocusEvent e;
+            data.m_eventFn(e);
+        }
+    });
+
+    // * window maximized/restored
+    glfwSetWindowMaximizeCallback(
+    m_window, [](GLFWwindow *t_window, int t_maximized) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        if (t_maximized) {
+            // * window maximized
+            windowMaximisedEvent e;
+            data.m_eventFn(e);
+        } else {
+            // * window restored
+            windowRestoredEvent e;
+            data.m_eventFn(e);
+        }
+    });
+
+    // * window minimize/restore
+    glfwSetWindowIconifyCallback(
+    m_window, [](GLFWwindow *t_window, int t_iconified) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        if (t_iconified) {
+            // * window maximized
+            windowMinimizedEvent e;
+            data.m_eventFn(e);
+        } else {
+            // * window restored
+            windowRestoredEvent e;
+            data.m_eventFn(e);
+        }
+    });
+
+    // * window key events
+    glfwSetKeyCallback(m_window, [](GLFWwindow *t_window, int t_key,
+    int t_scancode, int t_action, int t_mods) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+        switch (t_action) {
+            case GLFW_PRESS: {
+                keyPressedEvent e(t_key, 0);
+                data.m_eventFn(e);
+                break;
+            }
+            case GLFW_RELEASE: {
+                keyReleasedEvent e(t_key);
+                data.m_eventFn(e);
+                break;
+            }
+            case GLFW_REPEAT: {
+                keyPressedEvent e(t_key, 1);
+                data.m_eventFn(e);
+                break;
+            }
+        }
+    });
+
+    // * window key typed
+    glfwSetCharCallback(m_window, [](GLFWwindow *t_window, unsigned int t_char) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+        keyTypedEvent e(t_char);
+        data.m_eventFn(e);
+    });
+
+    // * window mouse pressed callbacks
+    glfwSetMouseButtonCallback(m_window, [](GLFWwindow *t_window, int t_button, int t_action, int t_mods) {
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+        switch (t_action) {
+            case GLFW_PRESS: {
+                mouseButtonPressedEvent e(t_button);
+                data.m_eventFn(e);
+                break;
+            }
+            case GLFW_RELEASE: {
+                mouseButtonReleasedEvent e(t_button);
+                data.m_eventFn(e);
+                break;
+            }
+        }
+    });
+
+    // * window mouse scrolled
+    glfwSetScrollCallback(m_window, [](GLFWwindow *t_window, double t_x, double t_y) {
+        driverData &wdata = *(driverData*)glfwGetWindowUserPointer(t_window);
+        mouseScrolledEvent e({t_x, t_y});
+        wdata.m_eventFn(e);
+    });
+
+
+    // * mouse moved callback
+    glfwSetCursorPosCallback(m_window, [](GLFWwindow *t_window, double t_x, double t_y) {
+        driverData &wdata = *(driverData*)glfwGetWindowUserPointer(t_window);
+        if (wdata.m_firstMouseMove)
+        {
+            wdata.m_lastMousePos = {t_x, t_y};
+            wdata.m_firstMouseMove = false;
+        }
+
+        glm::vec2 mousePosOffset = {t_x - wdata.m_lastMousePos.x, wdata.m_lastMousePos.y - t_y};
+        wdata.m_lastMousePos = {t_x, t_y};
+
+        // * create a mouse scroll event
+        mouseMovedEvent event({t_x, t_y}, mousePosOffset);
+        // * run the window event callback function with the created event
+        wdata.m_eventFn(event);
     });
 }
 

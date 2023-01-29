@@ -3,6 +3,7 @@
 
 #include <util/timer.hpp>
 #include <ere/api/windowAPI.hpp>
+#include <ere/events/appEvents.hpp>
 
 namespace ere {
 
@@ -13,7 +14,7 @@ public:
     ~application();
 
     void run();
-    void onEvent();
+    void onEvent(ereEvent& t_event);
 
     inline void setFPS(double t_fps) { m_fps = t_fps; }
 
@@ -31,6 +32,10 @@ public:
     void minimizeWindow();
     void restoreWindow();
     void focusWindow();
+
+private:
+
+    bool onWindowClose(windowClosedEvent& t_event);
 
 private:
 
