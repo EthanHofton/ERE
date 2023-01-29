@@ -61,6 +61,8 @@ cmake_dependent_option(USE_WIN32 "Use WIN32 as the windowing libary" ON "WIN32; 
 
 if (USE_GLFW)
     message("-- using GLFW as windowing API")
+    add_subdirectory(lib/glfw)
+    list(APPEND EXTRA_LIBS glfw)
 endif(USE_GLFW)
 
 if (USE_COCOA)
@@ -83,3 +85,4 @@ target_include_directories(ere PUBLIC ${PROJECT_BINARY_DIR})
 # link to libaries
 target_link_libraries(ere PUBLIC util)
 target_link_libraries(ere PUBLIC glm)
+target_link_libraries(ere PRIVATE ${EXTRA_LIBS})

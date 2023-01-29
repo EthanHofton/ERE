@@ -6,6 +6,14 @@
 
 #if defined(USE_GLFW)
 
+#ifdef USE_OPENGL
+// * include glad.h BEFORE glfw3.h
+#include <glad/glad.h>
+#endif
+
+#include <GLFW/glfw3.h>
+#include <ere/core/logger.hpp>
+
 namespace ere {
 
 class glfwWindowImpl : public windowAPI {
@@ -16,12 +24,20 @@ class glfwWindowImpl : public windowAPI {
     virtual void setWindowPos(const glm::vec2& t_pos);
     virtual void setWindowTitle(const std::string& t_title);
     virtual void setWindowSwapInterval(const int& t_fps);
-    virtual glm::vec2 getWindowSize();
-    virtual glm::vec2 getWindowPos();
+    virtual glm::vec2 getWindowSize() const;
+    virtual glm::vec2 getWindowPos() const;
     virtual void maximizeWindow();
     virtual void minimizeWindow();
     virtual void restoreWindow();
     virtual void focusWindow();
+    virtual void preRender();
+    virtual void postRender();
+    virtual void setBackgroundColor(const glm::vec4& t_color);
+
+private:
+
+    GLFWwindow *m_window = nullptr;
+    glm::vec4 m_backgroundColor = {1.0f, 1.0f, 1.0f, 1.0f};
 };
 
 }
