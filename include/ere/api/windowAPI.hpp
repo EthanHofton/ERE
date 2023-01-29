@@ -27,14 +27,7 @@ public:
     *
     * @return a downcasted version of a concreate window impl
     */
-    static std::shared_ptr<windowAPI> createConcreteWindow(const windowProps& t_props);
-
-    /**
-    * @brief windowAPI constructor. stores the props it gets
-    *
-    * @param t_props the window props needed to construct a window
-    */
-    windowAPI(const windowProps& t_props);
+    static std::shared_ptr<windowAPI> createConcreteWindowAPI();
 
     /* -- pure virtual functions -- */
     /**

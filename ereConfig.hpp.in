@@ -3,3 +3,7 @@
 #define ere_VERSION_MINOR @ere_VERSION_MINOR@
 #define ere_VERSION_PATCH @ere_VERSION_PATCH@
 
+#cmakedefine USE_GLFW
+#cmakedefine USE_COCOA
+#cmakedefine USE_WIN32
+
