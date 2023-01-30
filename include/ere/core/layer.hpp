@@ -15,31 +15,31 @@ public:
     virtual void onEvent(ereEvent& t_event) override final;
 
     /* -- application events -- */
-    inline virtual bool onUpdate(updateEvent& t_event) {}
-    inline virtual bool onAttach(attachEvent& t_event) {}
-    inline virtual bool onDetach(detachEvent& t_event) {}
-    inline virtual bool onImguiUpdate(imguiUpdateEvent& t_event) {}
+    inline virtual bool onUpdate(updateEvent& t_event) { return false; }
+    inline virtual bool onAttach(attachEvent& t_event) { return false; }
+    inline virtual bool onDetach(detachEvent& t_event) { return false; }
+    inline virtual bool onImguiUpdate(imguiUpdateEvent& t_event) { return false; }
 
     /* -- window events -- */
-    inline virtual bool onWindowClose(windowClosedEvent& t_event) {}
-    inline virtual bool onWindowMoved(windowMovedEvent& t_event) {}
-    inline virtual bool onWindowResize(windowResizeEvent& t_event) {}
-    inline virtual bool onWindowFocus(windowFocusEvent& t_event) {}
-    inline virtual bool onWindowLostFocus(windowLostFocusEvent& t_event) {}
-    inline virtual bool onWindowMinimized(windowMinimizedEvent& t_event) {}
-    inline virtual bool onWindowMaximised(windowMaximisedEvent& t_event) {}
-    inline virtual bool onWindowRestored(windowRestoredEvent& t_event) {}
+    inline virtual bool onWindowClose(windowClosedEvent& t_event) { return false; }
+    inline virtual bool onWindowMoved(windowMovedEvent& t_event) { return false; }
+    inline virtual bool onWindowResize(windowResizeEvent& t_event) { return false; }
+    inline virtual bool onWindowFocus(windowFocusEvent& t_event) { return false; }
+    inline virtual bool onWindowLostFocus(windowLostFocusEvent& t_event) { return false; }
+    inline virtual bool onWindowMinimized(windowMinimizedEvent& t_event) { return false; }
+    inline virtual bool onWindowMaximised(windowMaximisedEvent& t_event) { return false; }
+    inline virtual bool onWindowRestored(windowRestoredEvent& t_event) { return false; }
 
     /* -- key events -- */
-    inline virtual bool onKeyPressed(keyPressedEvent &t_event) {}
-    inline virtual bool onKeyReleased(keyReleasedEvent &t_event) {}
-    inline virtual bool onKeyTyped(keyTypedEvent &t_event) {}
+    inline virtual bool onKeyPressed(keyPressedEvent &t_event) { return false; }
+    inline virtual bool onKeyReleased(keyReleasedEvent &t_event) { return false; }
+    inline virtual bool onKeyTyped(keyTypedEvent &t_event) { return false; }
 
     /* -- mouse events -- */
-    inline virtual bool onMouseButtonPressed(mouseButtonPressedEvent &t_event) {}
-    inline virtual bool onMouseButtonReleased(mouseButtonReleasedEvent &t_event) {}
-    inline virtual bool onMouseMoved(mouseMovedEvent &t_event) {}
-    inline virtual bool onMouseScrolled(mouseScrolledEvent &t_event) {}
+    inline virtual bool onMouseButtonPressed(mouseButtonPressedEvent &t_event) { return false; }
+    inline virtual bool onMouseButtonReleased(mouseButtonReleasedEvent &t_event) { return false; }
+    inline virtual bool onMouseMoved(mouseMovedEvent &t_event) { return false; }
+    inline virtual bool onMouseScrolled(mouseScrolledEvent &t_event) { return false; }
 };
 
 }

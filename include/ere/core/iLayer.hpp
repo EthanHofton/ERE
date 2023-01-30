@@ -7,7 +7,7 @@ namespace ere {
 
 class iLayer {
 public:
-    virtual ~ILayer() = default;
+    virtual ~iLayer() = default;
     virtual void onEvent(ereEvent& t_event) = 0;
 };
 
