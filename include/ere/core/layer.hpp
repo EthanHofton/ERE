@@ -18,6 +18,7 @@ public:
     inline virtual bool onUpdate(updateEvent& t_event) {}
     inline virtual bool onAttach(attachEvent& t_event) {}
     inline virtual bool onDetach(detachEvent& t_event) {}
+    inline virtual bool onImguiUpdate(imguiUpdateEvent& t_event) {}
 
     /* -- window events -- */
     inline virtual bool onWindowClose(windowClosedEvent& t_event) {}

@@ -34,6 +34,12 @@ public:
     EVENT_CLASS_TYPE(ere::ereEvents, detach)
 };
 
+class imguiUpdateEvent : public ereEvent {
+public:
+
+    EVENT_CLASS_TYPE(ere::ereEvents, imguiUpdate)
+};
+
 };
 
 #endif

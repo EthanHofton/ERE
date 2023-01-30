@@ -9,6 +9,7 @@ void layer::onEvent(ereEvent& t_event) {
     dispatcher.dispatch<updateEvent>(std::bind(&layer::onUpdate, this, std::placeholders::_1));
     dispatcher.dispatch<attachEvent>(std::bind(&layer::onAttach, this, std::placeholders::_1));
     dispatcher.dispatch<detachEvent>(std::bind(&layer::onDetach, this, std::placeholders::_1));
+    dispatcher.dispatch<imguiUpdateEvent>(std::bind(&layer::onImguiUpdate, this, std::placeholders::_1));
 
     /* -- window events -- */
     dispatcher.dispatch<windowClosedEvent>(std::bind(&layer::onWindowClose, this, std::placeholders::_1));

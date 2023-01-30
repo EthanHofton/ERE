@@ -49,6 +49,7 @@ private:
 private:
 
     std::vector<std::shared_ptr<iLayer>> m_layers;
+    std::vector<std::shared_ptr<iLayer>>::iterator m_layersEnd = m_layers.begin();
 
     util::manual_timer m_timer;
     std::shared_ptr<windowAPI> m_windowAPI;

@@ -14,7 +14,7 @@ enum class ereEvents {
     /* -- mouse events -- */
     mouseButtonPressed, mouseButtonReleased, mouseMoved, mouseScrolled,
     /* -- app events -- */
-    update, attach, detach
+    update, attach, detach, imguiUpdate
 };
 
 using ereEvent = util::event<ereEvents>;
