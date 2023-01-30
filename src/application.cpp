@@ -28,8 +28,62 @@ void application::run() {
             updateEvent e(m_timer.getDeltaTime());
             m_windowAPI->sendEvent(e);
 
+            // * imgui
+            // imgui::begin()
+            imguiUpdateEvent imguiEvent;
+            m_windowAPI->sendEvent(imguiEvent);
+            // imgui::end()
+
             m_windowAPI->postRender();
         }
+    }
+}
+
+/* -- Layers -- */
+
+void application::pushLayer(std::shared_ptr<iLayer> t_layer) {
+    // * force an on attach event to the layer
+    attachEvent e;
+    t_layer->onEvent(e);
+
+    // * push to layer stack
+    m_layers.insert(m_layers.begin() + (m_layersEnd++), t_layer);
+}
+
+void application::pushOverlay(std::shared_ptr<iLayer> t_layer) {
+    // * force an on attach event to the layer
+    attachEvent e;
+    t_layer->onEvent(e);
+
+    // * push to layer stack
+    m_layers.push_back(t_layer);
+}
+
+void application::removeLayer(std::shared_ptr<iLayer> t_layer) {
+    // * find the layer
+    auto it = std::find(m_layers.begin(), m_layers.begin() + m_layersEnd, t_layer);
+    // * check if layuer found
+    if (it != m_layers.begin() + m_layersEnd) {
+        // * force an on detach event
+        detachEvent e;
+        t_layer->onEvent(e);
+        // * erease from layer stack
+        m_layers.erase(it);
+        // * decremnt the overlay start pos
+        m_layersEnd--;
+    }
+}
+
+void application::removeOverlay(std::shared_ptr<iLayer> t_layer) {
+    // * find the overlay
+    auto it = std::find(m_layers.begin() + m_layersEnd, m_layers.end(), t_layer);
+    // * check it was found
+    if (it != m_layers.end()) {
+        // * force a detach event
+        detachEvent e;
+        t_layer->onEvent(e);
+        // * remove the layer
+        m_layers.erase(it);
     }
 }
 
@@ -41,6 +95,13 @@ void application::onEvent(ereEvent& t_event) {
     dispatcher.dispatch<windowClosedEvent>(std::bind(&application::onWindowClose, this, std::placeholders::_1));
 
     // * propagate events down the event stack
+    for (auto it = m_layers.end(); it != m_layers.begin();) {
+        (*--it)->onEvent(t_event);
+
+        if (t_event.handled()) {
+            break;
+        }
+    }
 }
 
 bool application::onWindowClose(windowClosedEvent& t_event) {
