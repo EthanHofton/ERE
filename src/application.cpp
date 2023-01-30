@@ -47,7 +47,7 @@ void application::pushLayer(std::shared_ptr<iLayer> t_layer) {
     t_layer->onEvent(e);
 
     // * push to layer stack
-    m_layers.insert((m_layersEnd++), t_layer);
+    m_layers.insert(m_layers.begin() + (m_layersEnd++), t_layer);
 }
 
 void application::pushOverlay(std::shared_ptr<iLayer> t_layer) {
@@ -61,9 +61,9 @@ void application::pushOverlay(std::shared_ptr<iLayer> t_layer) {
 
 void application::removeLayer(std::shared_ptr<iLayer> t_layer) {
     // * find the layer
-    auto it = std::find(m_layers.begin(), m_layersEnd, t_layer);
+    auto it = std::find(m_layers.begin(), m_layers.begin() + m_layersEnd, t_layer);
     // * check if layuer found
-    if (it != m_layersEnd) {
+    if (it != m_layers.begin() + m_layersEnd) {
         // * force an on detach event
         detachEvent e;
         t_layer->onEvent(e);
@@ -76,7 +76,7 @@ void application::removeLayer(std::shared_ptr<iLayer> t_layer) {
 
 void application::removeOverlay(std::shared_ptr<iLayer> t_layer) {
     // * find the overlay
-    auto it = std::find(m_layersEnd, m_layers.end(), t_layer);
+    auto it = std::find(m_layers.begin() + m_layersEnd, m_layers.end(), t_layer);
     // * check it was found
     if (it != m_layers.end()) {
         // * force a detach event
