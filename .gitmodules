@@ -7,3 +7,7 @@
 [submodule "lib/glfw"]
 	path = lib/glfw
 	url = https://github.com/glfw/glfw
+[submodule "lib/imgui"]
+	path = lib/imgui
+	url = https://github.com/EthanHofton/imgui
+	branch = docking
