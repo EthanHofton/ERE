@@ -86,7 +86,7 @@ if (USE_OPENGL)
     list(APPEND EXTRA_LIBS ${OPENGL_LIBRARIES})
 
     # also include GLAD
-    add_subdirectory(lib/glad)
+    add_subdirectory(lib/glad/cmake)
     # create glad target
     glad_add_library(glad_gl_core_33 STATIC API gl:core=3.3)
     list(APPEND EXTRA_LIBS glad_gl_core_33)
