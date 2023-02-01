@@ -8,6 +8,8 @@ namespace ere {
 class entity {
 public:
 
+    friend class scene;
+
     entity(entt::entity t_entity, scene* t_scene) : m_entity(t_entity), m_scene(t_scene) {}
     entity(const entity& other) = default;
     entity() = default;

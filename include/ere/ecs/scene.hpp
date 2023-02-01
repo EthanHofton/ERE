@@ -4,6 +4,7 @@
 #include <entt/entt.hpp>
 #include <ere/core/iLayer.hpp>
 #include <ere/events/appEvents.hpp>
+#include <ere/components/uuid.hpp>
 
 namespace ere {
 
@@ -19,6 +20,8 @@ public:
     virtual void onEvent(ereEvent& t_event) final override;
 
 private:
+
+    bool onUpdate(updateEvent& t_e);
 
     entt::registry m_registry;
 
