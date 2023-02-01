@@ -56,6 +56,9 @@ add_subdirectory(lib/glm)
 # add imGui
 add_subdirectory(lib/imgui)
 
+# add entt
+add_subdirectory(lib/entt)
+
 
 # -- WINDOWING API -- #
 # if not use GLFW, use platform specific API
@@ -108,4 +111,5 @@ target_include_directories(ere PUBLIC ${PROJECT_BINARY_DIR})
 target_link_libraries(ere PUBLIC util)
 target_link_libraries(ere PUBLIC glm)
 target_link_libraries(ere PUBLIC imgui)
+target_link_libraries(ere PUBLIC EnTT::EnTT)
 target_link_libraries(ere PRIVATE ${EXTRA_LIBS})
