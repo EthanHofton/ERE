@@ -11,3 +11,6 @@
 	path = lib/imgui
 	url = https://github.com/EthanHofton/imgui
 	branch = docking
+[submodule "lib/glad"]
+	path = lib/glad
+	url = https://github.com/Dav1dde/glad
