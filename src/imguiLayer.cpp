@@ -1,6 +1,7 @@
 #include <ere/core/imguiLayer.hpp>
 #include <ere/mappings/keyMap.hpp>
 #include <ere/core/imgui_impl_opengl3.hpp>
+#include <ereConfig.hpp>
 #include <imgui.h>
 
 namespace ere {
@@ -10,12 +11,16 @@ void imguiLayer::begin(const double& t_delta, const glm::vec2& t_winSize) {
     io.DisplaySize = ImVec2(t_winSize.x, t_winSize.y);
     io.DeltaTime = t_delta;
 
+    #ifdef USE_OPENGL
     ImGui_ImplOpenGL3_NewFrame();
+    #endif 
     ImGui::NewFrame();
 }
 void imguiLayer::end() {
     ImGui::Render();
+    #ifdef USE_OPENGL
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    #endif
 }
 
 bool imguiLayer::onAttach(attachEvent& t_e) {
@@ -51,12 +56,16 @@ bool imguiLayer::onAttach(attachEvent& t_e) {
     io.KeyMap[ImGuiKey_Y]          = ERE_KEY_Y;
     io.KeyMap[ImGuiKey_Z]          = ERE_KEY_Z;
 
+    #ifdef USE_OPENGL
     ImGui_ImplOpenGL3_Init("#version 410");
+    #endif
 
     return false;
 }
 bool imguiLayer::onDetach(detachEvent& t_e) {
+    #ifdef USE_OPENGL
     ImGui_ImplOpenGL3_Shutdown();
+    #endif
     ImGui::DestroyContext();
     return false;
 }

@@ -1,3 +1,9 @@
+// * Ethan Hofton Addition (to check if OpenGL is used as the graphics API)
+#include <ereConfig.hpp>
+#ifdef USE_OPENGL
+
+// * from imgui/backends/imgui_impl_opengl3
+// 
 // dear imgui: Renderer Backend for modern OpenGL with shaders / programmatic pipeline
 // - Desktop GL: 2.x 3.x 4.x
 // - Embedded GL: ES 2.0 (WebGL 1.0), ES 3.0 (WebGL 2.0)
@@ -933,4 +939,7 @@ static void ImGui_ImplOpenGL3_ShutdownPlatformInterface()
 #endif
 #if defined(__clang__)
 #pragma clang diagnostic pop
+#endif
+
+// * Ethan Hofton addition
 #endif
