@@ -2,14 +2,14 @@
 #define ERE_ECS_SCENE_HPP
 
 #include <entt/entt.hpp>
-#include <ere/core/iLayer.hpp>
+#include <ere/core/layer.hpp>
 #include <ere/events/appEvents.hpp>
 #include <ere/components/uuid.hpp>
 
 namespace ere {
 
 class entity;
-class scene : public iLayer {
+class scene : public layer, public std::enable_shared_from_this<scene> {
 public:
     
     friend class entity;
@@ -17,11 +17,7 @@ public:
     entity createEntity();
     void destroyEntity(entity t_e);
 
-    virtual void onEvent(ereEvent& t_event) final override;
-
 private:
-
-    bool onUpdate(updateEvent& t_e);
 
     entt::registry m_registry;
 
