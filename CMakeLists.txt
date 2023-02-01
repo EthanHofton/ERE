@@ -53,8 +53,12 @@ add_subdirectory(lib/util)
 # add glm
 add_subdirectory(lib/glm)
 
+# add imGui
+add_subdirectory(lib/imgui)
+
 
 # -- WINDOWING API -- #
+# if not use GLFW, use platform specific API
 option(USE_GLFW "Use GLFW as the windowing libary" ON)
 cmake_dependent_option(USE_COCOA "Use COCOA as the windowing libary" ON "APPLE; NOT USE_GLFW" OFF)
 cmake_dependent_option(USE_WIN32 "Use WIN32 as the windowing libary" ON "WIN32; NOT USE_GLFW" OFF)
@@ -73,6 +77,24 @@ if (USE_WIN32)
     message("-- using WIN32 as windowing API")
 endif(USE_WIN32)
 
+# -- Graphics API -- #
+# if not use opengl, use platform specific API
+option(USE_OPENGL "Use OpenGL as the graphics API" ON)
+cmake_dependent_option(USE_METAL "Use METAL as the graphics API" ON "APPLE; NOT USE_OPENGL" OFF)
+cmake_dependent_option(USE_VULKAN "Use WIN32 as the graphics API" ON "WIN32; NOT USE_OPENGL" OFF)
+
+# setup OpenGL and glad
+if (USE_OPENGL)
+    find_package(OpenGL REQUIRED)
+    list(APPEND EXTRA_LIBS ${OPENGL_LIBRARIES})
+
+    # also include GLAD
+    add_subdirectory(lib/glad/cmake)
+    # create glad target
+    glad_add_library(glad_gl_core_33 STATIC API gl:core=3.3)
+    list(APPEND EXTRA_LIBS glad_gl_core_33)
+endif(USE_OPENGL)
+
 configure_file(${CONFIG_IN} ${CONFIG_OUT})
 
 # add library target
@@ -85,4 +107,5 @@ target_include_directories(ere PUBLIC ${PROJECT_BINARY_DIR})
 # link to libaries
 target_link_libraries(ere PUBLIC util)
 target_link_libraries(ere PUBLIC glm)
+target_link_libraries(ere PUBLIC imgui)
 target_link_libraries(ere PRIVATE ${EXTRA_LIBS})

@@ -7,8 +7,8 @@
 #if defined(USE_GLFW)
 
 #ifdef USE_OPENGL
-// * include glad.h BEFORE glfw3.h
-#include <glad/glad.h>
+// * include gl.h BEFORE glfw3.h
+#include <glad/gl.h>
 #endif
 
 #include <GLFW/glfw3.h>

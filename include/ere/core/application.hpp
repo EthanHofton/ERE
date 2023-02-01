@@ -7,6 +7,7 @@
 #include <ere/events/appEvents.hpp>
 
 #include "iLayer.hpp"
+#include "imguiLayer.hpp"
 
 namespace ere {
 
@@ -55,7 +56,7 @@ private:
     std::shared_ptr<windowAPI> m_windowAPI;
     bool m_running = true;
     double m_fps = 60.0f;
-
+    std::weak_ptr<imguiLayer> m_imguiLayer;
 };
 
 }

@@ -35,11 +35,14 @@ void glfwWindowImpl::createWindow(const windowProps& t_props) {
     glfwMakeContextCurrent(m_window);
 
     #ifdef USE_OPENGL
-    // * load glad
-    gladLoadGL(glfwGetProcAddress);
+    // * initalize glad
+    if (!gladLoadGL((GLADloadfunc)glfwGetProcAddress)) {
+        ERE_CRITICAL("Failed to initalize GLAD");
+        throw std::runtime_error("Failed to initalize GLAD");
+    }
 
     // * set viewport 
-    glViewport(0, 0, t_props.t_width, t_props.t_height);
+    glViewport(0, 0, t_props.m_width, t_props.m_height);
     #endif
 
     /* -- GLFW callbacks -- */

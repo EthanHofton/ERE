@@ -7,3 +7,6 @@
 #cmakedefine USE_COCOA
 #cmakedefine USE_WIN32
 
+#cmakedefine USE_OPENGL
+#cmakedefine USE_METAL
+#cmakedefine USE_VULKAN

@@ -7,7 +7,12 @@ application::application(const windowAPI::windowProps& t_props) {
     m_windowAPI = windowAPI::createConcreteWindowAPI();
     m_windowAPI->setEventFunction(std::bind(&application::onEvent, this, std::placeholders::_1));
     m_windowAPI->createWindow(t_props);
+
+    std::shared_ptr<imguiLayer> ilayer = std::make_shared<imguiLayer>();
+    m_imguiLayer = ilayer;
+    pushOverlay(ilayer);
 }
+
 application::~application() {
     m_windowAPI->destroyWindow();
 }
@@ -21,18 +26,15 @@ void application::run() {
 
             m_windowAPI->preRender();
 
-            // * create onUpdate event and propagate
-            // * imgui stuff
-            
             // * send a window updated event
             updateEvent e(m_timer.getDeltaTime());
             m_windowAPI->sendEvent(e);
 
             // * imgui
-            // imgui::begin()
+            m_imguiLayer.lock()->begin(m_timer.getDeltaTime(), m_windowAPI->getWindowSize());
             imguiUpdateEvent imguiEvent;
             m_windowAPI->sendEvent(imguiEvent);
-            // imgui::end()
+            m_imguiLayer.lock()->end();
 
             m_windowAPI->postRender();
         }
