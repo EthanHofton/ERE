@@ -136,6 +136,8 @@ public:
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 
+    virtual uint32_t getCount() const = 0;
+
     virtual void setData(uint32_t* t_indices, uint32_t t_size) = 0;
 
     static ref<indexBufferAPI> make(const uint32_t& t_size);

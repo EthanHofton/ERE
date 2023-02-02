@@ -84,6 +84,10 @@ void glIndexBuffer::unbind() const {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+uint32_t glIndexBuffer::getCount() const {
+    return m_count;
+}
+
 void glIndexBuffer::setData(uint32_t* t_data, uint32_t t_count) {
     m_count = t_count;
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
