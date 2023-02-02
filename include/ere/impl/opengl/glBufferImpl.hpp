@@ -18,8 +18,8 @@ class glVertexBuffer : public vertexBufferAPI {
     virtual void unbind() const override;
 
     virtual void setData(const void* t_data, uint32_t t_size) override;
-    virtual const bufferLayout& getLayout() const override;
-    virtual void setLayout(const bufferLayout& t_layout) override;
+    inline virtual const bufferLayout& getLayout() const override { return m_layout; }
+    inline virtual void setLayout(const bufferLayout& t_layout) override { m_layout = t_layout; }
 
 private:
 
@@ -29,16 +29,19 @@ private:
 
 class glIndexBuffer : public indexBufferAPI {
 
+    glIndexBuffer(const uint32_t& t_count);
+    glIndexBuffer(uint32_t* t_indices, const uint32_t& t_count);
     virtual ~glIndexBuffer();
 
     virtual void bind() const override;
     virtual void unbind() const override;
 
-    virtual void setData(uint32_t* t_data, uint32_t t_size) override;
+    virtual void setData(uint32_t* t_data, uint32_t t_count) override;
 
 private:
 
     unsigned int m_IBO;
+    uint32_t m_count;
 };
 
 }
