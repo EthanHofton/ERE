@@ -8,7 +8,7 @@ application::application(const windowAPI::windowProps& t_props) {
     m_windowAPI->setEventFunction(std::bind(&application::onEvent, this, std::placeholders::_1));
     m_windowAPI->createWindow(t_props);
 
-    std::shared_ptr<imguiLayer> ilayer = std::make_shared<imguiLayer>();
+    ref<imguiLayer> ilayer = createRef<imguiLayer>(); 
     m_imguiLayer = ilayer;
     pushOverlay(ilayer);
 }

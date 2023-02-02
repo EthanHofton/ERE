@@ -8,6 +8,7 @@
 #include <ere/events/windowEvents.hpp>
 #include <ere/events/keyEvents.hpp>
 #include <ere/events/mouseEvents.hpp>
+#include <ere/core/core.hpp>
 
 namespace ere {
 
@@ -29,7 +30,7 @@ public:
     *
     * @return a downcasted version of a concreate window impl
     */
-    static std::shared_ptr<windowAPI> createConcreteWindowAPI();
+    static ref<windowAPI> createConcreteWindowAPI();
 
     virtual ~windowAPI() = default;
 

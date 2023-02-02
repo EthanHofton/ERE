@@ -23,10 +23,10 @@ public:
     inline void setFPS(double t_fps) { m_fps = t_fps; }
 
     /* layer stack */
-    void pushLayer(std::shared_ptr<iLayer> t_layer);
-    void pushOverlay(std::shared_ptr<iLayer> t_layer);
-    void removeLayer(std::shared_ptr<iLayer> t_layer);
-    void removeOverlay(std::shared_ptr<iLayer> t_layer);
+    void pushLayer(ref<iLayer> t_layer);
+    void pushOverlay(ref<iLayer> t_layer);
+    void removeLayer(ref<iLayer> t_layer);
+    void removeOverlay(ref<iLayer> t_layer);
 
     /* -- windowAPI -- */
     void setWindowSize(const glm::vec2& t_size);
@@ -49,14 +49,14 @@ private:
 
 private:
 
-    std::vector<std::shared_ptr<iLayer>> m_layers;
+    std::vector<ref<iLayer>> m_layers;
     unsigned int m_layersEnd = 0;
 
     util::manual_timer m_timer;
-    std::shared_ptr<windowAPI> m_windowAPI;
+    ref<windowAPI> m_windowAPI;
     bool m_running = true;
     double m_fps = 60.0f;
-    std::weak_ptr<imguiLayer> m_imguiLayer;
+    weak_ref<imguiLayer> m_imguiLayer;
 };
 
 }

@@ -12,13 +12,13 @@ public:
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 
-    virtual void addVertexBuffer(const vertexBuffer& t_vertexBuffer) = 0;
-    virtual void addIndexBuffer(const indexBuffer& t_indexBuffer) = 0;
+    virtual void addVertexBuffer(const ref<vertexBufferAPI>& t_vertexBuffer) = 0;
+    virtual void addIndexBuffer(const ref<indexBufferAPI>& t_indexBuffer) = 0;
 
-    virtual const std::vector<vertexBuffer&> getVertexBuffers() const = 0;
-    virtual const indexBuffer& getIndexBuffer() const = 0;
+    virtual const std::vector<ref<vertexBufferAPI>>& getVertexBuffers() const = 0;
+    virtual const ref<indexBufferAPI>& getIndexBuffer() const = 0;
 
-    static vertexArray& make();
+    static ref<vertexArray> make();
 };
 
 }

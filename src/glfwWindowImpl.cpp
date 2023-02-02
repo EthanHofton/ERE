@@ -4,9 +4,9 @@
 
 namespace ere {
 
-std::shared_ptr<windowAPI> windowAPI::createConcreteWindowAPI() {
+ref<windowAPI> windowAPI::createConcreteWindowAPI() {
     // * return a shared pointer for windowAPI class, created with glfwWindowImpl
-    return std::make_shared<glfwWindowImpl>();
+    return createRef<glfwWindowImpl>();
 }
 
 void glfwWindowImpl::createWindow(const windowProps& t_props) {

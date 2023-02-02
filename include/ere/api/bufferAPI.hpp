@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string>
 #include <vector>
+#include <ere/core/core.hpp>
 
 namespace ere {
 
@@ -105,10 +106,10 @@ private:
     uint32_t m_stride = 0;
 };
 
-class vertexBuffer {
+class vertexBufferAPI {
 public:
 
-    virtual ~vertexBuffer() = default;
+    virtual ~vertexBufferAPI() = default;
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
@@ -117,8 +118,8 @@ public:
     virtual const bufferLayout& getLayout() const = 0;
     virtual void setLayout(const bufferLayout& t_layout) = 0;
 
-    static vertexBuffer& make(const uint32_t& t_size);
-    static vertexBuffer& make(void* t_vertices, const uint32_t& t_size);
+    static ref<vertexBufferAPI> make(const uint32_t& t_size);
+    static ref<vertexBufferAPI> make(void* t_vertices, const uint32_t& t_size);
 
 private:
 
@@ -127,17 +128,17 @@ private:
     bufferLayout m_layout;
 };
 
-class indexBuffer {
+class indexBufferAPI {
 public:
-    virtual ~indexBuffer() = default;
+    virtual ~indexBufferAPI() = default;
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 
     virtual void setData(uint32_t* t_indices, uint32_t t_size) = 0;
 
-    static indexBuffer& make(const uint32_t& t_size);
-    static indexBuffer& make(uint32_t* t_indices, const uint32_t& t_size);
+    static ref<indexBufferAPI> make(const uint32_t& t_size);
+    static ref<indexBufferAPI> make(uint32_t* t_indices, const uint32_t& t_size);
 };
 
 }
