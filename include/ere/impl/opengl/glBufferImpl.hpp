@@ -9,7 +9,7 @@
 namespace ere {
 
 class glVertexBuffer : public vertexBufferAPI {
-
+public:
     glVertexBuffer(const uint32_t& t_size);
     glVertexBuffer(void* t_vertices, const uint32_t& t_size);
     virtual ~glVertexBuffer();
@@ -28,7 +28,7 @@ private:
 };
 
 class glIndexBuffer : public indexBufferAPI {
-
+public:
     glIndexBuffer(const uint32_t& t_count);
     glIndexBuffer(uint32_t* t_indices, const uint32_t& t_count);
     virtual ~glIndexBuffer();

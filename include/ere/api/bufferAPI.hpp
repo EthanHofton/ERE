@@ -110,6 +110,7 @@ class vertexBufferAPI {
 public:
 
     virtual ~vertexBufferAPI() = default;
+    vertexBufferAPI() = default;
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;

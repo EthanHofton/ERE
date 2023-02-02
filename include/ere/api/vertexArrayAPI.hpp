@@ -7,6 +7,7 @@ namespace ere {
 
 class vertexArrayAPI {
 public:
+    vertexArrayAPI() = default;
     virtual ~vertexArrayAPI() = default;
 
     virtual void bind() const = 0;
