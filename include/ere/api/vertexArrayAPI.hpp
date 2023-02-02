@@ -5,9 +5,9 @@
 
 namespace ere {
 
-class vertexArray {
+class vertexArrayAPI {
 public:
-    virtual ~vertexArray() = default;
+    virtual ~vertexArrayAPI() = default;
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
@@ -18,7 +18,7 @@ public:
     virtual const std::vector<ref<vertexBufferAPI>>& getVertexBuffers() const = 0;
     virtual const ref<indexBufferAPI>& getIndexBuffer() const = 0;
 
-    static ref<vertexArray> make();
+    static ref<vertexArrayAPI> make();
 };
 
 }

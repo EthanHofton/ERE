@@ -89,7 +89,7 @@ public:
     bufferLayout() {}
     bufferLayout(std::initializer_list<bufferElement> t_elem) : m_elements(t_elem) {}
 
-    uint32_t getStride() { return m_stride; }
+    uint32_t getStride() const { return m_stride; }
     const std::vector<bufferElement>& getElements() const { return m_elements; }
 
     iterator begin() { return m_elements.begin(); } 
