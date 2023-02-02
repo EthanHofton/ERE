@@ -10,7 +10,7 @@ struct tag {
     tag() : m_tag("entity") {}
     tag(const std::string& t_tag) : m_tag(t_tag) {}
 
-    std::string getTag() { return m_tag; }
+    std::string getTag() const { return m_tag; }
     void rename(const std::string& t_tag) { m_tag = t_tag; }
 
 private:
