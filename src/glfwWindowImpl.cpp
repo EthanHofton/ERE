@@ -53,6 +53,11 @@ void glfwWindowImpl::createWindow(const windowProps& t_props) {
         #ifdef USE_OPENGL
         glViewport(0, 0, t_w, t_h);
         #endif
+
+        driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
+
+        windowFramebufferResizeEvent e({t_w, t_h});
+        data.m_eventFn(e);
     });
 
     // * glfw error callback
@@ -221,6 +226,11 @@ void glfwWindowImpl::setWindowSwapInterval(const int& t_fps) { glfwSwapInterval(
 glm::vec2 glfwWindowImpl::getWindowSize() const {
     glm::ivec2 size;
     glfwGetWindowSize(m_window, &size.x, &size.y);
+    return size;
+}
+glm::vec2 glfwWindowImpl::getWindowFramebufferSize() const {
+    glm::ivec2 size;
+    glfwGetFramebufferSize(m_window, &size.x, &size.y);
     return size;
 }
 glm::vec2 glfwWindowImpl::getWindowPos() const {

@@ -31,7 +31,7 @@ void application::run() {
             m_windowAPI->sendEvent(e);
 
             // * imgui
-            m_imguiLayer.lock()->begin(m_timer.getDeltaTime(), m_windowAPI->getWindowSize());
+            m_imguiLayer.lock()->begin(m_timer.getDeltaTime(), m_windowAPI->getWindowSize(), m_windowAPI->getWindowFramebufferSize());
             imguiUpdateEvent imguiEvent;
             m_windowAPI->sendEvent(imguiEvent);
             m_imguiLayer.lock()->end();

@@ -8,7 +8,7 @@ namespace ere {
 enum class ereEvents {
     /* -- window events -- */
     windowClosed, windowMoved, windowResize, windowFocus, windowLostFocus,
-    windowMinimized, windowMaximised, windowRestored,
+    windowMinimized, windowMaximised, windowRestored, windowFramebufferResize,
     /* -- key events -- */
     keyPressed, keyReleased, keyTyped,
     /* -- mouse events -- */

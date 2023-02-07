@@ -1,14 +1,17 @@
 #include <ere/core/imguiLayer.hpp>
 #include <ere/mappings/keyMap.hpp>
+#include <ere/core/imgui_impl_glfw.hpp>
 #include <ere/core/imgui_impl_opengl3.hpp>
 #include <ereConfig.hpp>
 #include <imgui.h>
+#include <ere/core/logger.hpp>
 
 namespace ere {
 
-void imguiLayer::begin(const double& t_delta, const glm::vec2& t_winSize) {
+void imguiLayer::begin(const double& t_delta, const glm::vec2& t_winSize, const glm::vec2& t_framebuffSize) {
     ImGuiIO& io = ImGui::GetIO();
     io.DisplaySize = ImVec2(t_winSize.x, t_winSize.y);
+    io.DisplayFramebufferScale = ImVec2(t_framebuffSize.x / t_winSize.x, t_framebuffSize.y / t_winSize.y);
     io.DeltaTime = t_delta;
 
     #ifdef USE_OPENGL
@@ -118,7 +121,12 @@ bool imguiLayer::onMouseScrolled(mouseScrolledEvent& t_e) {
 bool imguiLayer::onWindowResize(windowResizeEvent& t_e) {
     ImGuiIO &io = ImGui::GetIO();
     io.DisplaySize = ImVec2(t_e.getWindowSize().x, t_e.getWindowSize().y);
-    io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
+    return false;
+}
+
+bool imguiLayer::onWindowFramebufferResize(windowFramebufferResizeEvent &t_e) {
+    ImGuiIO &io = ImGui::GetIO();
+    io.DisplayFramebufferScale = ImVec2(t_e.getWindowFramebufferSize().x / io.DisplaySize.x, t_e.getWindowFramebufferSize().y / io.DisplaySize.y);
     return false;
 }
 

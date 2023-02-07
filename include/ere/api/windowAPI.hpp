@@ -78,6 +78,12 @@ public:
     */
     virtual glm::vec2 getWindowSize() const = 0;
     /**
+    * @brief get the size of the window framebuffer
+    *
+    * @return the size of the window framebuffer
+    */
+    virtual glm::vec2 getWindowFramebufferSize() const = 0;
+    /**
     * @brief get the window position
     *
     * @return the position of the window
