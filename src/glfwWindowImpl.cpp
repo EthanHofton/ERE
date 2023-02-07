@@ -34,28 +34,16 @@ void glfwWindowImpl::createWindow(const windowProps& t_props) {
 
     glfwMakeContextCurrent(m_window);
 
-    #ifdef USE_OPENGL
-    // * initalize glad
-    if (!gladLoadGL((GLADloadfunc)glfwGetProcAddress)) {
-        ERE_CRITICAL("Failed to initalize GLAD");
-        throw std::runtime_error("Failed to initalize GLAD");
-    }
-
-    // * set viewport 
-    glViewport(0, 0, t_props.m_width, t_props.m_height);
-    #endif
+    m_driverData.m_graphics->init();
+    m_driverData.m_graphics->setViewport({t_props.m_width, t_props.m_height});
 
     /* -- GLFW callbacks -- */
     glfwSetWindowUserPointer(m_window, &m_driverData);
 
     // * glfw framebuffer size callback
     glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* t_window, int t_w, int t_h) {
-        #ifdef USE_OPENGL
-        glViewport(0, 0, t_w, t_h);
-        #endif
-
         driverData &data = *(driverData *)glfwGetWindowUserPointer(t_window);
-
+        data.m_graphics->setViewport({t_w, t_h});
         windowFramebufferResizeEvent e({t_w, t_h});
         data.m_eventFn(e);
     });
@@ -243,10 +231,8 @@ void glfwWindowImpl::minimizeWindow() { glfwIconifyWindow(m_window); }
 void glfwWindowImpl::restoreWindow() { glfwRestoreWindow(m_window); }
 void glfwWindowImpl::focusWindow() { glfwFocusWindow(m_window); }
 void glfwWindowImpl::preRender() {
-    #ifdef USE_OPENGL
-    glClearColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    #endif
+    m_driverData.m_graphics->clearColor(m_backgroundColor);
+    m_driverData.m_graphics->clearBuffer();
 }
 void glfwWindowImpl::postRender() { glfwSwapBuffers(m_window); glfwPollEvents(); }
 void glfwWindowImpl::setBackgroundColor(const glm::vec4& t_color) { m_backgroundColor = t_color; }

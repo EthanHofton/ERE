@@ -3,6 +3,7 @@
 
 #include <ere/api/windowAPI.hpp>
 #include <ereConfig.hpp>
+#include <ere/api/renderAPI.hpp>
 
 #if defined(USE_GLFW)
 

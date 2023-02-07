@@ -14,6 +14,8 @@ public:
 
     virtual void init() = 0;
     virtual void setViewport(const glm::vec2& t_size) = 0;
+    virtual void clearColor(const glm::vec4& t_color) = 0;
+    virtual void clearBuffer() = 0;
     virtual void drawIndexed(const ref<vertexArrayAPI>& t_vertexArray, uint32_t t_indexCount = 0) = 0;
     static scope<renderAPI> make();
 };

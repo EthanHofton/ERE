@@ -9,6 +9,7 @@
 #include <ere/events/keyEvents.hpp>
 #include <ere/events/mouseEvents.hpp>
 #include <ere/core/core.hpp>
+#include <ere/api/renderAPI.hpp>
 
 namespace ere {
 
@@ -144,6 +145,7 @@ public:
     struct driverData {
         glm::vec2 m_lastMousePos;
         bool m_firstMouseMove;
+        scope<renderAPI> m_graphics = renderAPI::make();
         eventCallbackFn m_eventFn = [](ereEvent&){};
     };
 
