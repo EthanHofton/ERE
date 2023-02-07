@@ -1,6 +1,5 @@
 #include <ere/core/imguiLayer.hpp>
 #include <ere/mappings/keyMap.hpp>
-#include <ere/core/imgui_impl_glfw.hpp>
 #include <ere/core/imgui_impl_opengl3.hpp>
 #include <ereConfig.hpp>
 #include <imgui.h>
