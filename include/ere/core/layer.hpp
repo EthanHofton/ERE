@@ -24,6 +24,7 @@ public:
     inline virtual bool onWindowClose(windowClosedEvent& t_event) { return false; }
     inline virtual bool onWindowMoved(windowMovedEvent& t_event) { return false; }
     inline virtual bool onWindowResize(windowResizeEvent& t_event) { return false; }
+    inline virtual bool onWindowFramebufferResize(windowFramebufferResizeEvent& t_event) { return false; }
     inline virtual bool onWindowFocus(windowFocusEvent& t_event) { return false; }
     inline virtual bool onWindowLostFocus(windowLostFocusEvent& t_event) { return false; }
     inline virtual bool onWindowMinimized(windowMinimizedEvent& t_event) { return false; }

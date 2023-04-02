@@ -8,6 +8,8 @@
 #include <ere/events/windowEvents.hpp>
 #include <ere/events/keyEvents.hpp>
 #include <ere/events/mouseEvents.hpp>
+#include <ere/core/core.hpp>
+#include <ere/api/renderAPI.hpp>
 
 namespace ere {
 
@@ -29,7 +31,7 @@ public:
     *
     * @return a downcasted version of a concreate window impl
     */
-    static std::shared_ptr<windowAPI> createConcreteWindowAPI();
+    static ref<windowAPI> createConcreteWindowAPI();
 
     virtual ~windowAPI() = default;
 
@@ -76,6 +78,12 @@ public:
     * @return the size of the window
     */
     virtual glm::vec2 getWindowSize() const = 0;
+    /**
+    * @brief get the size of the window framebuffer
+    *
+    * @return the size of the window framebuffer
+    */
+    virtual glm::vec2 getWindowFramebufferSize() const = 0;
     /**
     * @brief get the window position
     *
@@ -137,6 +145,7 @@ public:
     struct driverData {
         glm::vec2 m_lastMousePos;
         bool m_firstMouseMove;
+        scope<renderAPI> m_graphics = renderAPI::make();
         eventCallbackFn m_eventFn = [](ereEvent&){};
     };
 

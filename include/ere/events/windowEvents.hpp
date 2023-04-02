@@ -86,6 +86,26 @@ private:
     glm::vec2 m_windowSize;
 };
 
+class windowFramebufferResizeEvent : public ereEvent {
+public:
+
+    windowFramebufferResizeEvent(const glm::vec2& t_size) : m_windowSize(t_size) {}
+
+    inline glm::vec2 getWindowFramebufferSize() const { return m_windowSize; } 
+
+    std::string toString() const override {
+        std::stringstream ss;
+        ss << "windowFramebufferResizeEvent: " << "{" << m_windowSize.x << ", " << m_windowSize.y << "}";
+        return ss.str();
+    }
+
+    EVENT_CLASS_TYPE(ereEvents, windowResize)
+
+private:
+
+    glm::vec2 m_windowSize;
+};
+
 }
 
 #endif

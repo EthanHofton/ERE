@@ -11,7 +11,7 @@ namespace ere {
 *
 * @return ere::application a fully initalized ere::application
 */
-extern std::shared_ptr<ere::application> createApplication();
+extern ref<ere::application> createApplication();
 
 }
 

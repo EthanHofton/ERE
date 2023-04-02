@@ -9,7 +9,7 @@ struct uuid {
 
     uuid() { m_uuid = util::generate_uuid_v4(); }
     std::string regenerate() { m_uuid = util::generate_uuid_v4(); return m_uuid; }
-    std::string getUUID() { return m_uuid; }
+    std::string getUUID() const { return m_uuid; }
 
 private:
 

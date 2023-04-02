@@ -1,6 +1,7 @@
 #ifndef ERE_ECS_ENTITY_HPP
 #define ERE_ECS_ENTITY_HPP
 
+#include <ere/core/core.hpp>
 #include "scene.hpp"
 
 namespace ere {
@@ -10,7 +11,7 @@ public:
 
     friend class scene;
 
-    entity(entt::entity t_entity, std::weak_ptr<scene> t_scene) : m_entity(t_entity), m_scene(t_scene) {}
+    entity(entt::entity t_entity, weak_ref<scene> t_scene) : m_entity(t_entity), m_scene(t_scene) {}
     entity(const entity& other) = default;
     entity() = default;
 
@@ -57,7 +58,7 @@ public:
 private:
 
     entt::entity m_entity;
-    std::weak_ptr<scene> m_scene;
+    weak_ref<scene> m_scene;
 
 };
 

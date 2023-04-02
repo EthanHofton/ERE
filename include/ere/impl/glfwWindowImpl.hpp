@@ -3,6 +3,7 @@
 
 #include <ere/api/windowAPI.hpp>
 #include <ereConfig.hpp>
+#include <ere/api/renderAPI.hpp>
 
 #if defined(USE_GLFW)
 
@@ -17,22 +18,23 @@
 namespace ere {
 
 class glfwWindowImpl : public windowAPI {
-    virtual void createWindow(const windowProps& t_props);
-    virtual void destroyWindow();
+    virtual void createWindow(const windowProps& t_props) override;
+    virtual void destroyWindow() override;
 
-    virtual void setWindowSize(const glm::vec2& t_size);
-    virtual void setWindowPos(const glm::vec2& t_pos);
-    virtual void setWindowTitle(const std::string& t_title);
-    virtual void setWindowSwapInterval(const int& t_fps);
-    virtual glm::vec2 getWindowSize() const;
-    virtual glm::vec2 getWindowPos() const;
-    virtual void maximizeWindow();
-    virtual void minimizeWindow();
-    virtual void restoreWindow();
-    virtual void focusWindow();
-    virtual void preRender();
-    virtual void postRender();
-    virtual void setBackgroundColor(const glm::vec4& t_color);
+    virtual void setWindowSize(const glm::vec2& t_size) override;
+    virtual void setWindowPos(const glm::vec2& t_pos) override;
+    virtual void setWindowTitle(const std::string& t_title) override;
+    virtual void setWindowSwapInterval(const int& t_fps) override;
+    virtual glm::vec2 getWindowSize() const override;
+    virtual glm::vec2 getWindowFramebufferSize() const override;
+    virtual glm::vec2 getWindowPos() const override;
+    virtual void maximizeWindow() override;
+    virtual void minimizeWindow() override;
+    virtual void restoreWindow() override;
+    virtual void focusWindow() override;
+    virtual void preRender() override;
+    virtual void postRender() override;
+    virtual void setBackgroundColor(const glm::vec4& t_color) override;
 
 private:
 

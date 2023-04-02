@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
     // * create the application
-    std::shared_ptr<ere::application> app = ere::createApplication();
+    ere::ref<ere::application> app = ere::createApplication();
 
     // * run the application
     app->run();

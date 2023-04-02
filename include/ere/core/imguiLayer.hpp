@@ -8,7 +8,7 @@ namespace ere {
 class imguiLayer : public layer {
 public:
 
-    void begin(const double& t_delta, const glm::vec2& t_winSize);
+    void begin(const double& t_delta, const glm::vec2& t_winSize, const glm::vec2& t_framebuffSize);
     void end();
 
     virtual bool onAttach(attachEvent& t_e) final override;
@@ -22,6 +22,7 @@ public:
     virtual bool onMouseMoved(mouseMovedEvent& t_e) final override;
     virtual bool onMouseScrolled(mouseScrolledEvent& t_e) final override;
     virtual bool onWindowResize(windowResizeEvent& t_e) final override;
+    virtual bool onWindowFramebufferResize(windowFramebufferResizeEvent& t_e) final override;
 };
 
 }

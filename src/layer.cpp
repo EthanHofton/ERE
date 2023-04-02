@@ -15,6 +15,7 @@ void layer::onEvent(ereEvent& t_event) {
     dispatcher.dispatch<windowClosedEvent>(std::bind(&layer::onWindowClose, this, std::placeholders::_1));
     dispatcher.dispatch<windowMovedEvent>(std::bind(&layer::onWindowMoved, this, std::placeholders::_1));
     dispatcher.dispatch<windowResizeEvent>(std::bind(&layer::onWindowResize, this, std::placeholders::_1));
+    dispatcher.dispatch<windowFramebufferResizeEvent>(std::bind(&layer::onWindowFramebufferResize, this, std::placeholders::_1));
     dispatcher.dispatch<windowFocusEvent>(std::bind(&layer::onWindowFocus, this, std::placeholders::_1));
     dispatcher.dispatch<windowLostFocusEvent>(std::bind(&layer::onWindowLostFocus, this, std::placeholders::_1));
     dispatcher.dispatch<windowMinimizedEvent>(std::bind(&layer::onWindowMinimized, this, std::placeholders::_1));
