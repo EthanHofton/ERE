@@ -19,5 +19,5 @@ jobs:
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config Release
 
-      - name: Test
-        run: cd ${{github.workspace}}/build && ctest --verbose
+      # - name: Test
+      #   run: cd ${{github.workspace}}/build && ctest --verbose

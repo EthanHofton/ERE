@@ -75,6 +75,11 @@ public:
     * @param overlay the overlay
     */
     void pop_overlay(ref<i_layer> t_overlay);
+
+    /**
+    * @brief manually kill the application
+    */
+    inline void stop() { m_running = false; }
     
 
 private:
