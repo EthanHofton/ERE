@@ -24,9 +24,9 @@ set(CMAKE_MACOSX_RPATH ON)
 
 enable_testing()
 
-# include include directory BEFORE src so that the library can use the configure file
-add_subdirectory(include)
 add_subdirectory(src)
+# include include directory AFTER src so that the library can use the configure file
+add_subdirectory(include)
 # include test directroy AFTER src so that the test can use the library built
 add_subdirectory(test)
 
