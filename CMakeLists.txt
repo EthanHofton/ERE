@@ -31,16 +31,18 @@ add_subdirectory(src)
 add_subdirectory(test)
 
 # docs
-option(BUILD_DOCS "Build documentation" OFF)
+option(BUILD_DOCS "Build documentation" ON)
 if(BUILD_DOCS)
     # find doxygen and generate documentation
     find_package(Doxygen)
     # check doxygen was found
     if (DOXYGEN_FOUND)
+        # use the readme as main page
+        set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md")
         # use doxygen_add_docs to generate documentation
         doxygen_add_docs(
-            doxygen
-            ${PROJECT_SOURCE_DIR}
+            docs
+            ${CMAKE_SOURCE_DIR}
             COMMENT "Generate man pages"
         )
     else()
