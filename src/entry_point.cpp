@@ -4,16 +4,20 @@
 int main(int argc, char** argv) {
 
     // log application start
-    ERE_INFO("Creating application");
+    ERE_INFO("ERE startup");
 
     // create the application
     ere::ref<ere::application> app = ere::ere_create_application();
 
+    ERE_INFO("ERE runtime");
+    // app->run();
+
+    // log application end
+    ERE_INFO("ERE cleanup");
+
     // free the app
     app = nullptr;
 
-    // log application end
-    ERE_INFO("Destroying application");
 
     return 0;
 }
