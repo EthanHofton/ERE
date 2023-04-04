@@ -8,10 +8,16 @@ ref<application> application::create_application() {
 
 application::application() {
     ERE_INFO("Application created");
+
+    m_window_driver = window_api::create_concrete();
+    m_window_driver->set_event_callback(std::bind(&application::on_event, this, std::placeholders::_1));
+    m_window_driver->create_window({"ere engine", 1280, 720});
 }
 
 application::~application() {
     ERE_INFO("Application destroyed");
+
+    m_window_driver->destroy_window();
 }
 
 void application::run() {
@@ -26,6 +32,7 @@ void application::run() {
             // reset the timer if it has
             m_timer.reset();
 
+            m_window_driver->pre_render();
 
             // send a window updated event
             update_event e_update(m_timer.getDeltaTime());
@@ -34,6 +41,8 @@ void application::run() {
             // send a imgui updated event
             // imgui_update_event e_imgui_update;
             // on_event(e_imgui_update);
+
+            m_window_driver->post_render();
         }
     }
 }

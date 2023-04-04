@@ -41,7 +41,7 @@ if(BUILD_DOCS)
         set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md")
         # use doxygen_add_docs to generate documentation
         doxygen_add_docs(
-            docs
+            ere_docs
             ${CMAKE_SOURCE_DIR}
             COMMENT "Generate man pages"
         )

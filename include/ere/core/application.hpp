@@ -5,6 +5,7 @@
 #include <ere/events/events.hpp>
 #include <ere/events/window_events.hpp>
 #include <ere/events/app_events.hpp>
+#include <ere/api/window_api.hpp>
 
 #include "i_layer.hpp"
 
@@ -77,6 +78,8 @@ public:
     
 
 private:
+
+    ref<window_api> m_window_driver;
 
     std::vector<ref<i_layer>> m_layers;
     unsigned int m_layersEnd = 0;

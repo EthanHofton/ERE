@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
     ere::ref<ere::application> app = ere::ere_create_application();
 
     ERE_INFO("ERE runtime");
-    // app->run();
+    app->run();
 
     // log application end
     ERE_INFO("ERE cleanup");
