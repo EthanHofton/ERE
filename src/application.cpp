@@ -25,6 +25,15 @@ void application::run() {
         if (m_timer.getDeltaTime() >= 1.0 / m_fps) {
             // reset the timer if it has
             m_timer.reset();
+
+
+            // send a window updated event
+            update_event e_update(m_timer.getDeltaTime());
+            on_event(e_update);
+
+            // send a imgui updated event
+            // imgui_update_event e_imgui_update;
+            // on_event(e_imgui_update);
         }
     }
 }
