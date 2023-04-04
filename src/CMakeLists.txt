@@ -26,6 +26,7 @@ FetchContent_MakeAvailable(glm)
 
 # ======= SOURCES =======
 set(SOURCES
+    layer.cpp
     entry_point.cpp
     application.cpp)
 # =======================

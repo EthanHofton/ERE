@@ -1,5 +1,5 @@
-#ifndef __ERE_APP_EVENTS_HPP__
-#define __ERE_APP_EVENTS_HPP__
+#ifndef __ERE_WINDOW_EVENTS_HPP__
+#define __ERE_WINDOW_EVENTS_HPP__
 
 /* -- WINDOW EVENTS: -- */
 /* -- windowClosed, windowMoved, windowResize, windowFocus, windowLostFocus, windowMinimized, windowMaximised, windowRestored -- */ 
