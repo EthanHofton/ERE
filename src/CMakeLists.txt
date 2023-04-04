@@ -16,7 +16,8 @@ FetchContent_MakeAvailable(util)
 
 # ======= SOURCES =======
 set(SOURCES
-    entry_point.cpp)
+    entry_point.cpp
+    application.cpp)
 # =======================
 
 
