@@ -2,6 +2,8 @@
 #define __ERE_APPLICATION_HPP__
 
 #include <util/timer.hpp>
+#include <ere/events/events.hpp>
+#include <ere/events/window_events.hpp>
 
 #include "logger.hpp"
 #include "core.hpp"
@@ -35,7 +37,7 @@ public:
     /**
     * @brief on event
     */
-    void on_event();
+    void on_event(ere_event& t_e);
 
     /**
     * @brief set the fps
