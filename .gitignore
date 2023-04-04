@@ -40,3 +40,6 @@ build/
 
 # Mac files
 .DS_Store
+
+# compile commands
+compile_commands.json

@@ -15,7 +15,8 @@ FetchContent_MakeAvailable(util)
 
 
 # ======= SOURCES =======
-set(SOURCES)
+set(SOURCES
+    entry_point.cpp)
 # =======================
 
 
@@ -41,7 +42,8 @@ set_target_properties(${LIBARY_NAME} PROPERTIES
 
 # ======= INCLUDES =======
 target_include_directories(${LIBARY_NAME} PUBLIC
-    $(PROJECT_SOURCE_DIR)/include
+    ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_BINARY_DIR}/include
 )
 # ========================
 
