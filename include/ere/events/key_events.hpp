@@ -1,5 +1,5 @@
-#ifndef __ERE_APP_EVENTS_HPP__
-#define __ERE_APP_EVENTS_HPP__
+#ifndef __ERE_KEY_EVENTS_HPP__
+#define __ERE_KEY_EVENTS_HPP__
 
 /* -- KEY EVENTS: -- */
 /* -- keyPressed, keyReleased -- */ 
