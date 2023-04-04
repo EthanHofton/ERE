@@ -1,9 +1,18 @@
 #ifndef __ERE_ENTRY_POINT_HPP__
 #define __ERE_ENTRY_POINT_HPP__
 
+#include "core.hpp"
+#include "application.hpp"
+
+namespace ere {
+
 /**
-* @brief extern function to create application. To be implemented by client.
+* @brief create an application. To be implemented by the client.
+*
+* @return ref<application> the application
 */
-extern void ere_create_application();
+extern ref<application> ere_create_application();
+
+}
 
 #endif

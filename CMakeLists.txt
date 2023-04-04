@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26.1)
+cmake_minimum_required(VERSION 3.26.0)
 
 # CMake useful variables
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
+set(CMAKE_BUILD_TYPE Debug)
 
 # Mac needed variables (adapt according to your needs)
 set(CMAKE_MACOSX_RPATH ON)
