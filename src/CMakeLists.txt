@@ -8,6 +8,16 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(util)
 # ========================================
 
+# ======= include g-truc/glm =======
+include(FetchContent)
+
+FetchContent_Declare(
+  glm
+  GIT_REPOSITORY https://github.com/g-truc/glm
+)
+FetchContent_MakeAvailable(glm)
+# ========================================
+
 
 
 
@@ -55,6 +65,7 @@ target_include_directories(${LIBARY_NAME} PUBLIC
 # ======= LINKS =======
 target_link_libraries(${LIBARY_NAME} PUBLIC
     util
+    glm
 )
 # ======================
 

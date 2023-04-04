@@ -29,8 +29,17 @@ void application::run() {
     }
 }
 
-void application::on_event() {
+void application::on_event(ere_event& t_e) {
     ERE_TRACE("Application event");
+
+    // check if the event is a window close event
+    util::event_dispatcher<ere_events> dispatcher(t_e);
+
+    dispatcher.dispatch<window_closed_event>([this](window_closed_event& t_e) {
+        ERE_TRACE("Window closed event");
+        m_running = false;
+        return true;
+    });
 }
 
 }
