@@ -6,14 +6,4 @@
 */
 extern void ere_create_application();
 
-/**
-* @brief main function. This is the entry point of the application.
-*
-* @param argc the number of arguments
-* @param argv the arguments
-*
-* @return the exit code
-*/
-int main(int argc, char** argv);
-
 #endif
