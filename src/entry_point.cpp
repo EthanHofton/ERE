@@ -7,7 +7,10 @@ int main(int argc, char** argv) {
     ERE_INFO("Creating application");
 
     // create the application
-    ere_create_application();
+    ere::ref<ere::application> app = ere::ere_create_application();
+
+    // free the app
+    app = nullptr;
 
     // log application end
     ERE_INFO("Destroying application");
