@@ -1,6 +1,8 @@
 #ifndef __ERE_APPLICATION_HPP__
 #define __ERE_APPLICATION_HPP__
 
+#include <util/timer.hpp>
+
 #include "logger.hpp"
 #include "core.hpp"
 
@@ -25,6 +27,29 @@ public:
     */
     ~application();
 
+    /**
+    * @brief run the application
+    */
+    void run();
+
+    /**
+    * @brief on event
+    */
+    void on_event();
+
+    /**
+    * @brief set the fps
+    *
+    * @param fps the fps
+    */
+    inline void set_fps(double fps) { m_fps = fps; }
+    
+
+private:
+
+    double m_fps = 60.0;
+    bool m_running = true;
+    util::manual_timer m_timer;
 };
 
 }
