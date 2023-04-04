@@ -20,3 +20,11 @@ target_link_libraries(GTest::GTest INTERFACE gtest_main)
 #
 # 3. add the test to the ctest suite
 # add_test(NAME gtest_name COMMAND test WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+
+
+
+# ================== test general ==================
+add_executable(general general.cpp)
+target_link_libraries(general PRIVATE GTest::GTest ere)
+add_test(NAME gtest_general COMMAND general WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+# ==================================================
