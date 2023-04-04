@@ -31,7 +31,7 @@ add_subdirectory(src)
 add_subdirectory(test)
 
 # docs
-option(BUILD_DOCS "Build documentation" ON)
+option(BUILD_DOCS "Build documentation" OFF)
 if(BUILD_DOCS)
     # find doxygen and generate documentation
     find_package(Doxygen)
