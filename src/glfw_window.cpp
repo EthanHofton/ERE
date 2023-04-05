@@ -16,12 +16,7 @@ void glfw_window::create_window(const window_props &t_props) {
         throw std::runtime_error("glfw initalization failed");
     }
 
-    // convert to render_api::set_window_hints()
-    #ifdef USE_OPENGL
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    #endif
+    render_api::get_renderer()->pre_window_setup();
 
     ERE_INFO("Creating window...");
     m_window = glfwCreateWindow(t_props.width, t_props.height, t_props.title.c_str(), NULL, NULL);
@@ -35,8 +30,8 @@ void glfw_window::create_window(const window_props &t_props) {
     glfwMakeContextCurrent(m_window);
 
     // renderer init
-    // render_api::init();
-    // render_api::set_viewport(0, 0, t_props.width, t_props.height);
+    render_api::init();
+    render_api::set_viewport({t_props.width, t_props.height});
 
     /* -- GLFW callbacks -- */
     // set the user pointer
@@ -45,7 +40,7 @@ void glfw_window::create_window(const window_props &t_props) {
 // * glfw framebuffer size callback
     glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* t_window, int t_w, int t_h) {
         driver_data &data = *(driver_data *)glfwGetWindowUserPointer(t_window);
-        // render_api::set_viewport(0, 0, t_w, t_h);
+        render_api::set_viewport({t_w, t_h});
         window_framebuffer_resized_event e({t_w, t_h});
         data.m_fn(e);
     });
@@ -233,8 +228,8 @@ void glfw_window::minimize_window() { glfwIconifyWindow(m_window); }
 void glfw_window::restore_window() { glfwRestoreWindow(m_window); }
 void glfw_window::focus_window() { glfwFocusWindow(m_window); }
 void glfw_window::pre_render() {
-    // render_api::clear_color(m_background_color);
-    // render_api::clear_buffer();
+    render_api::clear_color(m_background_color);
+    render_api::clear_buffer();
 }
 void glfw_window::post_render() { glfwSwapBuffers(m_window); glfwPollEvents(); }
 void glfw_window::set_background_color(const glm::vec4& t_color) { m_background_color = t_color; }

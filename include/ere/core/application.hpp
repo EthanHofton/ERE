@@ -81,6 +81,24 @@ public:
     * @brief manually kill the application
     */
     inline void stop() { m_running = false; }
+
+    /* ==== window api methods ==== */
+    inline void set_window_size(const glm::vec2& t_size) { m_window_driver->set_window_size(t_size); }
+    inline void set_window_pos(const glm::vec2& t_pos) { m_window_driver->set_window_pos(t_pos); }
+    inline void set_window_title(const std::string& t_title) { m_window_driver->set_window_title(t_title); }
+    inline void set_window_swap_interval(int t_interval) { m_window_driver->set_window_swap_interval(t_interval); }
+
+    inline glm::vec2 get_window_size() const { return m_window_driver->get_window_size(); }
+    inline glm::vec2 get_window_pos() const { return m_window_driver->get_window_pos(); }
+    inline glm::vec2 get_window_framebuffer_size() const { return m_window_driver->get_window_framebuffer_size(); }
+
+    inline void maximize_window() { m_window_driver->maximize_window(); }
+    inline void minimize_window() { m_window_driver->minimize_window(); }
+    inline void restore_window() { m_window_driver->restore_window(); }
+    inline void focus_window() { m_window_driver->focus_window(); }
+
+    inline void set_background_color(const glm::vec4& t_color) { m_window_driver->set_background_color(t_color); }
+    inline glm::vec4 get_background_color() const { return m_window_driver->get_background_color(); }
     
 
 private:

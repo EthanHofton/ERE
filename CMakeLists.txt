@@ -24,6 +24,14 @@ set(CMAKE_MACOSX_RPATH ON)
 
 enable_testing()
 
+# opengl deps
+option(USE_OPENGL "Use OpenGL" ON)
+if (USE_OPENGL)
+    add_subdirectory(glad)
+endif()
+
+
+
 add_subdirectory(src)
 # include include directory AFTER src so that the library can use the configure file
 add_subdirectory(include)
