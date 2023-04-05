@@ -6,6 +6,7 @@
 #include <ere/events/window_events.hpp>
 #include <ere/events/app_events.hpp>
 #include <ere/api/window_api.hpp>
+#include <ere/imgui/imgui_layer.hpp>
 
 #include "i_layer.hpp"
 
@@ -92,6 +93,8 @@ private:
     double m_fps = 60.0;
     bool m_running = true;
     util::manual_timer m_timer;
+
+    ref<imgui_layer> m_imgui_layer;
 };
 
 }

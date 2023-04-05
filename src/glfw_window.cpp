@@ -16,6 +16,13 @@ void glfw_window::create_window(const window_props &t_props) {
         throw std::runtime_error("glfw initalization failed");
     }
 
+    // convert to render_api::set_window_hints()
+    #ifdef USE_OPENGL
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    #endif
+
     ERE_INFO("Creating window...");
     m_window = glfwCreateWindow(t_props.width, t_props.height, t_props.title.c_str(), NULL, NULL);
 

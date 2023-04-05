@@ -20,7 +20,7 @@ public:
     *
     * @return int key code
     */
-    inline int gey_key_code() const { return m_keycode; }
+    inline int get_key_code() const { return m_keycode; }
     
 protected:
 

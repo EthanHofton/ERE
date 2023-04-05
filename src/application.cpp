@@ -12,6 +12,9 @@ application::application() {
     m_window_driver = window_api::create_concrete();
     m_window_driver->set_event_callback(std::bind(&application::on_event, this, std::placeholders::_1));
     m_window_driver->create_window({"ere engine", 1280, 720});
+
+    m_imgui_layer = createRef<imgui_layer>();
+    push_overlay(m_imgui_layer);
 }
 
 application::~application() {
@@ -39,8 +42,10 @@ void application::run() {
             on_event(e_update);
 
             // send a imgui updated event
-            // imgui_update_event e_imgui_update;
-            // on_event(e_imgui_update);
+            m_imgui_layer->begin(m_timer.getDeltaTime(), m_window_driver->get_window_size(), m_window_driver->get_window_framebuffer_size());
+            imgui_update_event e_imgui_update;
+            on_event(e_imgui_update);
+            m_imgui_layer->end();
 
             m_window_driver->post_render();
         }

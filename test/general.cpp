@@ -1,5 +1,6 @@
 #include <ere/core/entry_point.hpp>
 #include <ere/core/layer.hpp>
+#include <imgui.h>
 
 #include <iostream>
 
@@ -14,6 +15,10 @@ public:
     }
 
 
+    bool on_imgui_update(imgui_update_event& e) override {
+        ImGui::ShowDemoWindow();
+        return false;
+    }
 };
 
 ref<ere::application> ere_create_application() {

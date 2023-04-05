@@ -2,4 +2,19 @@
 #define ere_VERSION_MINOR @ere_VERSION_MINOR@
 #define ere_VERSION_PATCH @ere_VERSION_PATCH@
 
+// window API
 #cmakedefine USE_GLFW
+
+// render API
+#cmakedefine USE_OPENGL
+
+
+
+// temp disable
+#ifndef USE_GLFW
+    #error "Only GLFW is supported at the moment"
+#endif
+
+#ifndef USE_OPENGL
+    #error "Only OpenGL is supported at the moment"
+#endif
