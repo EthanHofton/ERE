@@ -61,7 +61,7 @@ void application::on_event(ere_event& t_e) {
     });
 
     // propagate the event to the layers
-    for (auto it = m_layers.begin(); it != m_layers.end();) {
+    for (auto it = m_layers.end(); it != m_layers.begin();) {
         // incrament and call the on event function
         (*--it)->on_event(t_e);
 
