@@ -18,14 +18,23 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 # ========================================
 
+# ======= include glfw/glfw =======
+option(USE_GLFW "Use GLFW" ON)
 
-
-
+if (USE_GLFW)
+    FetchContent_Declare(
+      glfw
+      GIT_REPOSITORY https://github.com/glfw/glfw
+    )
+    FetchContent_MakeAvailable(glfw)
+    list(APPEND EXTRA_LIBS glfw)
+endif()
 
 
 
 # ======= SOURCES =======
 set(SOURCES
+    glfw_window.cpp
     layer.cpp
     entry_point.cpp
     application.cpp)
@@ -68,6 +77,7 @@ target_link_libraries(${LIBARY_NAME} PUBLIC
     util
     glm
 )
+target_link_libraries(${LIBARY_NAME} PRIVATE ${EXTRA_LIBS})
 # ======================
 
 

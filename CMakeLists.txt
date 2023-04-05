@@ -24,9 +24,9 @@ set(CMAKE_MACOSX_RPATH ON)
 
 enable_testing()
 
-# include include directory BEFORE src so that the library can use the configure file
-add_subdirectory(include)
 add_subdirectory(src)
+# include include directory AFTER src so that the library can use the configure file
+add_subdirectory(include)
 # include test directroy AFTER src so that the test can use the library built
 add_subdirectory(test)
 
@@ -41,7 +41,7 @@ if(BUILD_DOCS)
         set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md")
         # use doxygen_add_docs to generate documentation
         doxygen_add_docs(
-            docs
+            ere_docs
             ${CMAKE_SOURCE_DIR}
             COMMENT "Generate man pages"
         )
