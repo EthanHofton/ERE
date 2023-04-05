@@ -1,6 +1,7 @@
-# ======= include EthanHofton/util =======
 include(FetchContent)
 
+# ======= include EthanHofton/util =======
+message("-- fetching EthanHofton/util")
 FetchContent_Declare(
   util
   GIT_REPOSITORY https://github.com/EthanHofton/util.git
@@ -9,8 +10,7 @@ FetchContent_MakeAvailable(util)
 # ========================================
 
 # ======= include g-truc/glm =======
-include(FetchContent)
-
+message("-- fetching g-truc/glm")
 FetchContent_Declare(
   glm
   GIT_REPOSITORY https://github.com/g-truc/glm
@@ -18,10 +18,20 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glm)
 # ========================================
 
+# ======= include imgui/imgui ============
+message("-- fetching imgui/imgui")
+FetchContent_Declare(
+  imgui
+  GIT_REPOSITORY https://github.com/EthanHofton/imgui.git
+  GIT_TAG docking
+)
+FetchContent_MakeAvailable(imgui)
+# ========================================
+
 # ======= include glfw/glfw =======
 option(USE_GLFW "Use GLFW" ON)
-
 if (USE_GLFW)
+    message("-- fetching glfw/glfw")
     FetchContent_Declare(
       glfw
       GIT_REPOSITORY https://github.com/glfw/glfw
@@ -29,11 +39,22 @@ if (USE_GLFW)
     FetchContent_MakeAvailable(glfw)
     list(APPEND EXTRA_LIBS glfw)
 endif()
+# ========================================
+
+# ======= openGL =======
+option(USE_OPENGL "Use OpenGL" ON)
+if (USE_OPENGL)
+    find_package(OpenGL REQUIRED)
+    list(APPEND EXTRA_LIBS OpenGL::GL)
+endif()
+# ======================
 
 
 
 # ======= SOURCES =======
 set(SOURCES
+    imgui_impl_opengl3.cpp
+    imgui_layer.cpp
     glfw_window.cpp
     layer.cpp
     entry_point.cpp
@@ -76,6 +97,7 @@ target_include_directories(${LIBARY_NAME} PUBLIC
 target_link_libraries(${LIBARY_NAME} PUBLIC
     util
     glm
+    imgui
 )
 target_link_libraries(${LIBARY_NAME} PRIVATE ${EXTRA_LIBS})
 # ======================
