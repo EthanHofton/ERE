@@ -11,12 +11,28 @@ namespace ere {
 class buffer_layout {
 public:
 
+    enum class shader_type {
+        float_1,
+        float_2,
+        float_3,
+        float_4,
+        int_1,
+        int_2,
+        int_3,
+        int_4,
+        bool_1,
+        matf_3,
+        matf_4,
+    };
+
     struct buffer_element {
+
         std::string name;
         uint32_t size;
         uint32_t count;
         size_t offset;
         bool normalized;
+        shader_type type;
     };
     using iterator = std::vector<buffer_element>::iterator;
     using const_iterator = std::vector<buffer_element>::const_iterator;

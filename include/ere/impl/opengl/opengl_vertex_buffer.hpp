@@ -13,7 +13,7 @@ class opengl_vertex_buffer : public vertex_buffer_api {
 public:
 
     opengl_vertex_buffer(uint32_t t_size);
-    opengl_vertex_buffer(void* t_data, uint32_t t_size);
+    opengl_vertex_buffer(const void* t_data, uint32_t t_size);
     virtual ~opengl_vertex_buffer();
 
     virtual void bind() const override;

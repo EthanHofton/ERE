@@ -22,7 +22,7 @@ public:
 
     static ref<vertex_array_api> create_vertex_array_api();
 
-private:
+protected:
 
     std::vector<ref<vertex_buffer_api>> m_vbos;
     ref<index_buffer_api> m_ibo = nullptr;

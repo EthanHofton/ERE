@@ -53,6 +53,7 @@ endif()
 
 # ======= SOURCES =======
 set(SOURCES
+    opengl_vertex_array.cpp
     opengl_index_buffer.cpp
     opengl_vertex_buffer.cpp
     opengl_shader.cpp

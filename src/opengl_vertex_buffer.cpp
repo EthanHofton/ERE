@@ -19,7 +19,7 @@ opengl_vertex_buffer::opengl_vertex_buffer(uint32_t t_size) {
     glBufferData(GL_ARRAY_BUFFER, t_size, nullptr, GL_DYNAMIC_DRAW);
 }
 
-opengl_vertex_buffer::opengl_vertex_buffer(void* t_data, uint32_t t_size) {
+opengl_vertex_buffer::opengl_vertex_buffer(const void* t_data, uint32_t t_size) {
     glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, t_size, t_data, GL_STATIC_DRAW);
