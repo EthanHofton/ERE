@@ -42,10 +42,10 @@ endif()
 # ========================================
 
 # ======= openGL =======
-option(USE_OPENGL "Use OpenGL" ON)
 if (USE_OPENGL)
     find_package(OpenGL REQUIRED)
     list(APPEND EXTRA_LIBS OpenGL::GL)
+    list(APPEND EXTRA_LIBS glad)
 endif()
 # ======================
 
@@ -53,6 +53,11 @@ endif()
 
 # ======= SOURCES =======
 set(SOURCES
+    opengl_vertex_array.cpp
+    opengl_index_buffer.cpp
+    opengl_vertex_buffer.cpp
+    opengl_shader.cpp
+    opengl_renderer.cpp
     imgui_impl_opengl3.cpp
     imgui_layer.cpp
     glfw_window.cpp

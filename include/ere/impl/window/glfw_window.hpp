@@ -6,6 +6,12 @@
 
 #ifdef USE_GLFW
 
+#ifdef USE_OPENGL
+// glad must be included before glfw
+#include <glad/glad.h>
+#endif
+
+#include <ere/api/render_api.hpp>
 #include <GLFW/glfw3.h>
 #include <ere/core/logger.hpp>
 
