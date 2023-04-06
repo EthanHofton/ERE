@@ -22,6 +22,7 @@
 # add_test(NAME gtest_name COMMAND test WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 
 # ================== test general ==================
 add_executable(general general.cpp)

@@ -34,6 +34,9 @@ ref<ere::application> ere_create_application() {
     app->set_fps(120.0);
     app->set_window_title("Ere Engine TEST CHANGE");
     app->vsync(false);
+    
+    // *** TEST ***
+    shader_api::create_shader_api_from_file("assets/shaders/vertex.glsl", "assets/shaders/fragment.glsl");
 
     return app;
 }

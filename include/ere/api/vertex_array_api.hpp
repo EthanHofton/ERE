@@ -25,7 +25,7 @@ public:
 private:
 
     std::vector<ref<vertex_buffer_api>> m_vbos;
-    ref<index_buffer_api> m_ibo;
+    ref<index_buffer_api> m_ibo = nullptr;
 };
 
 }

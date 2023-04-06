@@ -53,6 +53,8 @@ endif()
 
 # ======= SOURCES =======
 set(SOURCES
+    opengl_index_buffer.cpp
+    opengl_vertex_buffer.cpp
     opengl_shader.cpp
     opengl_renderer.cpp
     imgui_impl_opengl3.cpp

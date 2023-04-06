@@ -16,10 +16,12 @@ public:
 
     inline uint32_t get_count() const { return m_count; }
 
+    virtual void set_data(const uint32_t* t_data, uint32_t t_size) = 0;
+
     static ref<index_buffer_api> create_index_buffer_api(uint32_t t_size);
     static ref<index_buffer_api> create_index_buffer_api(uint32_t* t_data, uint32_t t_size);
 
-private:
+protected:
 
     uint32_t m_count = 0;
 };

@@ -29,10 +29,10 @@ public:
     static ref<shader_api> create_shader_api(const std::string& t_vertex_src, const std::string& t_geometry_src, const std::string& t_fragment_src);
 
     inline static ref<shader_api> create_shader_api_from_file(const std::string& t_vertex_src, const std::string& t_fragment_src) {
-        return create_shader_api_from_file(t_vertex_src, t_fragment_src);
+        return create_shader_api(load_file(t_vertex_src), load_file(t_fragment_src));
     }
     inline static ref<shader_api> create_shader_api_from_file(const std::string& t_vertex_src, const std::string& t_geometry_src, const std::string& t_fragment_src) {
-        return create_shader_api_from_file(load_file(t_vertex_src), load_file(t_geometry_src), load_file(t_fragment_src));
+        return create_shader_api(load_file(t_vertex_src), load_file(t_geometry_src), load_file(t_fragment_src));
     }
 
 private:

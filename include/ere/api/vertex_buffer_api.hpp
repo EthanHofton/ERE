@@ -9,18 +9,27 @@
 namespace ere {
 
 class buffer_layout {
+public:
 
     struct buffer_element {
         std::string name;
         uint32_t size;
         uint32_t count;
+        size_t offset;
         bool normalized;
     };
     using iterator = std::vector<buffer_element>::iterator;
     using const_iterator = std::vector<buffer_element>::const_iterator;
 
     buffer_layout() = default;
-    inline buffer_layout(std::initializer_list<buffer_element> t_elements) : m_elements(t_elements) {}
+    inline buffer_layout(std::initializer_list<buffer_element> t_elements) : m_elements(t_elements) {
+        size_t offset = 0;
+        for (auto& element : m_elements) {
+            element.offset = offset;
+            offset += element.size;
+            m_stride += element.size;
+        }
+    }
 
     inline uint32_t get_stride() const { return m_stride; }
     inline const std::vector<buffer_element>& get_elements() const { return m_elements; }
@@ -53,13 +62,17 @@ public:
     inline void set_layout(const buffer_layout& t_layout) { m_layout = t_layout; }
     inline const buffer_layout& get_layout() const { return m_layout; }
 
+    inline uint32_t get_data_size() const { return m_data_size; }
+    inline uint32_t get_buffer_size() const { return m_buffer_size; }
+
     static ref<vertex_buffer_api> create_vertex_buffer_api(uint32_t t_size);
     static ref<vertex_buffer_api> create_vertex_buffer_api(const void* t_data, uint32_t t_size);
 
 private:
 
     void* m_data;
-    uint32_t m_size;
+    uint32_t m_data_size;
+    uint32_t m_buffer_size;
     buffer_layout m_layout;
 };
 

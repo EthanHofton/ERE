@@ -48,6 +48,20 @@ void opengl_renderer::pre_window_setup_impl() {
 #endif
 }
 
+void opengl_renderer::draw_indexed_impl(const ref<vertex_array_api>& t_vao) {
+    if (!t_vao->get_index_buffer()) {
+        for (const auto& vbo : t_vao->get_vertex_buffers()) {
+            t_vao->bind();
+            glDrawArrays(GL_TRIANGLES, 0, vbo->get_data_size() / vbo->get_layout().get_stride());
+            t_vao->unbind();
+        }
+    } else {
+        t_vao->bind();
+        glDrawElements(GL_TRIANGLES, t_vao->get_index_buffer()->get_count(), GL_UNSIGNED_INT, nullptr);
+        t_vao->unbind();
+    }
+}
+
 }
 
 #endif

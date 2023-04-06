@@ -25,6 +25,8 @@ opengl_shader::opengl_shader(const std::string& t_vertex_src, const std::string&
 
     // link shaders
     link_shader({ vertex_shader_id, fragment_shader_id });
+
+    ERE_INFO("shader program created");
 }
 
 opengl_shader::opengl_shader(const std::string& t_vertex_src, const std::string& t_geometry_src, const std::string& t_fragment_src) {
@@ -38,6 +40,8 @@ opengl_shader::opengl_shader(const std::string& t_vertex_src, const std::string&
 
     // link shaders
     link_shader({ vertex_shader_id, fragment_shader_id, geometry_shader_id });
+
+    ERE_INFO("shader program created");
 }
 
 unsigned int opengl_shader::compile_shader(const std::string& t_src, unsigned int t_type) {
@@ -66,6 +70,7 @@ void opengl_shader::link_shader(std::initializer_list<unsigned int> t_shader_ids
     for (auto shader_id : t_shader_ids) {
         glAttachShader(m_shader_id, shader_id);
     }
+    ERE_INFO("Linking shader program");
     glLinkProgram(m_shader_id);
 
     // check for program linking errors
