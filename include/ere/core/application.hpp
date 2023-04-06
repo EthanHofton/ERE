@@ -99,6 +99,8 @@ public:
 
     inline void set_background_color(const glm::vec4& t_color) { m_window_driver->set_background_color(t_color); }
     inline glm::vec4 get_background_color() const { return m_window_driver->get_background_color(); }
+
+    inline void vsync(bool t_vsync) { m_window_driver->set_window_swap_interval(t_vsync); }
     
 
 private:
