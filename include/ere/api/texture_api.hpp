@@ -23,9 +23,9 @@ public:
     inline uint32_t get_height() const { return m_height; }
     inline uint32_t get_depth() const { return m_depth; }
 
-    ref<texture_api> create_texture_api(const std::string& path);
-    ref<texture_api> create_texture_api(size_t size, uint32_t width, uint32_t height);
-    ref<texture_api> create_texture_api(unsigned char* data, size_t size, uint32_t width, uint32_t height);
+    static ref<texture_api> create_texture_api(const std::string& path);
+    static ref<texture_api> create_texture_api(size_t size, uint32_t width, uint32_t height);
+    static ref<texture_api> create_texture_api(unsigned char* data, size_t size, uint32_t width, uint32_t height);
 
 protected:
 
