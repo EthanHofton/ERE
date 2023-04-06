@@ -2,8 +2,15 @@
 
 namespace ere {
 
-ref<application> application::create_application() {
-    return createRef<application>();
+ref<application> application::s_instance = nullptr;
+
+ref<application> application::get_application() {
+    if (s_instance == nullptr) {
+        struct make_shared_enabler : public application {};
+        s_instance = std::make_shared<make_shared_enabler>();
+    }
+
+    return s_instance;
 }
 
 application::application() {

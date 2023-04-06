@@ -13,7 +13,7 @@ public:
 
     bool on_key_pressed(key_pressed_event& e) override {
         if (e.get_key_code() == ERE_KEY_C) {
-
+            application::get_application()->set_background_color({0.1f, 1.f, 0.1f, 1.0f});
         }
         return true;
     }
@@ -26,7 +26,7 @@ public:
 };
 
 ref<ere::application> ere_create_application() {
-    ref<application> app = application::create_application();
+    ref<application> app = application::get_application();
 
     app->push_layer(createRef<l1>());
 

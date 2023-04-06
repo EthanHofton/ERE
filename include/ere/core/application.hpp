@@ -16,6 +16,18 @@
 namespace ere {
 
 class application {
+private:
+
+    /**
+    * @brief Construct a new application object
+    */
+    application();
+
+    /**
+    * @brief static instance to the application
+    */
+    static ref<application> s_instance;
+
 public:
 
     /**
@@ -23,12 +35,8 @@ public:
     *
     * @return ref<application> the application
     */
-    static ref<application> create_application();
+    static ref<application> get_application();
 
-    /**
-    * @brief Construct a new application object
-    */
-    application();
     /**
     * @brief Destroy the application object
     */
