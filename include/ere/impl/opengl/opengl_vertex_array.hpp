@@ -27,6 +27,7 @@ public:
 private:
 
     unsigned int m_VAO;
+    int m_index = 0;
 
 };
 

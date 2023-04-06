@@ -45,17 +45,16 @@ void opengl_vertex_array::unbind() const {
 void opengl_vertex_array::add_vertex_buffer(const ref<vertex_buffer_api>& t_vbo) {
     bind();
     t_vbo->bind();
-    int index = 0;
     const auto& layout = t_vbo->get_layout();
     for (const auto& element : layout) {
-        glEnableVertexAttribArray(index);
-        glVertexAttribPointer(index,
+        glEnableVertexAttribArray(m_index);
+        glVertexAttribPointer(m_index,
                               element.count,
                               ere_shader_type_to_gl(element.type),
-                              element.normalized,
+                              (element.normalized) ? GL_TRUE : GL_FALSE,
                               layout.get_stride(),
                               (const void*)element.offset);
-        index++;
+        m_index++;
     }
     m_vbos.push_back(t_vbo);
 }

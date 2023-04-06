@@ -17,12 +17,15 @@ opengl_vertex_buffer::opengl_vertex_buffer(uint32_t t_size) {
     glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, t_size, nullptr, GL_DYNAMIC_DRAW);
+    m_buffer_size = t_size;
 }
 
 opengl_vertex_buffer::opengl_vertex_buffer(const void* t_data, uint32_t t_size) {
     glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, t_size, t_data, GL_STATIC_DRAW);
+    m_buffer_size = t_size;
+    m_data_size = t_size;
 }
 
 opengl_vertex_buffer::~opengl_vertex_buffer() {
@@ -40,6 +43,7 @@ void opengl_vertex_buffer::unbind() const {
 void opengl_vertex_buffer::set_data(const void* t_data, uint32_t t_size) {
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, t_size, t_data);
+    m_data_size = t_size;
 }
 
 }

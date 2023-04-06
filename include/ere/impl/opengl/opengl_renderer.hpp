@@ -18,6 +18,7 @@ public:
     virtual void clear_buffer_impl() override;
     virtual void pre_window_setup_impl() override;
     virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) override;
+    virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) override;
 
 };
 

@@ -49,17 +49,25 @@ void opengl_renderer::pre_window_setup_impl() {
 }
 
 void opengl_renderer::draw_indexed_impl(const ref<vertex_array_api>& t_vao) {
+    // simple error checking
+    GLenum err;
+    while((err = glGetError()) != GL_NO_ERROR) {
+        ERE_ERROR("OpenGL error: {}", err);
+    }
+
     if (!t_vao->get_index_buffer()) {
-        for (const auto& vbo : t_vao->get_vertex_buffers()) {
-            t_vao->bind();
-            glDrawArrays(GL_TRIANGLES, 0, vbo->get_data_size() / vbo->get_layout().get_stride());
-            t_vao->unbind();
-        }
+        ERE_ERROR("No index buffer defined!");
     } else {
         t_vao->bind();
         glDrawElements(GL_TRIANGLES, t_vao->get_index_buffer()->get_count(), GL_UNSIGNED_INT, nullptr);
         t_vao->unbind();
     }
+}
+
+void opengl_renderer::draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) {
+    t_vao->bind();
+    glDrawArrays(GL_TRIANGLES, 0, t_vertex_count);
+    t_vao->unbind();
 }
 
 }

@@ -20,7 +20,16 @@ public:
     inline static void clear_color(const glm::vec4& t_color) { get_renderer()->clear_color_impl(t_color); }
     inline static void clear_buffer() { get_renderer()->clear_buffer_impl(); }
     inline static void pre_window_setup() { get_renderer()->pre_window_setup_impl(); }
-    inline static void draw_indexed(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader) { t_shader->bind(); get_renderer()->draw_indexed_impl(t_vao); t_shader->unbind(); }
+    inline static void draw_indexed(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader) {
+        t_shader->bind(); 
+        get_renderer()->draw_indexed_impl(t_vao); 
+        t_shader->unbind(); 
+    }
+    inline static void draw_arrays(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count) { 
+        t_shader->bind(); 
+        get_renderer()->draw_arrays_impl(t_vao, t_vertex_count); 
+        t_shader->unbind(); 
+    }
 
 private:
 
@@ -30,6 +39,7 @@ private:
     virtual void clear_buffer_impl() = 0;
     virtual void pre_window_setup_impl() = 0;
     virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) = 0;
+    virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) = 0;
 
 };
 

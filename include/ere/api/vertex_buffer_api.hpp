@@ -33,6 +33,23 @@ public:
         size_t offset;
         bool normalized;
         shader_type type;
+
+        buffer_element(std::string name, shader_type type, bool normalized = false)
+            : name(name), type(type), normalized(normalized) {
+            switch (type) {
+                case shader_type::float_1: size = 4;  count = 1; break;
+                case shader_type::float_2: size = 4 * 2;  count = 2; break;
+                case shader_type::float_3: size = 4 * 3;  count = 3; break;
+                case shader_type::float_4: size = 4 * 4;  count = 4; break;
+                case shader_type::int_1:   size = 4;  count = 1; break;
+                case shader_type::int_2:   size = 4 * 2;  count = 2; break;
+                case shader_type::int_3:   size = 4 * 3;  count = 3; break;
+                case shader_type::int_4:   size = 4 * 4;  count = 4; break;
+                case shader_type::bool_1:  size = 1;  count = 1; break;
+                case shader_type::matf_3:  size = 36; count = 1; break;
+                case shader_type::matf_4:  size = 64; count = 1; break;
+            }
+        }
     };
     using iterator = std::vector<buffer_element>::iterator;
     using const_iterator = std::vector<buffer_element>::const_iterator;
@@ -84,7 +101,7 @@ public:
     static ref<vertex_buffer_api> create_vertex_buffer_api(uint32_t t_size);
     static ref<vertex_buffer_api> create_vertex_buffer_api(const void* t_data, uint32_t t_size);
 
-private:
+protected:
 
     void* m_data;
     uint32_t m_data_size;
