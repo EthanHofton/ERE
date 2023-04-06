@@ -6,6 +6,7 @@
 
 #include "vertex_array_api.hpp"
 #include "shader_api.hpp"
+#include "texture_api.hpp"
 
 namespace ere {
 
@@ -29,6 +30,32 @@ public:
         t_shader->bind(); 
         get_renderer()->draw_arrays_impl(t_vao, t_vertex_count); 
         t_shader->unbind(); 
+    }
+
+    inline static void draw_indexed_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, const std::vector<ref<texture_api>>& t_texture) {
+        t_shader->bind();
+        for (int i = 0; i < t_texture.size(); i++) {
+            t_texture[i]->bind(i);
+            t_shader->set_uniform_1i(t_texture[i]->get_uniform_name(), i);
+        }
+        get_renderer()->draw_indexed_impl(t_vao);
+        for (int i = 0; i < t_texture.size(); i++) {
+            t_texture[i]->unbind();
+        }
+        t_shader->unbind();
+    }
+
+    inline static void draw_arrays_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, const std::vector<ref<texture_api>>& t_texture) {
+        t_shader->bind();
+        for (int i = 0; i < t_texture.size(); i++) {
+            t_texture[i]->bind(i);
+            t_shader->set_uniform_1i(t_texture[i]->get_uniform_name(), i);
+        }
+        get_renderer()->draw_arrays_impl(t_vao, t_vertex_count);
+        for (int i = 0; i < t_texture.size(); i++) {
+            t_texture[i]->unbind();
+        }
+        t_shader->unbind();
     }
 
 private:
