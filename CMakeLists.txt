@@ -30,7 +30,8 @@ if (USE_OPENGL)
     add_subdirectory(glad)
 endif()
 
-
+# add stb_image
+add_subdirectory(stb_image)
 
 add_subdirectory(src)
 # include include directory AFTER src so that the library can use the configure file

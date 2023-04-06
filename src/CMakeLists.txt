@@ -53,6 +53,7 @@ endif()
 
 # ======= SOURCES =======
 set(SOURCES
+    opengl_texture.cpp
     opengl_vertex_array.cpp
     opengl_index_buffer.cpp
     opengl_vertex_buffer.cpp
@@ -104,7 +105,10 @@ target_link_libraries(${LIBARY_NAME} PUBLIC
     glm
     imgui
 )
-target_link_libraries(${LIBARY_NAME} PRIVATE ${EXTRA_LIBS})
+target_link_libraries(${LIBARY_NAME} PRIVATE 
+    ${EXTRA_LIBS}
+    stb_image
+)
 # ======================
 
 
