@@ -4,6 +4,8 @@
 #include <ere/core/core.hpp>
 #include <glm/glm.hpp>
 
+#include "vertex_array_api.hpp"
+
 namespace ere {
 
 class render_api {
@@ -15,6 +17,7 @@ public:
     inline static void clear_color(const glm::vec4& t_color) { get_renderer()->clear_color_impl(t_color); }
     inline static void clear_buffer() { get_renderer()->clear_buffer_impl(); }
     inline static void pre_window_setup() { get_renderer()->pre_window_setup_impl(); }
+    inline static void draw_indexed(const ref<vertex_array_api>& t_vao) { get_renderer()->draw_indexed_impl(t_vao); }
 
 private:
 
@@ -23,6 +26,7 @@ private:
     virtual void clear_color_impl(const glm::vec4& t_color) = 0;
     virtual void clear_buffer_impl() = 0;
     virtual void pre_window_setup_impl() = 0;
+    virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) = 0;
 
 };
 
