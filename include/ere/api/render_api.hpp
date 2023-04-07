@@ -8,6 +8,7 @@
 #include "vertex_array_api.hpp"
 #include "shader_api.hpp"
 #include "texture_api.hpp"
+#include "projection_api.hpp"
 
 namespace ere {
 
@@ -60,8 +61,7 @@ public:
     }
 
     inline static void set_projection_matrix(const glm::mat4& t_projection_matrix) { s_projection_matrix = t_projection_matrix; }
-    // TODO: implement projection_api
-    // inline static void set_projection_matrix(const ref<projection_api>& t_projection) { s_projection_matrix = t_projection->get_projection_matrix(); }
+    inline static void set_projection_matrix(const ref<projection_api>& t_projection) { s_projection_matrix = t_projection->get_projection_matrix(); }
     inline static void set_view_matrix(const glm::mat4& t_view_matrix) { s_view_matrix = t_view_matrix; }
     // TODO: implement camera_api
     // inline static void set_view_matrix(const ref<camera_api>& t_camera) { s_view_matrix = t_camera->get_view_matrix(); }
