@@ -1,13 +1,15 @@
 #include <ere/core/entry_point.hpp>
 #include <ere/core/layer.hpp>
 #include <ere/mappings/key_map.hpp>
-#include <imgui.h>
 #include <ere/api/render_api.hpp>
 #include <ere/api/texture_api.hpp>
+#include <ere/api/projection_api.hpp>
+#include <ere/core/perspective_projection.hpp>
 
 #include <iostream>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <imgui.h>
 
 namespace ere {
 
@@ -145,11 +147,7 @@ ref<ere::application> ere_create_application() {
     app->set_window_title("Ere Engine TEST CHANGE");
     app->vsync(false);
 
-    // orthjographic projection 0-screen width, 0-screen height, -1, 1
-    // render_api::set_projection_matrix(glm::ortho(0.0f, (float)app->get_window_size().x, 0.0f, (float)app->get_window_size().y, -1.0f, 1.0f));
-    // perspective projection
-    render_api::set_projection_matrix(glm::perspective(glm::radians(45.0f), (float)app->get_window_size().x / (float)app->get_window_size().y, 0.1f, 100.0f));
-    
+    render_api::set_projection_matrix(createRef<perspective_projection>(45.0f, (float)app->get_window_size().x / (float)app->get_window_size().y, 0.1f, 100.0f));
 
     return app;
 }
