@@ -22,10 +22,6 @@ public:
 
     void set_data(unsigned char* data, size_t size, uint32_t width, uint32_t height) override;
 
-private:
-
-    unsigned int m_texture_id;
-
 };
 
 }

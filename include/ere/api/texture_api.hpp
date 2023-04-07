@@ -22,6 +22,7 @@ public:
     inline uint32_t get_width() const { return m_width; }
     inline uint32_t get_height() const { return m_height; }
     inline uint32_t get_depth() const { return m_depth; }
+    inline unsigned int get_texture_id() const { return m_texture_id; }
 
     static ref<texture_api> create_texture_api(const std::string& path);
     static ref<texture_api> create_texture_api(size_t size, uint32_t width, uint32_t height);
@@ -33,6 +34,7 @@ protected:
     uint32_t m_width;
     uint32_t m_height;
     uint32_t m_depth;
+    unsigned int m_texture_id;
 
 };
 
