@@ -6,6 +6,7 @@
 #include <ere/core/application.hpp>
 #include <ere/api/render_api.hpp>
 #include <ere/mappings/mouse_map.hpp>
+#include <ere/events/window_events.hpp>
 #include <imgui.h>
 
 namespace ere {
@@ -352,26 +353,8 @@ public:
         return true;
     }
 
-    bool on_mouse_button_pressed(mouse_button_pressed_event& e) override {
-        // case a ray from the camera to check if a sphere was clicked
-        // if (e.get_mouse_button() == ERE_MOUSE_BUTTON_LEFT) {
-        //     glm::vec2 mousePos = application::get_application()->get_mouse_pos();
-        //     glm::vec2 windowSize = application::get_application()->get_window_size();
-        //     glm::vec2 normalizedMousePos = glm::vec2((2.0f * mousePos.x) / windowSize.x - 1.0f, 1.0f - (2.0f * mousePos.y) / windowSize.y);
-        //     glm::vec4 clipSpace = glm::vec4(normalizedMousePos.x, normalizedMousePos.y, -1.0f, 1.0f);
-        //     glm::vec4 eyeSpace = glm::inverse(m_camera->get_projection_matrix()) * clipSpace;
-        //     eyeSpace = glm::vec4(eyeSpace.x, eyeSpace.y, -1.0f, 0.0f);
-        //     glm::vec3 worldSpace = glm::normalize(glm::vec3(glm::inverse(m_camera->get_view_matrix()) * eyeSpace));
-        //     glm::vec3 rayOrigin = m_camera->get_position();
-        //     glm::vec3 rayDirection = worldSpace;
-        //     float t = 0.0f;
-        //     for (int i = 0; i < m_spheres.size(); i++) {
-        //         if (glm::intersectRaySphere(rayOrigin, rayDirection, m_spheres[i]->get_position(), m_spheres[i]->get_radius(), t)) {
-        //             m_spheres[i]->set_position(glm::vec3(0.0f, 0.0f, 0.0f));
-        //         }
-        //     }
-        // }
-
+    bool on_window_resized(window_resized_event& e) override {
+        m_camera->on_window_resized(e);
         return true;
     }
 

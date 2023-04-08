@@ -126,6 +126,11 @@ void camera_3d::on_mouse_scrolled(mouse_scrolled_event& t_event) {
     m_projection_updated = true;
 }
 
+void camera_3d::on_window_resized(window_resized_event& t_event) {
+    m_aspect_ratio = static_cast<float>(t_event.get_window_size().x) / static_cast<float>(t_event.get_window_size().y);
+    m_projection_updated = true;
+}
+
 void camera_3d::move(camera_movement t_direction) {
     float velocity = m_move_speed * application::get_application()->get_delta_time();
     switch (t_direction) {

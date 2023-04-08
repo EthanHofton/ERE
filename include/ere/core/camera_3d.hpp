@@ -4,6 +4,7 @@
 #include <ere/api/camera_api.hpp>
 #include <ere/events/app_events.hpp>
 #include <ere/events/mouse_events.hpp>
+#include <ere/events/window_events.hpp>
 #include <ere/events/key_events.hpp>
 #include <ere/mappings/key_map.hpp>
 
@@ -31,6 +32,7 @@ public:
     void on_key_pressed(key_pressed_event& t_event);
     void on_mouse_moved(mouse_moved_event& t_event);
     void on_mouse_scrolled(mouse_scrolled_event& t_event);
+    void on_window_resized(window_resized_event& t_event);
 
     void set_position(const glm::vec3 t_position) { m_position = t_position; m_camera_updated = true; }
     void move(camera_movement t_direction);
