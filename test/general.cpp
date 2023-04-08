@@ -3,8 +3,7 @@
 #include <ere/mappings/key_map.hpp>
 #include <ere/api/render_api.hpp>
 #include <ere/api/texture_api.hpp>
-#include <ere/api/projection_api.hpp>
-#include <ere/core/perspective_projection.hpp>
+#include <ere/core/camera_3d.hpp>
 
 #include <iostream>
 
@@ -20,10 +19,27 @@ public:
         if (e.get_key_code() == ERE_KEY_C) {
             application::get_application()->set_background_color({0.1f, 1.f, 0.1f, 1.0f});
         }
+    
+        m_camera->on_key_pressed(e);
+
+        return true;
+    }
+
+    bool on_mouse_moved(mouse_moved_event& e) override {
+        m_camera->on_mouse_moved(e);
+        return true;
+    }
+
+    bool on_mouse_scrolled(mouse_scrolled_event& e) override {
+        m_camera->on_mouse_scrolled(e);
         return true;
     }
 
     bool on_attach(attach_event& e) override {
+        // create the camera
+        m_camera = createRef<camera_3d>(application::get_application()->get_window_size().x / application::get_application()->get_window_size().y);
+        render_api::set_camera(m_camera);
+
         // create the texture
         m_container_texture = texture_api::create_texture_api("assets/images/container.jpg");
         m_container_texture->set_uniform_name("uContainer");
@@ -33,10 +49,10 @@ public:
 
         // create the triangle data
         m_square_pos = {
-           -0.5f, -0.5f, -4.0f,
-            0.5f, -0.5f, -4.0f,
-            0.5f,  0.5f, -4.0f,
-           -0.5f,  0.5f, -4.0f
+           -0.5f, -0.5f, 0.f,
+            0.5f, -0.5f, 0.f,
+            0.5f,  0.5f, 0.f,
+           -0.5f,  0.5f, 0.f
         };
 
         m_square_colors = {
@@ -107,6 +123,7 @@ public:
     }
 
     bool on_update(update_event& e) override {
+        m_camera->on_update(e);
 
         render_api::draw_indexed_textured(m_vao, m_shader, {m_container_texture});
 
@@ -135,6 +152,10 @@ private:
     std::vector<float> m_square_colors;
     std::vector<float> m_square_uv;
     std::vector<uint32_t> m_square_indices;
+
+    ref<camera_3d> m_camera;
+
+    util::raii_timer m_timer;
 };
 
 ref<ere::application> ere_create_application() {
@@ -146,8 +167,7 @@ ref<ere::application> ere_create_application() {
     app->set_fps(120.0);
     app->set_window_title("Ere Engine TEST CHANGE");
     app->vsync(false);
-
-    render_api::set_projection_matrix(createRef<perspective_projection>(45.0f, (float)app->get_window_size().x / (float)app->get_window_size().y, 0.1f, 100.0f));
+    app->set_relative_mouse_mode(true);
 
     return app;
 }

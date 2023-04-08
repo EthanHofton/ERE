@@ -40,6 +40,14 @@ void opengl_renderer::clear_buffer_impl() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void opengl_renderer::enable_wireframe_impl() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+}
+
+void opengl_renderer::disable_wireframe_impl() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
 void opengl_renderer::pre_window_setup_impl() {
 #ifdef USE_GLFW
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

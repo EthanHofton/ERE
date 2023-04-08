@@ -41,8 +41,16 @@ public:
     void pre_render() override final;
     void post_render() override final;
 
+    void set_relative_mouse_mode(bool t_relative) override final;
+
     void set_background_color(const glm::vec4& t_color) override final;
     glm::vec4 get_background_color() const override final;
+
+    bool is_key_pressed(int t_key) const override final;
+    bool is_key_released(int t_key) const override final;
+    bool is_mouse_button_pressed(int t_button) const override final;
+    bool is_mouse_button_released(int t_button) const override final;
+    glm::vec2 get_mouse_pos() const override final;
 
 private:
 

@@ -108,8 +108,16 @@ public:
     inline void set_background_color(const glm::vec4& t_color) { m_window_driver->set_background_color(t_color); }
     inline glm::vec4 get_background_color() const { return m_window_driver->get_background_color(); }
 
+    inline void set_relative_mouse_mode(bool t_relative) { m_window_driver->set_relative_mouse_mode(t_relative); }
     inline void vsync(bool t_vsync) { m_window_driver->set_window_swap_interval(t_vsync); }
-    
+
+    inline double get_delta_time() { return m_timer.getDeltaTime(); }
+
+    inline bool is_key_pressed(int t_key) { return m_window_driver->is_key_pressed(t_key); }
+    inline bool is_key_released(int t_key) { return m_window_driver->is_key_released(t_key); }
+    inline bool is_mouse_button_pressed(int t_button) { return m_window_driver->is_mouse_button_pressed(t_button); }
+    inline bool is_mouse_button_released(int t_button) { return m_window_driver->is_mouse_button_released(t_button); }
+    inline glm::vec2 get_mouse_pos() { return m_window_driver->get_mouse_pos(); }
 
 private:
 
