@@ -14,6 +14,7 @@
 #include <iostream>
 
 #include <imgui.h>
+#include <glm/gtx/norm.hpp>
 
 namespace ere {
 
@@ -68,6 +69,20 @@ public:
         render_api::draw_indexed_textured(m_vao, m_shader, m_textures);
     }
 
+    glm::vec3 get_center() const {
+        glm::vec3 min = m_vertices[0];
+        glm::vec3 max = m_vertices[0];
+        for (const auto& vertex : m_vertices) {
+            if (vertex.x < min.x) min.x = vertex.x;
+            if (vertex.y < min.y) min.y = vertex.y;
+            if (vertex.z < min.z) min.z = vertex.z;
+            if (vertex.x > max.x) max.x = vertex.x;
+            if (vertex.y > max.y) max.y = vertex.y;
+            if (vertex.z > max.z) max.z = vertex.z;
+        }
+        return (min + max) * 0.5f;
+    }
+
     void set_texture(const std::vector<ref<texture_api>>& t_textures) { m_textures = t_textures; }
     void add_texture(const ref<texture_api>& t_texture) { m_textures.push_back(t_texture); }
     void add_textures(const std::vector<ref<texture_api>>& t_textures) { m_textures.insert(m_textures.end(), t_textures.begin(), t_textures.end()); }
@@ -105,7 +120,8 @@ public:
         load_model(t_path);
     }
 
-    void draw() {
+    void draw(const glm::vec3& t_camera_position) {
+        // sort_meshes(t_camera_position);
         for (auto& mesh : m_meshes) {
             mesh.draw();
         }
@@ -116,8 +132,8 @@ private:
     // load model using assimp
     void load_model(const std::string& t_path) {
         Assimp::Importer importer;
-        const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate | aiProcess_FlipUVs);
-        // const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate);
+        // const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate | aiProcess_FlipUVs);
+        const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
             ERE_INFO("ERROR::ASSIMP::{}", importer.GetErrorString());
@@ -228,6 +244,14 @@ private:
         return textures;
     }
 
+    void sort_meshes(const glm::vec3& camera_position) {
+        std::sort(m_meshes.begin(), m_meshes.end(), [&](const mesh& a, const mesh& b) {
+            float distance_a = glm::distance2(a.get_center(), camera_position);
+            float distance_b = glm::distance2(b.get_center(), camera_position);
+            return distance_a > distance_b;
+        });
+    }
+
 private:
 
     std::vector<mesh> m_meshes;
@@ -257,7 +281,7 @@ public:
     bool on_update(update_event& e) override {
         m_camera->on_update(e);
 
-        m_model->draw();
+        m_model->draw(m_camera->get_position());
 
         return true;
     }
@@ -265,11 +289,11 @@ public:
     bool on_attach(attach_event& e) override {
         m_camera = createRef<camera_3d>(application::get_application()->get_window_size().x / application::get_application()->get_window_size().y);
         m_camera->set_far(10000.f);
-        // m_camera->set_move_speed(250);
+        m_camera->set_move_speed(250);
         render_api::get_renderer()->set_camera(m_camera);
     
-        m_model = createRef<model>("assets/backpack/backpack.obj");
-        // m_model = createRef<model>("assets/Sponza/sponza.obj");
+        // m_model = createRef<model>("assets/backpack/backpack.obj");
+        m_model = createRef<model>("assets/Sponza/sponza.obj");
 
         return true;
     }

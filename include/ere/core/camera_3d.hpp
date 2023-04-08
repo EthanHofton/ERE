@@ -34,7 +34,7 @@ public:
 
     void set_position(const glm::vec3 t_position) { m_position = t_position; m_camera_updated = true; }
     void move(camera_movement t_direction);
-    glm::vec3 get_position() const { return m_position; }
+    glm::vec3 get_position() const override { return m_position; }
 
     void set_world_up(const glm::vec3 t_up) { m_up = t_up; m_camera_updated = true; }
     const glm::vec3& get_world_up() const { return m_up; }

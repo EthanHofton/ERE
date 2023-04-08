@@ -94,6 +94,25 @@ opengl_shader::~opengl_shader() {
 
 void opengl_shader::bind() const {
     glUseProgram(m_shader_id);
+
+    for (auto& [name, value] : m_uniform_1f_cache) {
+        glUniform1f(glGetUniformLocation(m_shader_id, name.c_str()), value);
+    }
+    for (auto& [name, value] : m_uniform_2f_cache) {
+        glUniform2f(glGetUniformLocation(m_shader_id, name.c_str()), value.x, value.y);
+    }
+    for (auto& [name, value] : m_uniform_3f_cache) {
+        glUniform3f(glGetUniformLocation(m_shader_id, name.c_str()), value.x, value.y, value.z);
+    }
+    for (auto& [name, value] : m_uniform_4f_cache) {
+        glUniform4f(glGetUniformLocation(m_shader_id, name.c_str()), value.x, value.y, value.z, value.w);
+    }
+    for (auto& [name, value] : m_uniform_1i_cache) {
+        glUniform1i(glGetUniformLocation(m_shader_id, name.c_str()), value);
+    }
+    for (auto& [name, value] : m_uniform_mat4f_cache) {
+        glUniformMatrix4fv(glGetUniformLocation(m_shader_id, name.c_str()), 1, GL_FALSE, &value[0][0]);
+    }
 }
 
 void opengl_shader::unbind() const {
@@ -101,27 +120,27 @@ void opengl_shader::unbind() const {
 }
 
 void opengl_shader::set_uniform_1i(const std::string& t_name, int t_value) {
-    glUniform1i(glGetUniformLocation(m_shader_id, t_name.c_str()), t_value);
+    m_uniform_1f_cache[t_name] = t_value;
 }
 
 void opengl_shader::set_uniform_1f(const std::string& t_name, float t_value) {
-    glUniform1f(glGetUniformLocation(m_shader_id, t_name.c_str()), t_value);
+    m_uniform_1f_cache[t_name] = t_value;
 }
 
 void opengl_shader::set_uniform_2f(const std::string& t_name, const glm::vec2& t_value) {
-    glUniform2f(glGetUniformLocation(m_shader_id, t_name.c_str()), t_value.x, t_value.y);
+    m_uniform_2f_cache[t_name] = t_value;
 }
 
 void opengl_shader::set_uniform_3f(const std::string& t_name, const glm::vec3& t_value) {
-    glUniform3f(glGetUniformLocation(m_shader_id, t_name.c_str()), t_value.x, t_value.y, t_value.z);
+    m_uniform_3f_cache[t_name] = t_value;
 }
 
 void opengl_shader::set_uniform_4f(const std::string& t_name, const glm::vec4& t_value) {
-    glUniform4f(glGetUniformLocation(m_shader_id, t_name.c_str()), t_value.x, t_value.y, t_value.z, t_value.w);
+    m_uniform_4f_cache[t_name] = t_value;
 }
 
 void opengl_shader::set_uniform_mat4f(const std::string& t_name, const glm::mat4& t_value) {
-    glUniformMatrix4fv(glGetUniformLocation(m_shader_id, t_name.c_str()), 1, GL_FALSE, &t_value[0][0]);
+    m_uniform_mat4f_cache[t_name] = t_value;
 }
 
 }
