@@ -109,7 +109,7 @@ void opengl_texture::bind(uint32_t slot) const {
 }
 
 void opengl_texture::unbind() const {
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void opengl_texture::set_data(unsigned char* data, size_t size, uint32_t width, uint32_t height) {

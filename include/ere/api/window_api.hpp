@@ -57,7 +57,16 @@ public:
     virtual void set_background_color(const glm::vec4& t_color) = 0;
     virtual glm::vec4 get_background_color() const = 0;
 
+    virtual void set_relative_mouse_mode(bool t_relative) = 0;
+
     inline void set_event_callback(event_callback_fn t_fn) { m_driver_data.m_fn = t_fn; }
+
+    // key inputs
+    virtual bool is_key_pressed(int t_key) const = 0;
+    virtual bool is_key_released(int t_key) const = 0;
+    virtual bool is_mouse_button_pressed(int t_button) const = 0;
+    virtual bool is_mouse_button_released(int t_button) const = 0;
+    virtual glm::vec2 get_mouse_pos() const = 0;
 
 protected:
 

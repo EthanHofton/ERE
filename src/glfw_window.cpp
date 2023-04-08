@@ -33,6 +33,8 @@ void glfw_window::create_window(const window_props &t_props) {
     render_api::init();
     render_api::set_viewport({t_props.width, t_props.height});
 
+    glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_TRUE);
+
     /* -- GLFW callbacks -- */
     // set the user pointer
     glfwSetWindowUserPointer(m_window, &m_driver_data);
@@ -231,9 +233,19 @@ void glfw_window::pre_render() {
     render_api::clear_color(m_background_color);
     render_api::clear_buffer();
 }
+void glfw_window::set_relative_mouse_mode(bool t_enabled) { glfwSetInputMode(m_window, GLFW_CURSOR, t_enabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
 void glfw_window::post_render() { glfwSwapBuffers(m_window); glfwPollEvents(); }
 void glfw_window::set_background_color(const glm::vec4& t_color) { m_background_color = t_color; }
 glm::vec4 glfw_window::get_background_color() const { return m_background_color; }
+bool glfw_window::is_key_pressed(int t_key) const { return glfwGetKey(m_window, t_key) == GLFW_PRESS; }
+bool glfw_window::is_key_released(int t_key) const { return glfwGetKey(m_window, t_key) == GLFW_RELEASE; }
+bool glfw_window::is_mouse_button_pressed(int t_button) const { return glfwGetMouseButton(m_window, t_button) == GLFW_PRESS; }
+bool glfw_window::is_mouse_button_released(int t_button) const { return glfwGetMouseButton(m_window, t_button) == GLFW_RELEASE; }
+glm::vec2 glfw_window::get_mouse_pos() const {
+    glm::dvec2 pos;
+    glfwGetCursorPos(m_window, &pos.x, &pos.y);
+    return pos;
+}
 
 }
 
