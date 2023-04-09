@@ -3,7 +3,11 @@
 
 namespace ere {
 
-camera_3d::camera_3d(float t_aspect_ratio) : m_aspect_ratio(t_aspect_ratio) { update_camera_vectors(); update_projection_matrix(); }
+camera_3d::camera_3d() { 
+    m_aspect_ratio = application::get_application()->get_window_size().x / application::get_application()->get_window_size().y;
+    update_camera_vectors(); 
+    update_projection_matrix(); 
+}
 
 void camera_3d::update_camera_vectors() {
     glm::vec3 front;

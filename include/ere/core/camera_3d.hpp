@@ -22,7 +22,7 @@ public:
         DOWN,
     };
 
-    camera_3d(float t_aspect_ratio);
+    camera_3d();
     ~camera_3d() = default;
 
     virtual const glm::mat4& get_projection_matrix() override;

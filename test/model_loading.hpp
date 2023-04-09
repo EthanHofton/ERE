@@ -287,7 +287,7 @@ public:
     }
 
     bool on_attach(attach_event& e) override {
-        m_camera = createRef<camera_3d>(application::get_application()->get_window_size().x / application::get_application()->get_window_size().y);
+        m_camera = createRef<camera_3d>();
         m_camera->set_far(10000.f);
         m_camera->set_move_speed(250);
         render_api::get_renderer()->set_camera(m_camera);

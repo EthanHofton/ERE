@@ -41,7 +41,7 @@ public:
 
     bool on_attach(attach_event& e) override {
         // create the camera
-        m_camera = createRef<camera_3d>(application::get_application()->get_window_size().x / application::get_application()->get_window_size().y);
+        m_camera = createRef<camera_3d>();
         render_api::set_camera(m_camera);
 
         // create the texture

@@ -276,7 +276,7 @@ class ere_21 : public layer {
 public:
 
     bool on_attach(attach_event& e) override {
-        m_camera = createRef<camera_3d>(application::get_application()->get_window_size().x / application::get_application()->get_window_size().y);
+        m_camera = createRef<camera_3d>();
         render_api::set_camera(m_camera);
 
         m_lightCubeShader = shader_api::create_shader_api_from_file("assets/shaders/ere-21/vertex.glsl", "assets/shaders/ere-21/fragment.glsl");
