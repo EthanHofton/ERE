@@ -1,6 +1,6 @@
 #include "model_loading.hpp"
 #include "layer_test.hpp"
-#include "ere_21.hpp"
+#include "ere-21/ere_21.hpp"
 
 
 namespace ere {

@@ -60,7 +60,7 @@ void opengl_renderer::draw_indexed_impl(const ref<vertex_array_api>& t_vao) {
     // simple error checking
     GLenum err;
     while((err = glGetError()) != GL_NO_ERROR) {
-        ERE_ERROR("OpenGL error: {}", err);
+        // ERE_ERROR("OpenGL error: {}", err);
     }
 
     if (!t_vao->get_index_buffer()) {

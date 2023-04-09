@@ -92,8 +92,8 @@ void camera_3d::on_mouse_moved(mouse_moved_event& t_event) {
         m_first_mouse = false;
         return;
     }
-    int x_offset = t_event.get_delta_pos().x;
-    int y_offset = t_event.get_delta_pos().y;
+    float x_offset = t_event.get_delta_pos().x;
+    float y_offset = t_event.get_delta_pos().y;
 
     x_offset *= m_turn_speed * application::get_application()->get_delta_time();
     y_offset *= m_turn_speed * application::get_application()->get_delta_time();

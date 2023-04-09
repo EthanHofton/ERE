@@ -6,7 +6,6 @@ layout (location = 1) in vec3 aNormals;
 uniform mat4 u_projection;
 uniform mat4 u_view;
 uniform mat4 u_model;
-uniform vec3 u_cam_pos;
 
 out vec3 Normals;
 out vec3 FragPos;
