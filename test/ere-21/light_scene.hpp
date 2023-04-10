@@ -28,49 +28,49 @@ public:
     }
 
     void draw(ref<shape> t_shape) {
-        ref<shader_api> shader = get_shader(t_shape);
+        ref<shader_api> shader = get_shader(t_shape->get_material());
 
-        // set the diffuse map
-        ref<texture_api> diffuse_texture = t_shape->get_material().diffuse_texture;
-        if (!diffuse_texture) {
-            diffuse_texture = m_default_diffuse_texture;
-        } else {
-            diffuse_texture->set_uniform_name("uMaterial.diffuseMap");
-        }
-
-        // set the specular map
-        ref<texture_api> specular_texture = t_shape->get_material().specular_texture;
-        if (!specular_texture) {
-            specular_texture = m_default_specular_texture;
-        } else {
-            specular_texture->set_uniform_name("uMaterial.specularMap");
-        }
-
-        // set the normal map
-        // ref<texture_api> normal_texture = t_shape->get_material().normal_texture;
-        // if (!normal_texture) {
-        //     normal_texture = m_default_normal_texture;
-        // } else {
-        //     normal_texture->set_uniform_name("uMaterial.normalMap");
-        // }
-
-        // set the emission map
-        ref<texture_api> emission_texture = t_shape->get_material().emission_texture;
-        if (!emission_texture) {
-            emission_texture = m_default_emission_texture;
-        } else {
-            emission_texture->set_uniform_name("uMaterial.emissionMap");
-        }
-
-        t_shape->draw_textured(shader, {diffuse_texture, specular_texture, emission_texture});
+        t_shape->draw_textured(shader, {
+            t_shape->get_material().diffuse_texture,
+            t_shape->get_material().specular_texture,
+            t_shape->get_material().emission_texture
+        });
     }
 
-    ref<shader_api> get_shader(ref<shape> t_shape) {
+    ref<shader_api> get_shader(material& t_material) {
         // set material uniforms
-        m_shader->set_uniform_3f("uMaterial.ambient", t_shape->get_material().ambient);
-        m_shader->set_uniform_3f("uMaterial.diffuse", t_shape->get_material().diffuse);
-        m_shader->set_uniform_3f("uMaterial.specular", t_shape->get_material().specular);
-        m_shader->set_uniform_1f("uMaterial.shininess", t_shape->get_material().shininess);
+        m_shader->set_uniform_3f("uMaterial.ambient", t_material.ambient);
+        m_shader->set_uniform_3f("uMaterial.diffuse", t_material.diffuse);
+        m_shader->set_uniform_3f("uMaterial.specular", t_material.specular);
+        m_shader->set_uniform_1f("uMaterial.shininess", t_material.shininess);
+
+        // set diffuse map
+        if (!t_material.diffuse_texture) {
+            t_material.diffuse_texture = m_default_diffuse_texture;
+        } else {
+            t_material.diffuse_texture->set_uniform_name("uMaterial.diffuseMap");
+        }
+
+        // set specular map
+        if (!t_material.specular_texture) {
+            t_material.specular_texture = m_default_specular_texture;
+        } else {
+            t_material.specular_texture->set_uniform_name("uMaterial.specularMap");
+        }
+
+        // set normal map
+        // if (!t_material.normal_texture) {
+        //     t_material.normal_texture = m_default_normal_texture;
+        // } else {
+        //     t_material.normal_texture->set_uniform_name("uMaterial.normalMap");
+        // }
+
+        if (!t_material.emission_texture) {
+            t_material.emission_texture = m_default_emission_texture;
+        } else {
+            t_material.emission_texture->set_uniform_name("uMaterial.emissionMap");
+        }
+
 
         // set light uniforms
         int direction_lights;
