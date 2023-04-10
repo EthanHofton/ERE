@@ -23,23 +23,39 @@ public:
         render_api::set_camera(m_camera);
 
         m_light_scene = createRef<light_scene>();
+        m_light_source_cube_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-21/vertex.glsl", "assets/shaders/ere-21/fragment.glsl");
 
-        m_shapes.push_back(createRef<cube>(glm::vec3(1.f, 1.f, 1.f), glm::vec3(0.f, 0.f, 0.f)));
-        m_shapes.push_back(createRef<sphere>(1.f, glm::vec3(-2.f, 0.f, 0.f)));
-
-        m_shapes[0]->set_material({
-            .ambient = glm::vec3(1.f, 0.5f, 0.31f),
-            .diffuse = glm::vec3(1.f, 0.5f, 0.31f),
-            .specular = glm::vec3(0.5f, 0.5f, 0.5f),
-            .shininess = 32.f,
+        m_light_source_cubes = createRef<cube>(cube{
+            glm::vec3(.5f, .5f, .5f),
+            glm::vec3(0.f, 0.f, 0.f),
         });
 
-        m_shapes[1]->set_material({
-            .ambient = glm::vec3(1.f, 0.5f, 0.31f),
-            .diffuse = glm::vec3(1.f, 0.5f, 0.31f),
-            .specular = glm::vec3(0.5f, 0.5f, 0.5f),
-            .shininess = 32.f,
+        m_cube = createRef<cube>(cube{
+            glm::vec3(1.f, 1.f, 1.f),
+            glm::vec3(0.f, 0.f, 0.f),
         });
+
+        m_cube->set_material(material{
+            .ambient = glm::vec3(0),
+            .diffuse = glm::vec3(0),
+            .specular = glm::vec3(0),
+            .shininess = 8.f,
+            .diffuse_texture = texture_api::create_texture_api("assets/images/container2.png"),
+            .specular_texture = texture_api::create_texture_api("assets/images/container2_specular.png"),
+        });
+
+        m_cube_positions = {
+            glm::vec3( 0.0f,  0.0f,  0.0f),
+            glm::vec3( 2.0f,  5.0f, -15.0f),
+            glm::vec3(-1.5f, -2.2f, -2.5f),
+            glm::vec3(-3.8f, -2.0f, -12.3f),
+            glm::vec3( 2.4f, -0.4f, -3.5f),
+            glm::vec3(-1.7f,  3.0f, -7.5f),
+            glm::vec3( 1.3f, -2.0f, -2.5f),
+            glm::vec3( 1.5f,  2.0f, -2.5f),
+            glm::vec3( 1.5f,  0.2f, -1.5f),
+            glm::vec3(-1.3f,  1.0f, -1.5f)
+        };
 
         m_spot_light = createRef<spot_light>(spot_light{
             .position = m_camera->get_position(),
@@ -63,8 +79,46 @@ public:
         m_spot_light->position = m_camera->get_position();
         m_spot_light->direction = m_camera->get_camera_front();
 
-        for (auto& shape : m_shapes) {
-            m_light_scene->draw(shape);
+        for (int i = 0; i < 10; i++) {
+            m_cube->set_pos(m_cube_positions[i]);
+            m_cube->set_rotation(glm::radians(20.f * i));
+            m_cube->set_rotation_axis(glm::vec3(1.0f, 0.3f, 0.5f));
+            m_light_scene->draw(m_cube);
+        }
+
+        for (auto& light : m_light_scene->get_lights()) {
+            m_light_source_cubes->set_pos(light->position);
+            m_light_source_cubes->set_material(material{
+                light->ambient,
+                light->diffuse,
+                light->specular,
+                32.f,
+            });
+            m_light_scene->draw(m_light_source_cubes);
+        }
+
+        for (auto& light : m_light_scene->get_point_lights()) {
+            m_light_source_cubes->set_pos(light->position);
+            m_light_source_cubes->set_material(material{
+                light->ambient,
+                light->diffuse,
+                light->specular,
+                32.f,
+            });
+            m_light_scene->draw(m_light_source_cubes);
+        }
+
+        for (auto& light : m_light_scene->get_spot_lights()) {
+            if (light != m_spot_light) {
+                m_light_source_cubes->set_pos(light->position);
+                m_light_source_cubes->set_material(material{
+                    light->ambient,
+                    light->diffuse,
+                    light->specular,
+                    32.f,
+                });
+                m_light_scene->draw(m_light_source_cubes);
+            }
         }
 
         return true;
@@ -126,6 +180,74 @@ public:
             ImGui::End();
         }
 
+        // window to add a new light source
+        ImGui::Begin("Add Light");
+        // light source type selection
+        static int light_type = 0;
+        ImGui::RadioButton("Simple", &light_type, 0);
+        ImGui::RadioButton("Directional", &light_type, 1);
+        ImGui::RadioButton("Point", &light_type, 2);
+        ImGui::RadioButton("Spot", &light_type, 3);
+
+        // light source position/direction
+        static glm::vec3 light_pos = glm::vec3(0.0f, 0.0f, 0.0f);
+        if (light_type == 0 || light_type == 2 || light_type == 3) {
+            ImGui::DragFloat3("Position", glm::value_ptr(light_pos), 0.1f);
+        } else {
+            ImGui::DragFloat3("Direction", glm::value_ptr(light_pos), 0.1f);
+        }
+
+        // light source color
+        static glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+        static glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+        static glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f);
+        ImGui::ColorEdit3("Ambient", glm::value_ptr(ambient));
+        ImGui::ColorEdit3("Diffuse", glm::value_ptr(diffuse));
+        ImGui::ColorEdit3("Specular", glm::value_ptr(specular));
+
+        // light source attenuation
+        static float constant = 1.0f;
+        static float linear = 0.09f;
+        static float quadratic = 0.032f;
+        if (light_type == 2 || light_type == 3) {
+            ImGui::DragFloat("Constant", &constant, 0.1f);
+            ImGui::DragFloat("Linear", &linear, 0.1f);
+            ImGui::DragFloat("Quadratic", &quadratic, 0.1f);
+        }
+
+        // light source cut off
+        static float cut_off = 12.5f;
+        static float outer_cut_off = 17.5f;
+        if (light_type == 3) {
+            ImGui::SliderAngle("CutOff", &cut_off, 0, 360);
+            ImGui::SliderAngle("OuterCutOff", &outer_cut_off, 0, 360);
+        }
+
+        static glm::vec3 direction = glm::vec3(0.0f, 0.0f, -1.0f);
+        if (light_type == 3) {
+            ImGui::DragFloat3("Direction", glm::value_ptr(direction), 0.1f);
+        }
+
+        // add light source button
+        if (ImGui::Button("Add Light")) {
+            switch (light_type) {
+                case 0:
+                    m_light_scene->add_light(createRef<light>(light{light_pos, ambient, diffuse, specular}));
+                    break;
+                case 1:
+                    m_light_scene->add_directional_light(createRef<directional_light>(directional_light{light_pos, ambient, diffuse, specular}));
+                    break;
+                case 2:
+                    m_light_scene->add_point_light(createRef<point_light>(point_light{light_pos, ambient, diffuse, specular, constant, linear, quadratic}));
+                    break;
+                case 3:
+                    m_light_scene->add_spot_light(createRef<spot_light>(spot_light{light_pos, direction, cut_off, outer_cut_off, ambient, diffuse, specular, constant, linear, quadratic}));
+                    break;
+            }
+        }
+
+        ImGui::End();
+
         return true;
     }
 
@@ -161,7 +283,11 @@ private:
 
     // light scene
     ref<light_scene> m_light_scene;
-    std::vector<ref<shape>> m_shapes;
+    // std::vector<ref<shape>> m_shapes;
+    ref<cube> m_cube;
+    ref<cube> m_light_source_cubes;
+    ref<shader_api> m_light_source_cube_shader;
+    std::vector<glm::vec3> m_cube_positions;
 
     ref<spot_light> m_spot_light;
 

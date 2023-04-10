@@ -14,11 +14,55 @@ public:
     light_scene() {
         m_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-21/light_vertex.glsl", "assets/shaders/ere-21/light_fragment.glsl");
         // m_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-21/vertex.glsl", "assets/shaders/ere-21/fragment.glsl");
+
+        // create a default 1x1 black pixel texture
+        m_default_texture_data = { 0, 0, 0, 255 };
+        m_default_diffuse_texture = create_default_texture();
+        m_default_diffuse_texture->set_uniform_name("uMaterial.diffuseMap");
+        m_default_specular_texture = create_default_texture();
+        m_default_specular_texture->set_uniform_name("uMaterial.specularMap");
+        m_default_normal_texture = create_default_texture();
+        m_default_normal_texture->set_uniform_name("uMaterial.normalMap");
+        m_default_emission_texture = create_default_texture();
+        m_default_emission_texture->set_uniform_name("uMaterial.emissionMap");
     }
 
     void draw(ref<shape> t_shape) {
         ref<shader_api> shader = get_shader(t_shape);
-        t_shape->draw(shader);
+
+        // set the diffuse map
+        ref<texture_api> diffuse_texture = t_shape->get_material().diffuse_texture;
+        if (!diffuse_texture) {
+            diffuse_texture = m_default_diffuse_texture;
+        } else {
+            diffuse_texture->set_uniform_name("uMaterial.diffuseMap");
+        }
+
+        // set the specular map
+        ref<texture_api> specular_texture = t_shape->get_material().specular_texture;
+        if (!specular_texture) {
+            specular_texture = m_default_specular_texture;
+        } else {
+            specular_texture->set_uniform_name("uMaterial.specularMap");
+        }
+
+        // set the normal map
+        // ref<texture_api> normal_texture = t_shape->get_material().normal_texture;
+        // if (!normal_texture) {
+        //     normal_texture = m_default_normal_texture;
+        // } else {
+        //     normal_texture->set_uniform_name("uMaterial.normalMap");
+        // }
+
+        // set the emission map
+        ref<texture_api> emission_texture = t_shape->get_material().emission_texture;
+        if (!emission_texture) {
+            emission_texture = m_default_emission_texture;
+        } else {
+            emission_texture->set_uniform_name("uMaterial.emissionMap");
+        }
+
+        t_shape->draw_textured(shader, {diffuse_texture, specular_texture, emission_texture});
     }
 
     ref<shader_api> get_shader(ref<shape> t_shape) {
@@ -71,6 +115,10 @@ public:
             m_shader->set_uniform_1f("uSpotLights[" + std::to_string(i) + "].outerCutOff", glm::cos(light->outer_cut_off));
         }
 
+        m_shader->set_uniform_1i("uDirLightCount", direction_lights);
+        m_shader->set_uniform_1i("uPointLightCount", m_point_lights.size());
+        m_shader->set_uniform_1i("uSpotLightCount", m_spot_lights.size());
+
         return m_shader;
     }
 
@@ -100,6 +148,11 @@ public:
 
 private:
 
+    ref<texture_api> create_default_texture() {
+        return texture_api::create_texture_api(&m_default_texture_data[0], sizeof(unsigned char) * m_default_texture_data.size(), 1, 1);
+
+    }
+
     std::vector<ref<light>> m_lights;
     std::vector<ref<directional_light>> m_directional_lights;
     std::vector<ref<point_light>> m_point_lights;
@@ -107,6 +160,11 @@ private:
 
     ref<shader_api> m_shader;
 
+    ref<texture_api> m_default_diffuse_texture;
+    ref<texture_api> m_default_specular_texture;
+    ref<texture_api> m_default_normal_texture;
+    ref<texture_api> m_default_emission_texture;
+    std::vector<unsigned char> m_default_texture_data;
 };
 
 }

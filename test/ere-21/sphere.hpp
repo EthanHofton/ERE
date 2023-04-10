@@ -84,15 +84,28 @@ public:
     }
 
     void draw(ref<shader_api> t_shader) override {
+        // set uniforms
+        set_uniforms(t_shader);
+        // draw the object
+        render_api::draw_indexed(m_vao, t_shader);
+    }
+
+    void draw_textured(ref<shader_api> t_shader, std::vector<ref<texture_api>> t_textures) override {
+        // set uniforms
+        set_uniforms(t_shader);
+        // draw the object
+        render_api::draw_indexed_textured(m_vao, t_shader, t_textures);
+    }
+
+private:
+
+    void set_uniforms(ref<shader_api> t_shader) {
         m_model = glm::mat4(1.0f);
         m_model = glm::translate(m_model, m_pos);
         // m_model = glm::rotate(m_model, glm::radians(m_rotation), m_rotationAxis);
 
         // set model matrix
         t_shader->set_uniform_mat4f("u_model", m_model);
-
-        // draw the object
-        render_api::draw_indexed(m_vao, t_shader);
     }
 
 public:

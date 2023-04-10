@@ -19,7 +19,7 @@ public:
         m_size = t_size;
         m_pos = t_pos;
         m_rotation = 0.f;
-        m_rotationAxis = { 0.f, 0.f, 0.f };
+        m_rotationAxis = { 0.f, 1.f, 0.f };
 
         // front, back, left, right, top, bottom faces vertices
         m_vertices = {
@@ -88,6 +88,39 @@ public:
             { 0.f, -1.f, 0.f }
         };
 
+        m_texCoords = {
+            // front face
+            { 0.f, 0.f },
+            { 1.f, 0.f },
+            { 1.f, 1.f },
+            { 0.f, 1.f },
+            // back face
+            { 1.f, 0.f },
+            { 1.f, 1.f },
+            { 0.f, 1.f },
+            { 0.f, 0.f },
+            // left face
+            { 0.f, 0.f },
+            { 1.f, 0.f },
+            { 1.f, 1.f },
+            { 0.f, 1.f },
+            // right face
+            { 1.f, 0.f },
+            { 1.f, 1.f },
+            { 0.f, 1.f },
+            { 0.f, 0.f },
+            // top face
+            { 0.f, 1.f },
+            { 0.f, 0.f },
+            { 1.f, 0.f },
+            { 1.f, 1.f },
+            // bottom face
+            { 1.f, 1.f },
+            { 0.f, 1.f },
+            { 0.f, 0.f },
+            { 1.f, 0.f }
+        };
+
         m_indices = {
             // front face
             0, 1, 2,
@@ -125,10 +158,17 @@ public:
             { "aNorm", buffer_layout::shader_type::float_3, false }
         });
 
+        // create the vertex buffer object
+        m_vbo_tex = vertex_buffer_api::create_vertex_buffer_api(m_texCoords.data(), m_texCoords.size() * sizeof(glm::vec2));
+        m_vbo_tex->set_layout({
+            { "aTex", buffer_layout::shader_type::float_2, false }
+        });
+
+
         // add the vertex buffer objects to the vertex array object
         m_vao->add_vertex_buffer(m_vbo_pos);
         m_vao->add_vertex_buffer(m_vbo_norm);
-
+        m_vao->add_vertex_buffer(m_vbo_tex);
 
         // create the index buffer object
         ref<index_buffer_api> ibo = index_buffer_api::create_index_buffer_api(m_indices.data(), m_indices.size() * sizeof(uint32_t));
@@ -138,19 +178,32 @@ public:
 
         m_model = glm::mat4(1.0f);
         m_model = glm::translate(m_model, t_pos);
-        // m_model = glm::rotate(m_model, glm::radians(m_rotation), m_rotationAxis);
+        m_model = glm::rotate(m_model, m_rotation, m_rotationAxis);
     }
 
     void draw(ref<shader_api> t_shader) override {
+        // set the uniforms
+        set_uniforms(t_shader);
+        // draw the cube
+        render_api::draw_indexed(m_vao, t_shader);
+    }
+
+    void draw_textured(ref<shader_api> t_shader, std::vector<ref<texture_api>> t_textures) override {
+        // set the uniforms
+        set_uniforms(t_shader);
+        // draw the cube
+        render_api::draw_indexed_textured(m_vao, t_shader, t_textures);
+    }
+
+private:
+
+    void set_uniforms(ref<shader_api> t_shader) {
         m_model = glm::mat4(1.0f);
         m_model = glm::translate(m_model, m_pos);
-        // m_model = glm::rotate(m_model, glm::radians(m_rotation), m_rotationAxis);
+        m_model = glm::rotate(m_model, m_rotation, m_rotationAxis);
 
         // set model matrix
         t_shader->set_uniform_mat4f("u_model", m_model);
-
-        // draw the cube
-        render_api::draw_indexed(m_vao, t_shader);
     }
 
 
@@ -160,11 +213,13 @@ public:
 
     std::vector<glm::vec3> m_vertices;
     std::vector<glm::vec3> m_normals;
+    std::vector<glm::vec2> m_texCoords;
     std::vector<uint32_t> m_indices;
 
     ref<vertex_array_api> m_vao;
     ref<vertex_buffer_api> m_vbo_pos;
     ref<vertex_buffer_api> m_vbo_norm;
+    ref<vertex_buffer_api> m_vbo_tex;
 
     glm::mat4 m_model = glm::mat4(1.0f);
 };

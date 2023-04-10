@@ -16,6 +16,7 @@ class shape {
 public:
 
     virtual void draw(ref<shader_api> t_shader) = 0;
+    virtual void draw_textured(ref<shader_api> t_shader, std::vector<ref<texture_api>> t_textures) = 0;
 
     void set_material(material t_material) { m_material = t_material; }
     material get_material() const { return m_material; }

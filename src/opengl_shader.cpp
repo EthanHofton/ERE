@@ -120,7 +120,7 @@ void opengl_shader::unbind() const {
 }
 
 void opengl_shader::set_uniform_1i(const std::string& t_name, int t_value) {
-    m_uniform_1f_cache[t_name] = t_value;
+    m_uniform_1i_cache[t_name] = t_value;
 }
 
 void opengl_shader::set_uniform_1f(const std::string& t_name, float t_value) {
