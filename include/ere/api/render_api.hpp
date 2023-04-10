@@ -68,6 +68,7 @@ private:
     inline static void set_uniforms(const ref<shader_api>& t_shader) {
         t_shader->set_uniform_mat4f("u_projection", s_camera->get_projection_matrix());
         t_shader->set_uniform_mat4f("u_view", s_camera->get_view_matrix());
+        t_shader->set_uniform_3f("u_cam_pos", s_camera->get_position());
         t_shader->set_uniform_1f("u_time", (float)s_timer.getTime() * 1e-9);
     }
 

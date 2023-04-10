@@ -13,6 +13,7 @@ public:
 
     virtual const glm::mat4& get_view_matrix() = 0;
     virtual const glm::mat4& get_projection_matrix() = 0;
+    virtual glm::vec3 get_position() const = 0;
 
 };
 

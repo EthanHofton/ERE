@@ -32,6 +32,13 @@ private:
     void link_shader(std::initializer_list<unsigned int> t_shader_ids);
     unsigned int compile_shader(const std::string& t_src, unsigned int t_type);
 
+    std::map<std::string, int> m_uniform_1i_cache;
+    std::map<std::string, float> m_uniform_1f_cache;
+    std::map<std::string, glm::vec2> m_uniform_2f_cache;
+    std::map<std::string, glm::vec3> m_uniform_3f_cache;
+    std::map<std::string, glm::vec4> m_uniform_4f_cache;
+    std::map<std::string, glm::mat4> m_uniform_mat4f_cache;
+
     unsigned int m_shader_id;
 
 };

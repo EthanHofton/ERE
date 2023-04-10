@@ -3,7 +3,11 @@
 
 namespace ere {
 
-camera_3d::camera_3d(float t_aspect_ratio) : m_aspect_ratio(t_aspect_ratio) { update_camera_vectors(); update_projection_matrix(); }
+camera_3d::camera_3d() { 
+    m_aspect_ratio = application::get_application()->get_window_size().x / application::get_application()->get_window_size().y;
+    update_camera_vectors(); 
+    update_projection_matrix(); 
+}
 
 void camera_3d::update_camera_vectors() {
     glm::vec3 front;
@@ -88,8 +92,8 @@ void camera_3d::on_mouse_moved(mouse_moved_event& t_event) {
         m_first_mouse = false;
         return;
     }
-    int x_offset = t_event.get_delta_pos().x;
-    int y_offset = t_event.get_delta_pos().y;
+    float x_offset = t_event.get_delta_pos().x;
+    float y_offset = t_event.get_delta_pos().y;
 
     x_offset *= m_turn_speed * application::get_application()->get_delta_time();
     y_offset *= m_turn_speed * application::get_application()->get_delta_time();
@@ -123,6 +127,11 @@ void camera_3d::on_mouse_scrolled(mouse_scrolled_event& t_event) {
         m_fov = 45.0f;
     }
 
+    m_projection_updated = true;
+}
+
+void camera_3d::on_window_resized(window_resized_event& t_event) {
+    m_aspect_ratio = static_cast<float>(t_event.get_window_size().x) / static_cast<float>(t_event.get_window_size().y);
     m_projection_updated = true;
 }
 
