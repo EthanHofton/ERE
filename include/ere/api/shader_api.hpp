@@ -25,8 +25,13 @@ public:
     virtual void set_uniform_4f(const std::string& t_name, const glm::vec4& t_value) = 0;
     virtual void set_uniform_mat4f(const std::string& t_name, const glm::mat4& t_value) = 0;
 
+    static ref<shader_api> create_shader_api(const std::string& t_vertex_src);
     static ref<shader_api> create_shader_api(const std::string& t_vertex_src, const std::string& t_fragment_src);
     static ref<shader_api> create_shader_api(const std::string& t_vertex_src, const std::string& t_geometry_src, const std::string& t_fragment_src);
+
+    inline static ref<shader_api> create_shader_api_from_file(const std::string& t_vertex_src) {
+        return create_shader_api(load_file(t_vertex_src));
+    }
 
     inline static ref<shader_api> create_shader_api_from_file(const std::string& t_vertex_src, const std::string& t_fragment_src) {
         return create_shader_api(load_file(t_vertex_src), load_file(t_fragment_src));

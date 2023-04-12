@@ -6,6 +6,18 @@
 
 namespace ere {
 
+enum class texture_format {
+    red = 1,
+    rg = 2,
+    rgb = 3,
+    rgba = 4,
+    color_buffer = 5,
+    depth_buffer = 6,
+    stencil_buffer = 7,
+    depth_stencil_buffer = 8,
+
+};
+
 class texture_api {
 public:
 

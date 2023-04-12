@@ -6,6 +6,11 @@
 
 namespace ere {
 
+ref<shader_api> shader_api::create_shader_api(const std::string& t_vertex_src)
+{
+    return std::make_shared<opengl_shader>(t_vertex_src);
+}
+
 ref<shader_api> shader_api::create_shader_api(const std::string& t_vertex_src, const std::string& t_fragment_src)
 {
     return std::make_shared<opengl_shader>(t_vertex_src, t_fragment_src);
@@ -13,6 +18,19 @@ ref<shader_api> shader_api::create_shader_api(const std::string& t_vertex_src, c
 
 ref<shader_api> shader_api::create_shader_api(const std::string &t_vertex_src, const std::string &t_geometry_src, const std::string &t_fragment_src) {
     return std::make_shared<opengl_shader>(t_vertex_src, t_geometry_src, t_fragment_src);
+}
+
+opengl_shader::opengl_shader(const std::string& t_vertex_src) {
+    // create shader program
+    m_shader_id = glCreateProgram();
+
+    // compile shaders
+    unsigned int vertex_shader_id = compile_shader(t_vertex_src, GL_VERTEX_SHADER);
+
+    // link shaders
+    link_shader({ vertex_shader_id });
+
+    ERE_INFO("shader program created");
 }
 
 opengl_shader::opengl_shader(const std::string& t_vertex_src, const std::string& t_fragment_src) {

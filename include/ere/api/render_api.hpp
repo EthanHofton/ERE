@@ -20,16 +20,47 @@ private:
 
 public:
 
+    enum class culling_face {
+        FRONT,
+        BACK,
+        FRONT_AND_BACK
+    };
+
+    enum class culling_direction {
+        CLOCKWISE,
+        COUNTER_CLOCKWISE
+    };
+
     virtual ~render_api() = default;
 
     static ref<render_api> get_renderer();
     inline static void init() { get_renderer()->init_impl(); }
+
     inline static void set_viewport(const glm::vec2& t_size) { get_renderer()->set_viewport_impl(t_size); }
+
     inline static void clear_color(const glm::vec4& t_color) { get_renderer()->clear_color_impl(t_color); }
-    inline static void clear_buffer() { get_renderer()->clear_buffer_impl(); }
+
+    inline static void clear_buffers() { get_renderer()->clear_buffers_impl(); }
+    inline static void clear_color_buffer() { get_renderer()->clear_color_buffer_impl(); }
+    inline static void clear_depth_buffer() { get_renderer()->clear_depth_buffer_impl(); }
+    inline static void clear_stencil_buffer() { get_renderer()->clear_stencil_buffer_impl(); }
+
     inline static void enable_wireframe() { get_renderer()->enable_wireframe_impl(); }
     inline static void disable_wireframe() { get_renderer()->disable_wireframe_impl(); }
+
+    inline static void enable_depth_testing() { get_renderer()->enable_depth_testing_impl(); }
+    inline static void enable_depth_test_write() { get_renderer()->enable_depth_test_write_impl(); }
+    inline static void disable_depth_testing() { get_renderer()->disable_depth_testing_impl(); }
+    inline static void disable_depth_test_write() { get_renderer()->disable_depth_test_write_impl(); }
+
+    inline static void enable_blending() { get_renderer()->enable_blending_impl(); }
+    inline static void disable_blending() { get_renderer()->disable_blending_impl(); }
+
+    inline static void enable_culling(const culling_face& t_face, const culling_direction& t_direction) { get_renderer()->enable_culling_impl(t_face, t_direction); }
+    inline static void disable_culling() { get_renderer()->disable_culling_impl(); }
+
     inline static void pre_window_setup() { get_renderer()->pre_window_setup_impl(); }
+
     inline static void draw_indexed(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader) {
         t_shader->bind(); 
         set_uniforms(t_shader);
@@ -88,12 +119,32 @@ private:
 private:
 
     virtual void init_impl() = 0;
+
     virtual void set_viewport_impl(const glm::vec2& t_size) = 0;
+
     virtual void clear_color_impl(const glm::vec4& t_color) = 0;
-    virtual void clear_buffer_impl() = 0;
+
+    virtual void clear_buffers_impl() = 0;
+    virtual void clear_color_buffer_impl() = 0;
+    virtual void clear_depth_buffer_impl() = 0;
+    virtual void clear_stencil_buffer_impl() = 0;
+
     virtual void enable_wireframe_impl() = 0;
     virtual void disable_wireframe_impl() = 0;
+
+    virtual void enable_depth_testing_impl() = 0;
+    virtual void enable_depth_test_write_impl() = 0;
+    virtual void disable_depth_testing_impl() = 0;
+    virtual void disable_depth_test_write_impl() = 0;
+
+    virtual void enable_blending_impl() = 0;
+    virtual void disable_blending_impl() = 0;
+
+    virtual void enable_culling_impl(const culling_face& t_face, const culling_direction& t_direction) = 0;
+    virtual void disable_culling_impl() = 0;
+
     virtual void pre_window_setup_impl() = 0;
+
     virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) = 0;
     virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) = 0;
 

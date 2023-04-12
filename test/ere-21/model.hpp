@@ -39,7 +39,8 @@ private:
         Assimp::Importer importer;
         // const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate | aiProcess_FlipUVs);
         // const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
-        const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate | aiProcess_GenNormals);
+        // const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate | aiProcess_GenNormals);
+        const aiScene *scene = importer.ReadFile(t_path, aiProcess_Triangulate);
 
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
             ERE_INFO("ERROR::ASSIMP::{}", importer.GetErrorString());
