@@ -14,7 +14,11 @@ public:
         RED,
         RG,
         RGB,
+        RGB16F,
+        RGB32F,
         RGBA,
+        RGBA16F,
+        RGBA32F,
         DEPTH,
         STENCIL,
         DEPTH_STENCIL

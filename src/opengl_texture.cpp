@@ -29,15 +29,11 @@ opengl_texture::opengl_texture(const std::string& path) {
     unsigned char* data = stbi_load(path.c_str(), (int*)&m_width, (int*)&m_height, (int*)&m_depth, 0);
 
     if (data) {
-        GLenum format;
         if (m_depth == 1) {
-            format = GL_RED;
             m_format = texture_api::format::RED;
         } else if (m_depth == 3) {
-            format = GL_RGB;
             m_format = texture_api::format::RGB;
         } else if (m_depth == 4) {
-            format = GL_RGBA;
             m_format = texture_api::format::RGBA;
         }
 
@@ -47,7 +43,7 @@ opengl_texture::opengl_texture(const std::string& path) {
         set_min_filter(texture_api::filter::LINEAR);
         set_mag_filter(texture_api::filter::LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, format, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, get_gl_internal_format(m_format), m_width, m_height, 0, get_gl_format(m_format), get_gl_type(m_format), data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         stbi_image_free(data);
@@ -63,20 +59,13 @@ opengl_texture::opengl_texture(const texture_api::format& t_format, uint32_t wid
     m_format = t_format;
     m_texture_id = 0;
 
-    GLenum type = GL_UNSIGNED_BYTE;
-    if (m_format == texture_api::format::DEPTH_STENCIL) {
-        type = GL_UNSIGNED_INT_24_8;
-    }
-
-    GLenum format = get_gl_format(t_format);
-
     glGenTextures(1, &m_texture_id);
     glBindTexture(GL_TEXTURE_2D, m_texture_id);
 
     set_min_filter(texture_api::filter::LINEAR);
     set_mag_filter(texture_api::filter::LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, format, type, nullptr);
+    glTexImage2D(GL_TEXTURE_2D, 0, get_gl_internal_format(m_format), m_width, m_height, 0, get_gl_format(m_format), get_gl_type(m_format), nullptr);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
@@ -87,19 +76,13 @@ opengl_texture::opengl_texture(unsigned char* data, const texture_api::format& t
     m_depth = get_depth_from_format(t_format);
     m_texture_id = 0;
 
-    GLenum format = get_gl_format(t_format);
-    GLenum type = GL_UNSIGNED_BYTE;
-    if (m_format == texture_api::format::DEPTH_STENCIL) {
-        type = GL_UNSIGNED_INT_24_8;
-    }
-
     glGenTextures(1, &m_texture_id);
     glBindTexture(GL_TEXTURE_2D, m_texture_id);
 
     set_min_filter(texture_api::filter::LINEAR);
     set_mag_filter(texture_api::filter::LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, format, type, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, get_gl_internal_format(m_format), m_width, m_height, 0, get_gl_format(m_format), get_gl_type(m_format), data);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
@@ -123,14 +106,8 @@ void opengl_texture::set_data(unsigned char* data, const texture_api::format& t_
     m_format = t_format;
     m_depth = get_depth_from_format(t_format);
 
-    GLenum format = get_gl_format(t_format);
-    GLenum type = GL_UNSIGNED_BYTE;
-    if (m_format == texture_api::format::DEPTH_STENCIL) {
-        type = GL_UNSIGNED_INT_24_8;
-    }
-
     glBindTexture(GL_TEXTURE_2D, m_texture_id);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, format, GL_UNSIGNED_BYTE, data);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, get_gl_format(m_format), get_gl_type(m_format), data);
 }
 
 void opengl_texture::set_min_filter(texture_api::filter filter) {
@@ -178,8 +155,12 @@ unsigned int opengl_texture::get_depth_from_format(const texture_api::format& fo
         case texture_api::format::DEPTH_STENCIL:
             return 2;
         case texture_api::format::RGB:
+        case texture_api::format::RGB16F:
+        case texture_api::format::RGB32F:
             return 3;
         case texture_api::format::RGBA:
+        case texture_api::format::RGBA16F:
+        case texture_api::format::RGBA32F:
             return 4;
         default:
             return 4;
@@ -193,9 +174,42 @@ GLenum opengl_texture::get_gl_format(const texture_api::format& format) const {
         case texture_api::format::RG:
             return GL_RG;
         case texture_api::format::RGB:
+        case texture_api::format::RGB16F:
+        case texture_api::format::RGB32F:
             return GL_RGB;
         case texture_api::format::RGBA:
+        case texture_api::format::RGBA16F:
+        case texture_api::format::RGBA32F:
             return GL_RGBA;
+        case texture_api::format::DEPTH:
+            return GL_DEPTH_COMPONENT;
+        case texture_api::format::STENCIL:
+            return GL_STENCIL_INDEX;
+        case texture_api::format::DEPTH_STENCIL:
+            return GL_DEPTH_STENCIL;
+        default:
+            return GL_RGBA;
+    }
+}
+
+GLenum opengl_texture::get_gl_internal_format(const texture_api::format& format) const {
+    switch (format) {
+        case texture_api::format::RED:
+            return GL_RED;
+        case texture_api::format::RG:
+            return GL_RG;
+        case texture_api::format::RGB:
+            return GL_RGB;
+        case texture_api::format::RGB16F:
+            return GL_RGB16F;
+        case texture_api::format::RGB32F:
+            return GL_RGB32F;
+        case texture_api::format::RGBA:
+            return GL_RGBA;
+        case texture_api::format::RGBA16F:
+            return GL_RGBA16F;
+        case texture_api::format::RGBA32F:
+            return GL_RGBA32F;
         case texture_api::format::DEPTH:
             return GL_DEPTH_COMPONENT;
         case texture_api::format::STENCIL:
@@ -241,6 +255,28 @@ GLenum opengl_texture::get_gl_wrap(const texture_api::wrap& wrap) const {
     }
 }
 
+GLenum opengl_texture::get_gl_type(const texture_api::format& format) const {
+    switch (format) {
+        case texture_api::format::RED:
+        case texture_api::format::RG:
+        case texture_api::format::RGB:
+        case texture_api::format::RGBA:
+        case texture_api::format::DEPTH:
+        case texture_api::format::STENCIL:
+            return GL_UNSIGNED_BYTE;
+        case texture_api::format::DEPTH_STENCIL:
+            return GL_UNSIGNED_INT_24_8;
+        case texture_api::format::RGB16F:
+        case texture_api::format::RGB32F:
+        case texture_api::format::RGBA16F:
+        case texture_api::format::RGBA32F:
+            return GL_FLOAT;
+        default:
+            return GL_UNSIGNED_BYTE;
+    }
+
+
+}
 
 }
 

@@ -25,6 +25,7 @@ void opengl_renderer::init_impl() {
     enable_depth_testing();
 
     glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void opengl_renderer::set_viewport_impl(const glm::vec2& t_size) {

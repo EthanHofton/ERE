@@ -24,15 +24,17 @@ public:
     virtual int get_width() const = 0;
     virtual int get_height() const = 0;
 
+    virtual void resize(int t_width, int t_height) = 0;
+
     virtual bool is_valid() const = 0;
 
-    virtual ref<texture_api> add_color_attachment() = 0;
+    virtual void add_color_attachment() = 0;
     virtual ref<texture_api> get_color_attachemt() const = 0;
-    virtual ref<texture_api> add_depth_attachment() = 0;
+    virtual void add_depth_attachment() = 0;
     virtual ref<texture_api> get_depth_attachemt() const = 0;
-    virtual ref<texture_api> add_stencil_attachment() = 0;
+    virtual void add_stencil_attachment() = 0;
     virtual ref<texture_api> get_stencil_attachemt() const = 0;
-    virtual ref<texture_api> add_depth_stencil_attachment() = 0;
+    virtual void add_depth_stencil_attachment() = 0;
     virtual ref<texture_api> get_depth_stencil_attachemt() const = 0;
     virtual void add_depth_stencil_attachment_write_only() = 0;
 };

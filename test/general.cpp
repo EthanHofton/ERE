@@ -1,6 +1,7 @@
 #include <ere/core/entry_point.hpp>
 // #include "ere-21/model_lighting.hpp"
-#include "ere-21/ere_21.hpp"
+// #include "ere-21/ere_21.hpp"
+#include "ere-17/ere_17.hpp"
 
 
 namespace ere {
@@ -8,7 +9,7 @@ namespace ere {
 ref<ere::application> ere_create_application() {
     ref<application> app = application::get_application();
 
-    app->push_layer(createRef<ere_21>());
+    app->push_layer(createRef<ere_17>());
 
     // app->set_background_color({.529f, .808f, .922f, 1.0f});
     app->set_background_color({0.f, 0.f, 0.f, 1.0f});

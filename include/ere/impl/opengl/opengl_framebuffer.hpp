@@ -26,15 +26,17 @@ public:
     virtual int get_width() const override;
     virtual int get_height() const override;
 
+    virtual void resize(int t_width, int t_height) override;
+
     virtual bool is_valid() const override;
 
-    virtual ref<texture_api> add_color_attachment() override;
+    virtual void add_color_attachment() override;
     inline virtual ref<texture_api> get_color_attachemt() const override { return m_color_attachment; }
-    virtual ref<texture_api> add_depth_attachment() override;
+    virtual void add_depth_attachment() override;
     inline virtual ref<texture_api> get_depth_attachemt() const override { return m_depth_attachment; }
-    virtual ref<texture_api> add_stencil_attachment() override;
+    virtual void add_stencil_attachment() override;
     inline virtual ref<texture_api> get_stencil_attachemt() const override { return m_stencil_attachment; }
-    virtual ref<texture_api> add_depth_stencil_attachment() override;
+    virtual void add_depth_stencil_attachment() override;
     inline virtual ref<texture_api> get_depth_stencil_attachemt() const override { return m_depth_stencil_attachment; }
     virtual void add_depth_stencil_attachment_write_only() override;
 

@@ -17,6 +17,7 @@ void glfw_window::create_window(const window_props &t_props) {
     }
 
     render_api::get_renderer()->pre_window_setup();
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     ERE_INFO("Creating window...");
     m_window = glfwCreateWindow(t_props.width, t_props.height, t_props.title.c_str(), NULL, NULL);

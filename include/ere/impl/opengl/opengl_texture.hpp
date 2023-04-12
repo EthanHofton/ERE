@@ -33,8 +33,10 @@ private:
 
     unsigned int get_depth_from_format(const texture_api::format& t_format) const;
     GLenum get_gl_format(const texture_api::format& t_format) const;
+    GLenum get_gl_internal_format(const texture_api::format& t_format) const;
     GLenum get_gl_filter(const texture_api::filter& t_filter) const;
     GLenum get_gl_wrap(const texture_api::wrap& t_wrap) const;
+    GLenum get_gl_type(const texture_api::format& t_format) const;
 };
 
 }
