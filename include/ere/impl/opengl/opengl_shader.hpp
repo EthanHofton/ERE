@@ -13,6 +13,7 @@ namespace ere {
 class opengl_shader : public shader_api {
 public:
 
+    opengl_shader(const std::string& t_vertex_src);
     opengl_shader(const std::string& t_vertex_src, const std::string& t_fragment_src);
     opengl_shader(const std::string& t_vertex_src, const std::string& t_geometry_src, const std::string& t_fragment_src);
     virtual ~opengl_shader();

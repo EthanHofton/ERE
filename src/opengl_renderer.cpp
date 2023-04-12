@@ -21,11 +21,11 @@ void opengl_renderer::init_impl() {
         throw std::runtime_error("Failed to initialize glad!");
     }
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    enable_blending();
+    enable_depth_testing();
 
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_MULTISAMPLE);
 }
 
 void opengl_renderer::set_viewport_impl(const glm::vec2& t_size) {
@@ -36,8 +36,20 @@ void opengl_renderer::clear_color_impl(const glm::vec4& t_color) {
     glClearColor(t_color.r, t_color.g, t_color.b, t_color.a);
 }
 
-void opengl_renderer::clear_buffer_impl() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void opengl_renderer::clear_buffers_impl() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+}
+
+void opengl_renderer::clear_color_buffer_impl() {
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void opengl_renderer::clear_depth_buffer_impl() {
+    glClear(GL_DEPTH_BUFFER_BIT);
+}
+
+void opengl_renderer::clear_stencil_buffer_impl() {
+    glClear(GL_STENCIL_BUFFER_BIT);
 }
 
 void opengl_renderer::enable_wireframe_impl() {
@@ -46,6 +58,59 @@ void opengl_renderer::enable_wireframe_impl() {
 
 void opengl_renderer::disable_wireframe_impl() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void opengl_renderer::enable_depth_testing_impl() {
+    glEnable(GL_DEPTH_TEST);
+}
+
+void opengl_renderer::enable_depth_test_write_impl() {
+    glDepthMask(GL_TRUE);
+}
+
+void opengl_renderer::disable_depth_testing_impl() {
+    glDisable(GL_DEPTH_TEST);
+}
+
+void opengl_renderer::disable_depth_test_write_impl() {
+    glDepthMask(GL_FALSE);
+}
+
+void opengl_renderer::enable_blending_impl() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void opengl_renderer::disable_blending_impl() {
+    glDisable(GL_BLEND);
+}
+
+void opengl_renderer::enable_culling_impl(const render_api::culling_face& t_face, const render_api::culling_direction& t_direction) {
+    glEnable(GL_CULL_FACE);
+    switch (t_face) {
+        case render_api::culling_face::FRONT:
+            glCullFace(GL_FRONT);
+            break;
+        case render_api::culling_face::BACK:
+            glCullFace(GL_BACK);
+            break;
+        case render_api::culling_face::FRONT_AND_BACK:
+            glCullFace(GL_FRONT_AND_BACK);
+            break;
+    }
+
+    switch (t_direction) {
+        case render_api::culling_direction::CLOCKWISE:
+            glFrontFace(GL_CW);
+            break;
+        case render_api::culling_direction::COUNTER_CLOCKWISE:
+            glFrontFace(GL_CCW);
+            break;
+    }
+}
+
+void opengl_renderer::disable_culling_impl() {
+    glDisable(GL_CULL_FACE);
 }
 
 void opengl_renderer::pre_window_setup_impl() {

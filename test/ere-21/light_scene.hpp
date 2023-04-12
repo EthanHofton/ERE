@@ -149,7 +149,7 @@ public:
 private:
 
     ref<texture_api> create_default_texture() {
-        return texture_api::create_texture_api(&m_default_texture_data[0], sizeof(unsigned char) * m_default_texture_data.size(), 1, 1);
+        return texture_api::create_texture_api(&m_default_texture_data[0], texture_api::format::RGBA, 1, 1);
 
     }
 

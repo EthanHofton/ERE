@@ -17,6 +17,7 @@ void glfw_window::create_window(const window_props &t_props) {
     }
 
     render_api::get_renderer()->pre_window_setup();
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     ERE_INFO("Creating window...");
     m_window = glfwCreateWindow(t_props.width, t_props.height, t_props.title.c_str(), NULL, NULL);
@@ -231,7 +232,7 @@ void glfw_window::restore_window() { glfwRestoreWindow(m_window); }
 void glfw_window::focus_window() { glfwFocusWindow(m_window); }
 void glfw_window::pre_render() {
     render_api::clear_color(m_background_color);
-    render_api::clear_buffer();
+    render_api::clear_buffers();
 }
 void glfw_window::set_relative_mouse_mode(bool t_enabled) { glfwSetInputMode(m_window, GLFW_CURSOR, t_enabled ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL); }
 void glfw_window::post_render() { glfwSwapBuffers(m_window); glfwPollEvents(); }
