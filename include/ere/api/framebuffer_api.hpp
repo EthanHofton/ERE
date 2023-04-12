@@ -28,8 +28,9 @@ public:
 
     virtual bool is_valid() const = 0;
 
-    virtual void add_color_attachment() = 0;
-    virtual ref<texture_api> get_color_attachemt() const = 0;
+    virtual void add_color_attachment(texture_api::format t_format = texture_api::format::RGB) = 0;
+    virtual ref<texture_api> get_color_attachemt(int t_index) const = 0;
+    virtual const std::vector<ref<texture_api>>& get_color_attachments() const = 0;
     virtual void add_depth_attachment() = 0;
     virtual ref<texture_api> get_depth_attachemt() const = 0;
     virtual void add_stencil_attachment() = 0;

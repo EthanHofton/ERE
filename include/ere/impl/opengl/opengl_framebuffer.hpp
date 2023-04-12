@@ -2,6 +2,7 @@
 #define __ERE_OPENGL_FRAMEBUFFER_HPP__
 
 #include <ere/ere_config.hpp>
+#include <vector>
 
 #ifdef USE_OPENGL
 
@@ -30,8 +31,9 @@ public:
 
     virtual bool is_valid() const override;
 
-    virtual void add_color_attachment() override;
-    inline virtual ref<texture_api> get_color_attachemt() const override { return m_color_attachment; }
+    virtual void add_color_attachment(texture_api::format t_format = texture_api::format::RGB) override;
+    inline virtual ref<texture_api> get_color_attachemt(int t_index = 0) const override { return m_color_attachments[t_index]; }
+    inline virtual const std::vector<ref<texture_api>>& get_color_attachments() const override { return m_color_attachments; }
     virtual void add_depth_attachment() override;
     inline virtual ref<texture_api> get_depth_attachemt() const override { return m_depth_attachment; }
     virtual void add_stencil_attachment() override;
@@ -48,7 +50,7 @@ private:
     int m_width;
     int m_height;
 
-    ref<texture_api> m_color_attachment = nullptr;
+    std::vector<ref<texture_api>> m_color_attachments;
     ref<texture_api> m_depth_attachment = nullptr;
     ref<texture_api> m_stencil_attachment = nullptr;
     ref<texture_api> m_depth_stencil_attachment = nullptr;

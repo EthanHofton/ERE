@@ -74,9 +74,11 @@ public:
         m_light_scene->add_spot_light(m_spot_light);
 
         m_framebuffer = framebuffer_api::create_framebuffer_api(application::get_application()->get_window_size().x, application::get_application()->get_window_size().y);
-        m_framebuffer->add_color_attachment();
+        m_framebuffer->add_color_attachment(texture_api::format::RGB16F);
+        m_framebuffer->add_color_attachment(texture_api::format::RGB16F);
         m_framebuffer->add_depth_attachment();
-        m_framebuffer->get_color_attachemt()->set_uniform_name("color_buffer");
+        m_framebuffer->get_color_attachemt(0)->set_uniform_name("color_buffer");
+        m_framebuffer->get_color_attachemt(1)->set_uniform_name("color_buffer");
 
         
         // the vec3 positions of the quad
@@ -139,7 +141,7 @@ public:
 
         m_framebuffer->unbind();
 
-        render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt() });
+        render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt(index) });
 
         return true;
     }
@@ -268,6 +270,10 @@ public:
 
         ImGui::End();
 
+        ImGui::Begin("Framebuffer Color Buffer");
+        ImGui::InputInt("Color Buffer Index", &index, 0);
+        ImGui::End();
+
         return true;
     }
 
@@ -376,6 +382,9 @@ private:
     ref<shader_api> m_quad_shader;
 
     ref<spot_light> m_spot_light;
+
+    // test
+    int index = 0;
 
 };
 
