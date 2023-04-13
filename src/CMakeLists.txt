@@ -53,6 +53,7 @@ endif()
 
 # ======= SOURCES =======
 set(SOURCES
+    opengl_cubemap.cpp
     opengl_framebuffer.cpp
     camera_3d.cpp
     render_api.cpp

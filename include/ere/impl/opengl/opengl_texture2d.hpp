@@ -7,6 +7,7 @@
 
 #ifdef USE_OPENGL
 #include <glad/glad.h>
+#include "opengl_texture_conversions.hpp"
 
 namespace ere {
 
@@ -31,13 +32,6 @@ public:
     virtual void set_wrap_s(texture_api::wrap wrap_s) override;
     virtual void set_wrap_t(texture_api::wrap wrap_t) override;
 
-private:
-
-    GLenum get_gl_format(const texture_api::format& t_format) const;
-    GLenum get_gl_internal_format(const texture_api::format& t_format) const;
-    GLenum get_gl_filter(const texture_api::filter& t_filter) const;
-    GLenum get_gl_wrap(const texture_api::wrap& t_wrap) const;
-    GLenum get_gl_type(const texture_api::format& t_format) const;
 };
 
 }
