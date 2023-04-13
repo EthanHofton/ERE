@@ -17,7 +17,7 @@ public:
     opengl_cubemap(const std::vector<std::string>& paths);
     opengl_cubemap(const std::vector<format>& t_formats, const std::vector<glm::ivec2>& sizes);
     opengl_cubemap(const std::vector<unsigned char*>& data, const std::vector<format>& t_formats, const std::vector<glm::ivec2>& sizes);
-    virtual ~opengl_cubemap() override = default;
+    virtual ~opengl_cubemap() override;
 
     virtual void bind(uint32_t slot) const override;
     virtual void unbind() const override;

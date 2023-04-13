@@ -10,7 +10,7 @@ namespace ere {
 class cubemap_api : public texture_api {
 public:
    
-    virtual ~cubemap_api();
+    virtual ~cubemap_api() = default;
 
     virtual void bind(uint32_t slot) const = 0;
     virtual void unbind() const = 0;
