@@ -22,6 +22,8 @@ void opengl_renderer::init_impl() {
     }
 
     enable_blending();
+    set_blending_function(blending_function::SRC_ALPHA, blending_function::ONE_MINUS_SRC_ALPHA);
+
     enable_depth_testing();
 
     glEnable(GL_LINE_SMOOTH);
