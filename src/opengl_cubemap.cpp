@@ -25,16 +25,25 @@ opengl_cubemap::opengl_cubemap(const std::vector<std::string>& paths) {
         return;
     }
 
-    m_formats = std::vector<format>(paths.size(), format::RGBA);
-
     glGenTextures(1, &m_texture_id);
     glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture_id);
 
     int width, height, nr_channels;
     for (uint32_t i = 0; i < paths.size(); i++) {
+        stbi_set_flip_vertically_on_load(0);
         unsigned char* data = stbi_load(paths[i].c_str(), &width, &height, &nr_channels, 0);
+        format format;
+        if (nr_channels == 1) {
+            format = format::RED;
+        } else if (nr_channels == 3) {
+            format = format::RGB;
+        } else if (nr_channels == 4) {
+            format = format::RGBA;
+        }
+        m_formats.push_back(format);
         if (data) {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, get_gl_internal_format(m_formats[i]), width, height, 0, get_gl_format(m_formats[i]), get_gl_type(m_formats[i]), data);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, get_gl_internal_format(format), width, height, 0, get_gl_format(format), get_gl_type(format), data);
+            m_sizes.push_back(glm::ivec2(width, height));
             stbi_image_free(data);
         } else {
             ERE_ERROR("Cubemap texture failed to load at path: {}", paths[i]);

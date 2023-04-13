@@ -51,8 +51,8 @@ public:
 
 protected:
 
-    std::string m_uniform_name;
-    unsigned int m_texture_id;
+    std::string m_uniform_name = "texture";
+    unsigned int m_texture_id = 0;
 
 };
 
