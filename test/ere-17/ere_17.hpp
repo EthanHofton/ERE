@@ -4,12 +4,14 @@
 #include "../ere-21/cube.hpp"
 #include "../ere-21/sphere.hpp"
 #include "../ere-21/light_scene.hpp"
+#include "skybox_cube.hpp"
 
 #include <ere/core/application.hpp>
 #include <ere/core/camera_3d.hpp>
 #include <ere/core/layer.hpp>
 #include <ere/api/render_api.hpp>
 #include <ere/api/framebuffer_api.hpp>
+#include <ere/api/cubemap_api.hpp>
 
 #include <imgui.h>
 
@@ -42,8 +44,8 @@ public:
             .diffuse = glm::vec3(0),
             .specular = glm::vec3(0),
             .shininess = 8.f,
-            .diffuse_texture = texture_api::create_texture_api("assets/images/container2.png"),
-            .specular_texture = texture_api::create_texture_api("assets/images/container2_specular.png"),
+            .diffuse_texture = texture2d_api::create_texture2d_api("assets/images/container2.png"),
+            .specular_texture = texture2d_api::create_texture2d_api("assets/images/container2_specular.png"),
         });
 
         m_cube_positions = {
@@ -127,6 +129,18 @@ public:
         m_quad_vao->set_index_buffer(m_quad_ibo);
 
         m_quad_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-17/quad_vert.glsl", "assets/shaders/ere-17/quad_frag.glsl");
+
+        m_cubemap = cubemap_api::create_cubemap_api({
+            "assets/skybox/right.jpg",
+            "assets/skybox/left.jpg",
+            "assets/skybox/top.jpg",
+            "assets/skybox/bottom.jpg",
+            "assets/skybox/front.jpg",
+            "assets/skybox/back.jpg",
+        });
+        m_cubemap->set_uniform_name("skybox");
+        m_skybox_cube = createRef<skybox_cube>();
+        m_skybox_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-22/skybox_vert.glsl", "assets/shaders/ere-22/skybox_frag.glsl");
 
         return true;
     }
@@ -309,6 +323,11 @@ public:
 private:
 
     void render_scene() {
+        // render skybox
+        render_api::disable_depth_test_write();
+        render_api::draw_arrays_textured(m_skybox_cube->m_vao, m_skybox_shader, m_skybox_cube->m_vertices.size(), { m_cubemap });
+        render_api::enable_depth_test_write();
+
         m_spot_light->position = m_camera->get_position();
         m_spot_light->direction = m_camera->get_camera_front();
 
@@ -385,6 +404,11 @@ private:
 
     // test
     int index = 0;
+
+    // skybox
+    ref<cubemap_api> m_cubemap;
+    ref<skybox_cube> m_skybox_cube;
+    ref<shader_api> m_skybox_shader;
 
 };
 

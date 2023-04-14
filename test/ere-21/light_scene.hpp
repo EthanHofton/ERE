@@ -148,8 +148,8 @@ public:
 
 private:
 
-    ref<texture_api> create_default_texture() {
-        return texture_api::create_texture_api(&m_default_texture_data[0], texture_api::format::RGBA, 1, 1);
+    ref<texture2d_api> create_default_texture() {
+        return texture2d_api::create_texture2d_api(&m_default_texture_data[0], texture_api::format::RGBA, 1, 1);
 
     }
 
@@ -160,10 +160,10 @@ private:
 
     ref<shader_api> m_shader;
 
-    ref<texture_api> m_default_diffuse_texture;
-    ref<texture_api> m_default_specular_texture;
-    ref<texture_api> m_default_normal_texture;
-    ref<texture_api> m_default_emission_texture;
+    ref<texture2d_api> m_default_diffuse_texture;
+    ref<texture2d_api> m_default_specular_texture;
+    ref<texture2d_api> m_default_normal_texture;
+    ref<texture2d_api> m_default_emission_texture;
     std::vector<unsigned char> m_default_texture_data;
 };
 
