@@ -28,6 +28,7 @@ include(FetchContent)
 FetchContent_Declare(
   ere
   GIT_REPOSITORY https://github.com/EthanHofton/ere.git
+  GIT_TAG main
 )
 FetchContent_MakeAvailable(ere)
 
@@ -35,4 +36,22 @@ FetchContent_MakeAvailable(ere)
 
 add_executable(${EXE_NAME} ${EXE_SRC})
 target_link_libraries(${EXE_NAME} PUBLIC ere)
+```
+
+#### Build Examples
+
+```
+mkdir build
+cd build
+cmake .. -DBUILD_EXAMPLES=ON
+cmake --build .
+```
+
+#### Build Docs
+
+```
+mkdir build
+cd build
+cmake .. -BUILD_DOCS=ON
+cmake --build . --target ere_docs
 ```
