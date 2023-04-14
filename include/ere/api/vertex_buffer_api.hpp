@@ -31,11 +31,12 @@ public:
         uint32_t size;
         uint32_t count;
         size_t offset;
-        bool normalized;
+        unsigned int vertex_divisor = 0;
+        bool normalized = false;
         shader_type type;
 
-        buffer_element(std::string name, shader_type type, bool normalized = false)
-            : name(name), type(type), normalized(normalized) {
+        buffer_element(std::string name, shader_type type, unsigned int t_vertex_divisor = 0, bool normalized = false)
+            : name(name), type(type), vertex_divisor(t_vertex_divisor), normalized(normalized) {
             switch (type) {
                 case shader_type::float_1: size = 4;  count = 1; break;
                 case shader_type::float_2: size = 4 * 2;  count = 2; break;

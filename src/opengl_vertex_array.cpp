@@ -54,6 +54,7 @@ void opengl_vertex_array::add_vertex_buffer(const ref<vertex_buffer_api>& t_vbo)
                               (element.normalized) ? GL_TRUE : GL_FALSE,
                               layout.get_stride(),
                               (const void*)element.offset);
+        glVertexAttribDivisor(m_index, element.vertex_divisor);
         m_index++;
     }
     m_vbos.push_back(t_vbo);
