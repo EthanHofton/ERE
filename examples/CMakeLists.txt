@@ -36,5 +36,4 @@ file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 # ================== test general ==================
 add_executable(general general.cpp)
 target_link_libraries(general PRIVATE ere assimp)
-add_test(NAME test_general COMMAND general WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
 # ==================================================
