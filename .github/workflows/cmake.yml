@@ -1,0 +1,23 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build_and_test:
+    name: Build And Test
+    runs-on: macos-12
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create Build Directory
+        run: cmake -E make_directory ${{github.workspace}}/build
+
+      - name: Configure CMake
+        run: cmake -S . -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config Release
+
+      # - name: Test
+      #   run: cd ${{github.workspace}}/build && ctest --verbose
