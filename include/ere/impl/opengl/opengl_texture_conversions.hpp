@@ -9,8 +9,7 @@
 
 namespace ere {
 
-
-inline GLenum get_gl_format(const texture_api::format& t_format) {
+extern inline GLenum get_gl_format(const texture_api::format& t_format) {
     switch (t_format) {
         case texture_api::format::RED:
             return GL_RED;
@@ -34,7 +33,8 @@ inline GLenum get_gl_format(const texture_api::format& t_format) {
             return GL_RGBA;
     }
 }
-inline GLenum get_gl_internal_format(const texture_api::format& t_format) {
+
+extern inline GLenum get_gl_internal_format(const texture_api::format& t_format) {
     switch (t_format) {
         case texture_api::format::RED:
             return GL_RED;
@@ -62,7 +62,8 @@ inline GLenum get_gl_internal_format(const texture_api::format& t_format) {
             return GL_RGBA;
     }
 }
-inline GLenum get_gl_filter(const texture_api::filter& t_filter) {
+
+extern inline GLenum get_gl_filter(const texture_api::filter& t_filter) {
     switch (t_filter) {
         case texture_api::filter::LINEAR:
             return GL_LINEAR;
@@ -80,7 +81,8 @@ inline GLenum get_gl_filter(const texture_api::filter& t_filter) {
             return GL_LINEAR;
     }
 }
-inline GLenum get_gl_wrap(const texture_api::wrap& t_wrap) {
+
+extern inline GLenum get_gl_wrap(const texture_api::wrap& t_wrap) {
     switch (t_wrap) {
         case texture_api::wrap::CLAMP_TO_EDGE:
             return GL_CLAMP_TO_EDGE;
@@ -94,7 +96,8 @@ inline GLenum get_gl_wrap(const texture_api::wrap& t_wrap) {
             return GL_REPEAT;
     }
 }
-inline GLenum get_gl_type(const texture_api::format& t_format) {
+
+extern inline GLenum get_gl_type(const texture_api::format& t_format) {
     switch (t_format) {
         case texture_api::format::RED:
         case texture_api::format::RG:
