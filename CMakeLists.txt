@@ -5,7 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib") 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-project(ere VERSION 1.0.0 LANGUAGES CXX)
+project(ere VERSION 1.0.1 LANGUAGES CXX)
 
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 
@@ -22,8 +22,6 @@ set(CMAKE_MACOSX_RPATH ON)
 #set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 #set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-enable_testing()
-
 # opengl deps
 option(USE_OPENGL "Use OpenGL" ON)
 if (USE_OPENGL)
@@ -36,8 +34,6 @@ add_subdirectory(stb_image)
 add_subdirectory(src)
 # include include directory AFTER src so that the library can use the configure file
 add_subdirectory(include)
-# include test directroy AFTER src so that the test can use the library built
-add_subdirectory(test)
 
 # docs
 option(BUILD_DOCS "Build documentation" OFF)
@@ -57,4 +53,9 @@ if(BUILD_DOCS)
     else()
         message(FATAL_ERROR "Doxygen is needed to build the documentation.")
     endif()
+endif()
+
+option(BUILD_EXAMPLES "Build examples" OFF)
+if(BUILD_EXAMPLES)
+    add_subdirectory(examples)
 endif()
