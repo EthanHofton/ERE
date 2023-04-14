@@ -139,6 +139,38 @@ public:
         t_shader->unbind();
     }
 
+    inline static void draw_indexed_instanced(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_instance_count) {
+        t_shader->bind();
+        set_uniforms(t_shader);
+        get_renderer()->draw_indexed_instanced_impl(t_vao, t_instance_count);
+        t_shader->unbind();
+    }
+
+    inline static void draw_indexed_instanced_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_instance_count, const std::vector<ref<texture_api>>& t_texture) {
+        t_shader->bind();
+        set_uniforms(t_shader);
+        set_uniform_textures(t_shader, t_texture);
+        get_renderer()->draw_indexed_instanced_impl(t_vao, t_instance_count);
+        unbind_textures(t_texture);
+        t_shader->unbind();
+    }
+
+    inline static void draw_arrays_instanced(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, int t_instance_count) {
+        t_shader->bind();
+        set_uniforms(t_shader);
+        get_renderer()->draw_arrays_instanced_impl(t_vao, t_vertex_count, t_instance_count);
+        t_shader->unbind();
+    }
+
+    inline static void draw_arrays_instanced_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, int t_instance_count, const std::vector<ref<texture_api>>& t_texture) {
+        t_shader->bind();
+        set_uniforms(t_shader);
+        set_uniform_textures(t_shader, t_texture);
+        get_renderer()->draw_arrays_instanced_impl(t_vao, t_vertex_count, t_instance_count);
+        unbind_textures(t_texture);
+        t_shader->unbind();
+    }
+
     inline static void set_camera(const ref<camera_api>& t_camera) { s_camera = t_camera; }
 
 private:
@@ -202,6 +234,8 @@ private:
 
     virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) = 0;
     virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) = 0;
+    virtual void draw_indexed_instanced_impl(const ref<vertex_array_api>& t_vao, int t_instance_count) = 0;
+    virtual void draw_arrays_instanced_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count, int t_instance_count) = 0;
 
 };
 

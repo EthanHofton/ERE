@@ -6,6 +6,7 @@
 
 #ifdef USE_OPENGL
 #include <glad/glad.h>
+#include "opengl_renderer_conversions.hpp"
 
 namespace ere {
 
@@ -49,14 +50,8 @@ public:
 
     virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) override;
     virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) override;
-
-private:
-
-    GLenum get_gl_culling_face(render_api::culling_face t_face);
-    GLenum get_gl_culling_direction(render_api::culling_direction t_direction);
-    GLenum get_gl_testing_function(render_api::testing_function t_function);
-    GLenum get_gl_blending_function(render_api::blending_function t_function);
-    GLenum get_gl_stencil_operation(render_api::stencil_operation t_operation);
+    virtual void draw_indexed_instanced_impl(const ref<vertex_array_api>& t_vao, int t_instance_count) override;
+    virtual void draw_arrays_instanced_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count, int t_instance_count) override;
 
 };
 

@@ -149,19 +149,19 @@ public:
         // create the vertex buffer object
         m_vbo_pos = vertex_buffer_api::create_vertex_buffer_api(m_vertices.data(), m_vertices.size() * sizeof(glm::vec3));
         m_vbo_pos->set_layout({
-            { "aPos", buffer_layout::shader_type::float_3, false }
+            { "aPos", buffer_layout::shader_type::float_3 }
         });
 
         // create the vertex buffer object
         m_vbo_norm = vertex_buffer_api::create_vertex_buffer_api(m_normals.data(), m_normals.size() * sizeof(glm::vec3));
         m_vbo_norm->set_layout({
-            { "aNorm", buffer_layout::shader_type::float_3, false }
+            { "aNorm", buffer_layout::shader_type::float_3 }
         });
 
         // create the vertex buffer object
         m_vbo_tex = vertex_buffer_api::create_vertex_buffer_api(m_texCoords.data(), m_texCoords.size() * sizeof(glm::vec2));
         m_vbo_tex->set_layout({
-            { "aTex", buffer_layout::shader_type::float_2, false }
+            { "aTex", buffer_layout::shader_type::float_2 }
         });
 
 

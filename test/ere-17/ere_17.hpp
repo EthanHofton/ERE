@@ -155,7 +155,7 @@ public:
 
         m_framebuffer->unbind();
 
-        render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt(index) });
+        render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt(0) });
 
         return true;
     }
@@ -284,9 +284,17 @@ public:
 
         ImGui::End();
 
-        ImGui::Begin("Framebuffer Color Buffer");
-        ImGui::InputInt("Color Buffer Index", &index, 0);
+        ImGui::Begin("Game Scene");
+        {
+            ImGui::BeginChild("Game Render");
+            {
+                unsigned int tex_id = m_framebuffer->get_color_attachemt(1)->get_texture_id();
+                ImGui::Image((ImTextureID)tex_id, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()));
+            }
+            ImGui::EndChild();
+        }
         ImGui::End();
+
 
         return true;
     }
@@ -401,9 +409,6 @@ private:
     ref<shader_api> m_quad_shader;
 
     ref<spot_light> m_spot_light;
-
-    // test
-    int index = 0;
 
     // skybox
     ref<cubemap_api> m_cubemap;
