@@ -34,6 +34,13 @@ void opengl_renderer::set_viewport_impl(const glm::vec2& t_size) {
     glViewport(0, 0, t_size.x, t_size.y);
 }
 
+glm::vec2 opengl_renderer::get_viewport_impl() const {
+    glm::ivec4 viewport;
+    glGetIntegerv(GL_VIEWPORT, &viewport[0]);
+
+    return glm::vec2(viewport.z, viewport.w);
+}
+
 void opengl_renderer::clear_color_impl(const glm::vec4& t_color) {
     glClearColor(t_color.r, t_color.g, t_color.b, t_color.a);
 }
