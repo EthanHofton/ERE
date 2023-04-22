@@ -16,6 +16,7 @@ public:
     virtual void init_impl() override;
 
     virtual void set_viewport_impl(const glm::vec2& t_size) override;
+    virtual glm::vec2 get_viewport_impl() const override;
 
     virtual void clear_color_impl(const glm::vec4& t_color) override;
 
