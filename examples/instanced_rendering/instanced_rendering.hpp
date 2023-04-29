@@ -19,7 +19,7 @@
 
 namespace ere {
 
-class ere_23 : public layer {
+class instanced_rendering : public layer {
 public:
 
     bool on_attach(attach_event& e) override {
@@ -95,7 +95,7 @@ private:
 
         util::prng rng;
 
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 1000; i++) {
             float r = rng.rand(inner_radius, outer_radius);
             float theta = rng.rand(0.0f, 2.0f * util::PI);
             float phi = rng.rand(0.0f, util::PI);

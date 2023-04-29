@@ -15,7 +15,7 @@
 
 namespace ere {
 
-class ere_21 : public layer {
+class lighting_test : public layer {
 public:
 
     bool on_attach(attach_event& e) override {
@@ -40,8 +40,8 @@ public:
             .diffuse = glm::vec3(0),
             .specular = glm::vec3(0),
             .shininess = 8.f,
-            .diffuse_texture = texture_api::create_texture_api("assets/images/container2.png"),
-            .specular_texture = texture_api::create_texture_api("assets/images/container2_specular.png"),
+            .diffuse_texture = texture2d_api::create_texture2d_api("assets/images/container2.png"),
+            .specular_texture = texture2d_api::create_texture2d_api("assets/images/container2_specular.png"),
         });
 
         m_cube_positions = {

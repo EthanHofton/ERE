@@ -46,9 +46,12 @@ public:
 
     virtual void add_depth_stencil_attachment_write_only() = 0;
 
+    virtual void set_viewport(glm::vec2 t_size) = 0;
+    virtual glm::vec2 get_viewport() const = 0;
+
 protected:
 
-    static weak_ref<framebuffer_api> s_default_framebuffer;
+    static ref<framebuffer_api> s_default_framebuffer;
     static weak_ref<framebuffer_api> s_current_framebuffer;
 
 };

@@ -1,9 +1,9 @@
 #ifndef __ERE_21_HPP__
 #define __ERE_21_HPP__
 
-#include "../ere-21/cube.hpp"
-#include "../ere-21/sphere.hpp"
-#include "../ere-21/light_scene.hpp"
+#include "../lighting/cube.hpp"
+#include "../lighting/sphere.hpp"
+#include "../lighting/light_scene.hpp"
 #include "skybox_cube.hpp"
 
 #include <ere/core/application.hpp>
@@ -19,7 +19,7 @@
 
 namespace ere {
 
-class ere_17 : public layer {
+class skybox : public layer {
 public:
 
     bool on_attach(attach_event& e) override {
@@ -155,6 +155,7 @@ public:
 
         m_framebuffer->unbind();
 
+
         render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt(0) });
 
         return true;
@@ -289,7 +290,7 @@ public:
             ImGui::BeginChild("Game Render");
             {
                 unsigned int tex_id = m_framebuffer->get_color_attachemt(1)->get_texture_id();
-                ImGui::Image((ImTextureID)tex_id, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()));
+                ImGui::Image((ImTextureID)(size_t)tex_id, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()));
             }
             ImGui::EndChild();
         }

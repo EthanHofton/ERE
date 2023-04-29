@@ -33,8 +33,6 @@ void glfw_window::create_window(const window_props &t_props) {
 
     // renderer init
     render_api::init();
-    render_api::set_viewport({t_props.width, t_props.height});
-
     glfwSetInputMode(m_window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
     /* -- GLFW callbacks -- */
@@ -45,11 +43,6 @@ void glfw_window::create_window(const window_props &t_props) {
     glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* t_window, int t_w, int t_h) {
         driver_data &data = *(driver_data *)glfwGetWindowUserPointer(t_window);
         ere::ref<framebuffer_api> prev_framebuffer = framebuffer_api::get_current_framebuffer_api();
-
-        framebuffer_api::get_default_framebuffer_api()->bind();
-        render_api::set_viewport({t_w, t_h});
-
-        prev_framebuffer->bind();
         window_framebuffer_resized_event e({t_w, t_h});
         data.m_fn(e);
     });

@@ -12,11 +12,11 @@ ref<framebuffer_api> framebuffer_api::create_framebuffer_api(int t_width, int t_
 }
 
 ref<framebuffer_api> framebuffer_api::get_default_framebuffer_api() {
-    if (s_default_framebuffer.lock() == nullptr) {
+    if (s_default_framebuffer == nullptr) {
         s_default_framebuffer = std::make_shared<opengl_framebuffer>(0);
     }
 
-    return s_default_framebuffer.lock();
+    return s_default_framebuffer;
 }
 
 ref<framebuffer_api> framebuffer_api::get_current_framebuffer_api() {
@@ -39,10 +39,12 @@ opengl_framebuffer::opengl_framebuffer(int t_id) {
 }
 
 opengl_framebuffer::~opengl_framebuffer() {
-    unbind();
-    glDeleteFramebuffers(1, &m_id);
-    if (m_rbo_id != 0) {
-        glDeleteRenderbuffers(1, &m_rbo_id);
+    if (m_id != 0) {
+        unbind();
+        glDeleteFramebuffers(1, &m_id);
+        if (m_rbo_id != 0) {
+            glDeleteRenderbuffers(1, &m_rbo_id);
+        }
     }
 }
 

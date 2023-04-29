@@ -14,7 +14,7 @@ namespace ere {
 
 struct texture {
     std::string path;
-    ref<texture_api> texture;
+    ref<texture2d_api> texture;
 };
 
 class model {
@@ -161,8 +161,8 @@ private:
 
         if (t_mesh->mMaterialIndex >= 0) {
             aiMaterial* material = t_secne->mMaterials[t_mesh->mMaterialIndex];
-            ref<texture_api> diffuse_map = load_material_texture(material, aiTextureType_DIFFUSE, "texture_diffuse");
-            ref<texture_api> specular_maps = load_material_texture(material, aiTextureType_SPECULAR, "texture_specular");
+            ref<texture2d_api> diffuse_map = load_material_texture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+            ref<texture2d_api> specular_maps = load_material_texture(material, aiTextureType_SPECULAR, "texture_specular");
 
             aiColor3D k_ambient(0.0f, 0.0f, 0.0f);
             aiColor3D k_diffuse(0.0f, 0.0f, 0.0f);
@@ -190,12 +190,12 @@ private:
         return m;
     }
 
-    ref<texture_api> load_material_texture(aiMaterial* t_mat, aiTextureType t_type, const std::string& t_type_name) {
+    ref<texture2d_api> load_material_texture(aiMaterial* t_mat, aiTextureType t_type, const std::string& t_type_name) {
         if (t_mat->GetTextureCount(t_type) > 1) {
             ERE_INFO("WARNING::MODEL::TEXTURE::{}::{}", t_type_name, "more than one texture of the same type");
         }
 
-        ref<texture_api> tex = nullptr;
+        ref<texture2d_api> tex = nullptr;
         for (unsigned int i = 0; i < t_mat->GetTextureCount(t_type); i++) {
             aiString str;
             t_mat->GetTexture(t_type, i, &str);
@@ -209,7 +209,7 @@ private:
             }
 
             if (!skip) {
-                ref<texture_api> texture = texture_api::create_texture_api(m_directory + "/" + str.C_Str());
+                ref<texture2d_api> texture = texture2d_api::create_texture2d_api(m_directory + "/" + str.C_Str());
                 tex = texture;
                 m_textures_loaded.push_back({str.C_Str(), texture});
             }

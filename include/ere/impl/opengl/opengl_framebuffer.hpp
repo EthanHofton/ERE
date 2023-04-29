@@ -49,6 +49,10 @@ public:
 
     friend class opengl_renderer;
 
+    virtual void set_viewport(glm::vec2 t_size) override;
+    virtual glm::vec2 get_viewport() const override;
+
+
 private:
 
     unsigned int m_id;
