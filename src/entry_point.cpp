@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
     ERE_INFO("ERE startup");
 
     // create the application
-    ere::ref<ere::application> app = ere::ere_create_application();
+    ere::ref<ere::application> app = ere::ere_create_application(argc, argv);
 
     ERE_INFO("ERE runtime");
     app->run();
