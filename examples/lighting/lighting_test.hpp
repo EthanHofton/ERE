@@ -7,6 +7,7 @@
 
 #include <ere/core/camera_3d.hpp>
 #include <ere/core/layer.hpp>
+#include <ere/core/application.hpp>
 #include <ere/api/render_api.hpp>
 
 #include <imgui.h>
@@ -247,6 +248,15 @@ public:
         }
 
         ImGui::End();
+
+        ImGui::Begin("window info");
+
+        ImGui::Text("FPS: %f", 1.0f / application::get_application()->get_delta_time());
+        ImGui::Text("Window Size %f x %f", application::get_application()->get_window_size().x, application::get_application()->get_window_size().y);
+        ImGui::Text("Default Framebuffer Viewport %f x %f", render_api::get_viewport().x, render_api::get_viewport().y);
+
+        ImGui::End();
+
 
         return true;
     }

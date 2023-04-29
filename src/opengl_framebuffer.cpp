@@ -1,5 +1,7 @@
 #include <ere/impl/opengl/opengl_framebuffer.hpp>
 #include <ere/core/logger.hpp>
+#include <ere/api/render_api.hpp>
+#include <ere/core/application.hpp>
 
 #ifdef USE_OPENGL
 #include <glad/glad.h>
@@ -30,6 +32,7 @@ ref<framebuffer_api> framebuffer_api::get_current_framebuffer_api() {
 opengl_framebuffer::opengl_framebuffer(int t_width, int t_height) {
     m_width = t_width;
     m_height = t_height;
+    m_viewport = glm::vec2(t_width, t_height);
 
     glGenFramebuffers(1, &m_id);
 }
@@ -40,7 +43,6 @@ opengl_framebuffer::opengl_framebuffer(int t_id) {
 
 opengl_framebuffer::~opengl_framebuffer() {
     if (m_id != 0) {
-        unbind();
         glDeleteFramebuffers(1, &m_id);
         if (m_rbo_id != 0) {
             glDeleteRenderbuffers(1, &m_rbo_id);
@@ -50,14 +52,15 @@ opengl_framebuffer::~opengl_framebuffer() {
 
 void opengl_framebuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+    render_api::set_viewport(m_viewport);
 
     s_current_framebuffer = shared_from_this();
 }
 
 void opengl_framebuffer::unbind() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    s_current_framebuffer = get_default_framebuffer_api();
+    if (m_id != 0) {
+        get_default_framebuffer_api()->bind();
+    }
 }
 
 void opengl_framebuffer::disable_color_attachment() {
@@ -229,6 +232,17 @@ void opengl_framebuffer::add_depth_stencil_attachment_write_only() {
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo_id);
 
     prev->bind();
+}
+
+void opengl_framebuffer::set_viewport(glm::vec2 t_size) {
+    m_viewport = t_size;
+
+    if (get_current_framebuffer_api() == shared_from_this()) {
+        render_api::set_viewport(m_viewport);
+    }
+}
+glm::vec2 opengl_framebuffer::get_viewport() const {
+    return m_viewport;
 }
 
 

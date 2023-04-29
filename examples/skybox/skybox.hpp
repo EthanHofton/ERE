@@ -77,7 +77,7 @@ public:
 
         m_framebuffer = framebuffer_api::create_framebuffer_api(application::get_application()->get_window_size().x, application::get_application()->get_window_size().y);
         m_framebuffer->add_color_attachment(texture_api::format::RGB16F);
-        m_framebuffer->add_color_attachment(texture_api::format::RGB16F);
+        m_framebuffer->add_color_attachment();
         m_framebuffer->add_depth_attachment();
         m_framebuffer->get_color_attachemt(0)->set_uniform_name("color_buffer");
         m_framebuffer->get_color_attachemt(1)->set_uniform_name("color_buffer");
@@ -155,8 +155,8 @@ public:
 
         m_framebuffer->unbind();
 
-
         render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt(0) });
+
 
         return true;
     }
@@ -289,11 +289,24 @@ public:
         {
             ImGui::BeginChild("Game Render");
             {
-                unsigned int tex_id = m_framebuffer->get_color_attachemt(1)->get_texture_id();
+                unsigned int tex_id = m_framebuffer->get_color_attachemt(0)->get_texture_id();
                 ImGui::Image((ImTextureID)(size_t)tex_id, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()));
             }
             ImGui::EndChild();
         }
+        ImGui::End();
+
+        ImGui::Begin("window info");
+
+        ImGui::Text("FPS: %f", 1.0f / application::get_application()->get_delta_time());
+        ImGui::Text("Window Size %f x %f", application::get_application()->get_window_size().x, application::get_application()->get_window_size().y);
+        framebuffer_api::get_default_framebuffer_api()->bind();
+        ImGui::Text("Default Framebuffer Viewport %f x %f", render_api::get_viewport().x, render_api::get_viewport().y);
+        m_framebuffer->bind();
+        ImGui::Text("Game Framebuffer Viewport %f x %f", render_api::get_viewport().x, render_api::get_viewport().y);
+        ImGui::Text("Game Framebuffer Size %d x %d", m_framebuffer->get_width(), m_framebuffer->get_height());
+        framebuffer_api::get_default_framebuffer_api()->bind();
+
         ImGui::End();
 
 
@@ -321,13 +334,11 @@ public:
 
     bool on_window_resized(window_resized_event& e) override {
         m_camera->on_window_resized(e);
+        m_framebuffer->resize(e.get_window_size().x, e.get_window_size().y);
+        m_framebuffer->set_viewport({e.get_window_size().x, e.get_window_size().y});
         return true;
     }
 
-    bool on_window_framebuffer_resized(window_framebuffer_resized_event& e) override {
-        m_framebuffer->resize(e.get_window_framebuffer_size().x, e.get_window_framebuffer_size().y);
-        return true;
-    }
 
 private:
 

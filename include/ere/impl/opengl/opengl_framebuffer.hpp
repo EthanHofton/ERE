@@ -52,7 +52,6 @@ public:
     virtual void set_viewport(glm::vec2 t_size) override;
     virtual glm::vec2 get_viewport() const override;
 
-
 private:
 
     unsigned int m_id;
@@ -65,6 +64,8 @@ private:
     ref<texture2d_api> m_depth_stencil_attachment = nullptr;
 
     unsigned int m_rbo_id = 0;
+
+    glm::vec2 m_viewport;
 };
 
 }
