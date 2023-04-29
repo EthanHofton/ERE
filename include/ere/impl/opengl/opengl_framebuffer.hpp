@@ -10,17 +10,18 @@
 
 namespace ere {
 
-class opengl_framebuffer : public framebuffer_api {
+class opengl_framebuffer : public framebuffer_api, public std::enable_shared_from_this<opengl_framebuffer> {
 public:
 
+    opengl_framebuffer(int t_id);
     opengl_framebuffer(int t_width, int t_height);
 
     virtual ~opengl_framebuffer() override;
 
-    virtual void bind() const override;
+    virtual void bind() override;
     virtual void unbind() const override;
 
-    virtual void disable_color_attachment() const override;
+    virtual void disable_color_attachment() override;
 
     virtual int get_id() const override;
 
@@ -29,7 +30,7 @@ public:
 
     virtual void resize(int t_width, int t_height) override;
 
-    virtual bool is_valid() const override;
+    virtual bool is_valid() override;
 
     virtual void add_color_attachment(texture_api::format t_format = texture_api::format::RGB) override;
     inline virtual ref<texture2d_api> get_color_attachemt(int t_index = 0) const override { return m_color_attachments[t_index]; }
@@ -48,6 +49,9 @@ public:
 
     friend class opengl_renderer;
 
+    virtual void set_viewport(glm::vec2 t_size) override;
+    virtual glm::vec2 get_viewport() const override;
+
 private:
 
     unsigned int m_id;
@@ -60,6 +64,8 @@ private:
     ref<texture2d_api> m_depth_stencil_attachment = nullptr;
 
     unsigned int m_rbo_id = 0;
+
+    glm::vec2 m_viewport;
 };
 
 }

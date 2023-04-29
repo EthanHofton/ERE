@@ -33,7 +33,22 @@ FetchContent_MakeAvailable(assimp)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${CMAKE_BINARY_DIR})
 
-# ================== test general ==================
-add_executable(general general.cpp)
-target_link_libraries(general PRIVATE ere assimp)
+# ================== test skybox ==================
+add_executable(skybox skybox.cpp)
+target_link_libraries(skybox PRIVATE ere assimp)
+# ==================================================
+
+# ================== test intanced rendering ==================
+add_executable(instanced_rendering instanced_rendering.cpp)
+target_link_libraries(instanced_rendering PRIVATE ere)
+# ==================================================
+
+# ================== test lighting ==================
+add_executable(lighting lighting.cpp)
+target_link_libraries(lighting PRIVATE ere)
+# ==================================================
+
+# ================== test model lighting ==================
+add_executable(model_loading model_loading.cpp)
+target_link_libraries(model_loading PRIVATE ere assimp)
 # ==================================================

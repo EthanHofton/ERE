@@ -1,17 +1,14 @@
 #ifndef __ERE_21_HPP__
 #define __ERE_21_HPP__
 
-#include "../ere-21/cube.hpp"
-#include "../ere-21/sphere.hpp"
-#include "../ere-21/light_scene.hpp"
-#include "skybox_cube.hpp"
+#include "cube.hpp"
+#include "sphere.hpp"
+#include "light_scene.hpp"
 
-#include <ere/core/application.hpp>
 #include <ere/core/camera_3d.hpp>
 #include <ere/core/layer.hpp>
+#include <ere/core/application.hpp>
 #include <ere/api/render_api.hpp>
-#include <ere/api/framebuffer_api.hpp>
-#include <ere/api/cubemap_api.hpp>
 
 #include <imgui.h>
 
@@ -19,7 +16,7 @@
 
 namespace ere {
 
-class ere_17 : public layer {
+class lighting_test : public layer {
 public:
 
     bool on_attach(attach_event& e) override {
@@ -75,87 +72,55 @@ public:
         });
         m_light_scene->add_spot_light(m_spot_light);
 
-        m_framebuffer = framebuffer_api::create_framebuffer_api(application::get_application()->get_window_size().x, application::get_application()->get_window_size().y);
-        m_framebuffer->add_color_attachment(texture_api::format::RGB16F);
-        m_framebuffer->add_color_attachment(texture_api::format::RGB16F);
-        m_framebuffer->add_depth_attachment();
-        m_framebuffer->get_color_attachemt(0)->set_uniform_name("color_buffer");
-        m_framebuffer->get_color_attachemt(1)->set_uniform_name("color_buffer");
-
-        
-        // the vec3 positions of the quad
-        m_quad_vertices = {
-            // positions        // texture Coords
-            glm::vec3(-1.0f,  1.0f, 0.0f),
-            glm::vec3(-1.0f, -1.0f, 0.0f),
-            glm::vec3( 1.0f, -1.0f, 0.0f),
-
-            glm::vec3(-1.0f,  1.0f, 0.0f),
-            glm::vec3( 1.0f, -1.0f, 0.0f),
-            glm::vec3( 1.0f,  1.0f, 0.0f),
-        };
-
-        m_quad_tex_coords = {
-            glm::vec2(0.0f, 1.0f),
-            glm::vec2(0.0f, 0.0f),
-            glm::vec2(1.0f, 0.0f),
-
-            glm::vec2(0.0f, 1.0f),
-            glm::vec2(1.0f, 0.0f),
-            glm::vec2(1.0f, 1.0f),
-        };
-
-        m_quad_indices = {
-            0, 1, 2,
-            3, 4, 5,
-        };
-
-        m_quad_vao = vertex_array_api::create_vertex_array_api();
-        m_quad_pos_vbo = vertex_buffer_api::create_vertex_buffer_api(&m_quad_vertices[0], m_quad_vertices.size() * sizeof(glm::vec3));
-        m_quad_pos_vbo->set_layout({
-            { "a_pos", buffer_layout::shader_type::float_3, false },
-        });
-
-        m_quad_tex_vbo = vertex_buffer_api::create_vertex_buffer_api(&m_quad_tex_coords[0], m_quad_tex_coords.size() * sizeof(glm::vec2));
-        m_quad_tex_vbo->set_layout({
-            { "a_tex_coord", buffer_layout::shader_type::float_2, false },
-        });
-
-        m_quad_ibo = index_buffer_api::create_index_buffer_api(&m_quad_indices[0], m_quad_indices.size() * sizeof(uint32_t));
-
-        m_quad_vao->add_vertex_buffer(m_quad_pos_vbo);
-        m_quad_vao->add_vertex_buffer(m_quad_tex_vbo);
-
-        m_quad_vao->set_index_buffer(m_quad_ibo);
-
-        m_quad_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-17/quad_vert.glsl", "assets/shaders/ere-17/quad_frag.glsl");
-
-        m_cubemap = cubemap_api::create_cubemap_api({
-            "assets/skybox/right.jpg",
-            "assets/skybox/left.jpg",
-            "assets/skybox/top.jpg",
-            "assets/skybox/bottom.jpg",
-            "assets/skybox/front.jpg",
-            "assets/skybox/back.jpg",
-        });
-        m_cubemap->set_uniform_name("skybox");
-        m_skybox_cube = createRef<skybox_cube>();
-        m_skybox_shader = shader_api::create_shader_api_from_file("assets/shaders/ere-22/skybox_vert.glsl", "assets/shaders/ere-22/skybox_frag.glsl");
-
         return true;
     }
 
     bool on_update(update_event& e) override {
         m_camera->on_update(e);
+        m_spot_light->position = m_camera->get_position();
+        m_spot_light->direction = m_camera->get_camera_front();
 
-        m_framebuffer->bind();
-        render_api::clear_buffers();
+        for (int i = 0; i < 10; i++) {
+            m_cube->set_pos(m_cube_positions[i]);
+            m_cube->set_rotation(glm::radians(20.f * i));
+            m_cube->set_rotation_axis(glm::vec3(1.0f, 0.3f, 0.5f));
+            m_light_scene->draw(m_cube);
+        }
 
-        render_scene();
+        for (auto& light : m_light_scene->get_lights()) {
+            m_light_source_cubes->set_pos(light->position);
+            m_light_source_cubes->set_material(material{
+                light->ambient,
+                light->diffuse,
+                light->specular,
+                32.f,
+            });
+            m_light_scene->draw(m_light_source_cubes);
+        }
 
-        m_framebuffer->unbind();
+        for (auto& light : m_light_scene->get_point_lights()) {
+            m_light_source_cubes->set_pos(light->position);
+            m_light_source_cubes->set_material(material{
+                light->ambient,
+                light->diffuse,
+                light->specular,
+                32.f,
+            });
+            m_light_scene->draw(m_light_source_cubes);
+        }
 
-        render_api::draw_indexed_textured(m_quad_vao, m_quad_shader, { m_framebuffer->get_color_attachemt(0) });
+        for (auto& light : m_light_scene->get_spot_lights()) {
+            if (light != m_spot_light) {
+                m_light_source_cubes->set_pos(light->position);
+                m_light_source_cubes->set_material(material{
+                    light->ambient,
+                    light->diffuse,
+                    light->specular,
+                    32.f,
+                });
+                m_light_scene->draw(m_light_source_cubes);
+            }
+        }
 
         return true;
     }
@@ -284,15 +249,12 @@ public:
 
         ImGui::End();
 
-        ImGui::Begin("Game Scene");
-        {
-            ImGui::BeginChild("Game Render");
-            {
-                unsigned int tex_id = m_framebuffer->get_color_attachemt(1)->get_texture_id();
-                ImGui::Image((ImTextureID)tex_id, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight()));
-            }
-            ImGui::EndChild();
-        }
+        ImGui::Begin("window info");
+
+        ImGui::Text("FPS: %f", 1.0f / application::get_application()->get_delta_time());
+        ImGui::Text("Window Size %f x %f", application::get_application()->get_window_size().x, application::get_application()->get_window_size().y);
+        ImGui::Text("Default Framebuffer Viewport %f x %f", render_api::get_viewport().x, render_api::get_viewport().y);
+
         ImGui::End();
 
 
@@ -323,68 +285,7 @@ public:
         return true;
     }
 
-    bool on_window_framebuffer_resized(window_framebuffer_resized_event& e) override {
-        m_framebuffer->resize(e.get_window_framebuffer_size().x, e.get_window_framebuffer_size().y);
-        return true;
-    }
-
 private:
-
-    void render_scene() {
-        // render skybox
-        render_api::disable_depth_test_write();
-        render_api::draw_arrays_textured(m_skybox_cube->m_vao, m_skybox_shader, m_skybox_cube->m_vertices.size(), { m_cubemap });
-        render_api::enable_depth_test_write();
-
-        m_spot_light->position = m_camera->get_position();
-        m_spot_light->direction = m_camera->get_camera_front();
-
-        for (int i = 0; i < 10; i++) {
-            m_cube->set_pos(m_cube_positions[i]);
-            m_cube->set_rotation(glm::radians(20.f * i));
-            m_cube->set_rotation_axis(glm::vec3(1.0f, 0.3f, 0.5f));
-            m_light_scene->draw(m_cube);
-        }
-
-        for (auto& light : m_light_scene->get_lights()) {
-            m_light_source_cubes->set_pos(light->position);
-            m_light_source_cubes->set_material(material{
-                light->ambient,
-                light->diffuse,
-                light->specular,
-                32.f,
-            });
-            m_light_scene->draw(m_light_source_cubes);
-        }
-
-        for (auto& light : m_light_scene->get_point_lights()) {
-            m_light_source_cubes->set_pos(light->position);
-            m_light_source_cubes->set_material(material{
-                light->ambient,
-                light->diffuse,
-                light->specular,
-                32.f,
-            });
-            m_light_scene->draw(m_light_source_cubes);
-        }
-
-        for (auto& light : m_light_scene->get_spot_lights()) {
-            if (light != m_spot_light) {
-                m_light_source_cubes->set_pos(light->position);
-                m_light_source_cubes->set_material(material{
-                    light->ambient,
-                    light->diffuse,
-                    light->specular,
-                    32.f,
-                });
-                m_light_scene->draw(m_light_source_cubes);
-            }
-        }
-    }
-
-private:
-
-    ref<framebuffer_api> m_framebuffer;
 
     // base elements required for rendering
     ref<camera_3d> m_camera;
@@ -398,22 +299,7 @@ private:
     ref<shader_api> m_light_source_cube_shader;
     std::vector<glm::vec3> m_cube_positions;
 
-
-    std::vector<glm::vec3> m_quad_vertices;
-    std::vector<glm::vec2> m_quad_tex_coords;
-    std::vector<unsigned int> m_quad_indices;
-    ref<vertex_array_api> m_quad_vao;
-    ref<vertex_buffer_api> m_quad_pos_vbo;
-    ref<vertex_buffer_api> m_quad_tex_vbo;
-    ref<index_buffer_api> m_quad_ibo;
-    ref<shader_api> m_quad_shader;
-
     ref<spot_light> m_spot_light;
-
-    // skybox
-    ref<cubemap_api> m_cubemap;
-    ref<skybox_cube> m_skybox_cube;
-    ref<shader_api> m_skybox_shader;
 
 };
 
