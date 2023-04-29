@@ -31,7 +31,15 @@ void opengl_renderer::init_impl() {
 }
 
 void opengl_renderer::set_viewport_impl(const glm::vec2& t_size) {
+    static glm::vec2 s_viewport_size = glm::vec2(0.0f);
+
+    if (s_viewport_size == t_size) {
+        return;
+    }
+
     glViewport(0, 0, t_size.x, t_size.y);
+
+    s_viewport_size = t_size;
 }
 
 glm::vec2 opengl_renderer::get_viewport_impl() const {

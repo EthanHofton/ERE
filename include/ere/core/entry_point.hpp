@@ -11,7 +11,7 @@ namespace ere {
 *
 * @return ref<application> the application
 */
-extern ref<application> ere_create_application();
+extern ref<application> ere_create_application(int argc, char** argv);
 
 }
 

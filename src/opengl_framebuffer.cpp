@@ -1,42 +1,74 @@
 #include <ere/impl/opengl/opengl_framebuffer.hpp>
 #include <ere/core/logger.hpp>
+#include <ere/api/render_api.hpp>
+#include <ere/core/application.hpp>
 
 #ifdef USE_OPENGL
 #include <glad/glad.h>
 
 namespace ere {
 
+
 ref<framebuffer_api> framebuffer_api::create_framebuffer_api(int t_width, int t_height) {
     return std::make_shared<opengl_framebuffer>(t_width, t_height);
+}
+
+ref<framebuffer_api> framebuffer_api::get_default_framebuffer_api() {
+    if (s_default_framebuffer == nullptr) {
+        s_default_framebuffer = std::make_shared<opengl_framebuffer>(0);
+    }
+
+    return s_default_framebuffer;
+}
+
+ref<framebuffer_api> framebuffer_api::get_current_framebuffer_api() {
+    if (s_current_framebuffer.lock() == nullptr) {
+        s_current_framebuffer = get_default_framebuffer_api();
+    }
+
+    return s_current_framebuffer.lock();
 }
 
 opengl_framebuffer::opengl_framebuffer(int t_width, int t_height) {
     m_width = t_width;
     m_height = t_height;
+    m_viewport = glm::vec2(t_width, t_height);
 
     glGenFramebuffers(1, &m_id);
 }
 
+opengl_framebuffer::opengl_framebuffer(int t_id) {
+    m_id = t_id;
+}
+
 opengl_framebuffer::~opengl_framebuffer() {
-    glDeleteFramebuffers(1, &m_id);
-    if (m_rbo_id != 0) {
-        glDeleteRenderbuffers(1, &m_rbo_id);
+    if (m_id != 0) {
+        glDeleteFramebuffers(1, &m_id);
+        if (m_rbo_id != 0) {
+            glDeleteRenderbuffers(1, &m_rbo_id);
+        }
     }
 }
 
-void opengl_framebuffer::bind() const {
+void opengl_framebuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, m_id);
+    render_api::set_viewport(m_viewport);
+
+    s_current_framebuffer = shared_from_this();
 }
 
 void opengl_framebuffer::unbind() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    if (m_id != 0) {
+        get_default_framebuffer_api()->bind();
+    }
 }
 
-void opengl_framebuffer::disable_color_attachment() const {
+void opengl_framebuffer::disable_color_attachment() {
+    auto prev = get_current_framebuffer_api();
     bind();
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
-    unbind();
+    prev->bind();
 }
 
 int opengl_framebuffer::get_id() const {
@@ -117,14 +149,16 @@ void opengl_framebuffer::resize(int t_width, int t_height) {
     }
 }
 
-bool opengl_framebuffer::is_valid() const {
+bool opengl_framebuffer::is_valid() {
+    auto prev = get_current_framebuffer_api();
     bind();
     bool status = glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
-    unbind();
+    prev->bind();
     return status;
 }
 
 void opengl_framebuffer::add_color_attachment(texture_api::format t_format) {
+    auto prev = get_current_framebuffer_api();
     bind();
 
     ref<texture2d_api> tex = texture2d_api::create_texture2d_api(t_format, m_width, m_height);
@@ -143,10 +177,11 @@ void opengl_framebuffer::add_color_attachment(texture_api::format t_format) {
     }
     glDrawBuffers(m_color_attachments.size(), attachmets);
 
-    unbind();
+    prev->bind();
 }
 
 void opengl_framebuffer::add_depth_attachment() {
+    auto prev = get_current_framebuffer_api();
     bind();
 
     m_depth_attachment = texture2d_api::create_texture2d_api(texture_api::format::DEPTH, m_width, m_height);
@@ -156,10 +191,11 @@ void opengl_framebuffer::add_depth_attachment() {
     m_depth_attachment->bind(0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_attachment->get_texture_id(), 0);
 
-    unbind();
+    prev->bind();
 }
 
 void opengl_framebuffer::add_stencil_attachment() {
+    auto prev = get_current_framebuffer_api();
     bind();
 
     m_stencil_attachment = texture2d_api::create_texture2d_api(texture_api::format::STENCIL, m_width, m_height);
@@ -169,10 +205,11 @@ void opengl_framebuffer::add_stencil_attachment() {
     m_stencil_attachment->bind(0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_stencil_attachment->get_texture_id(), 0);
     
-    unbind();
+    prev->bind();
 }
 
 void opengl_framebuffer::add_depth_stencil_attachment() {
+    auto prev = get_current_framebuffer_api();
     bind();
 
     m_depth_stencil_attachment = texture2d_api::create_texture2d_api(texture_api::format::DEPTH_STENCIL, m_width, m_height);
@@ -182,10 +219,11 @@ void opengl_framebuffer::add_depth_stencil_attachment() {
     m_depth_stencil_attachment->bind(0);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_depth_stencil_attachment->get_texture_id(), 0);
 
-    unbind();
+    prev->bind();
 }
 
 void opengl_framebuffer::add_depth_stencil_attachment_write_only() {
+    auto prev = get_current_framebuffer_api();
     bind();
 
     glGenRenderbuffers(1, &m_rbo_id);
@@ -193,7 +231,18 @@ void opengl_framebuffer::add_depth_stencil_attachment_write_only() {
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_rbo_id);
 
-    unbind();
+    prev->bind();
+}
+
+void opengl_framebuffer::set_viewport(glm::vec2 t_size) {
+    m_viewport = t_size;
+
+    if (get_current_framebuffer_api() == shared_from_this()) {
+        render_api::set_viewport(m_viewport);
+    }
+}
+glm::vec2 opengl_framebuffer::get_viewport() const {
+    return m_viewport;
 }
 
 
