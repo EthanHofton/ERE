@@ -339,6 +339,12 @@ public:
         return true;
     }
 
+    bool on_file_dropped(file_dropped_event& e) override {
+        ERE_INFO(e.toString());
+
+        return false;
+    }
+
 
 private:
 

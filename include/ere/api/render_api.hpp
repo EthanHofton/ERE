@@ -70,6 +70,16 @@ public:
         INVERT
     };
 
+    enum class primitive {
+        POINTS,
+        LINES,
+        LINE_STRIP,
+        LINE_LOOP,
+        TRIANGLES,
+        TRIANGLE_STRIP,
+        TRIANGLE_FAN
+    };
+
     virtual ~render_api() = default;
 
     static ref<render_api> get_renderer();
@@ -109,65 +119,65 @@ public:
 
     inline static void pre_window_setup() { get_renderer()->pre_window_setup_impl(); }
 
-    inline static void draw_indexed(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader) {
+    inline static void draw_indexed(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind(); 
         set_uniforms(t_shader);
-        get_renderer()->draw_indexed_impl(t_vao); 
+        get_renderer()->draw_indexed_impl(t_vao, t_primitive); 
         t_shader->unbind(); 
     }
-    inline static void draw_arrays(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count) { 
+    inline static void draw_arrays(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, primitive t_primitive = primitive::TRIANGLES) { 
         t_shader->bind(); 
         set_uniforms(t_shader);
-        get_renderer()->draw_arrays_impl(t_vao, t_vertex_count); 
+        get_renderer()->draw_arrays_impl(t_vao, t_vertex_count, t_primitive); 
         t_shader->unbind(); 
     }
 
-    inline static void draw_indexed_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, const std::vector<ref<texture_api>>& t_texture) {
+    inline static void draw_indexed_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, const std::vector<ref<texture_api>>& t_texture, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind();
         set_uniforms(t_shader);
         set_uniform_textures(t_shader, t_texture);
-        get_renderer()->draw_indexed_impl(t_vao);
+        get_renderer()->draw_indexed_impl(t_vao, t_primitive);
         unbind_textures(t_texture);
         t_shader->unbind();
     }
 
-    inline static void draw_arrays_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, const std::vector<ref<texture_api>>& t_texture) {
+    inline static void draw_arrays_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, const std::vector<ref<texture_api>>& t_texture, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind();
         set_uniforms(t_shader);
         set_uniform_textures(t_shader, t_texture);
-        get_renderer()->draw_arrays_impl(t_vao, t_vertex_count);
+        get_renderer()->draw_arrays_impl(t_vao, t_vertex_count, t_primitive);
         unbind_textures(t_texture);
         t_shader->unbind();
     }
 
-    inline static void draw_indexed_instanced(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_instance_count) {
+    inline static void draw_indexed_instanced(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_instance_count, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind();
         set_uniforms(t_shader);
-        get_renderer()->draw_indexed_instanced_impl(t_vao, t_instance_count);
+        get_renderer()->draw_indexed_instanced_impl(t_vao, t_instance_count, t_primitive);
         t_shader->unbind();
     }
 
-    inline static void draw_indexed_instanced_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_instance_count, const std::vector<ref<texture_api>>& t_texture) {
+    inline static void draw_indexed_instanced_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_instance_count, const std::vector<ref<texture_api>>& t_texture, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind();
         set_uniforms(t_shader);
         set_uniform_textures(t_shader, t_texture);
-        get_renderer()->draw_indexed_instanced_impl(t_vao, t_instance_count);
+        get_renderer()->draw_indexed_instanced_impl(t_vao, t_instance_count, t_primitive);
         unbind_textures(t_texture);
         t_shader->unbind();
     }
 
-    inline static void draw_arrays_instanced(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, int t_instance_count) {
+    inline static void draw_arrays_instanced(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, int t_instance_count, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind();
         set_uniforms(t_shader);
-        get_renderer()->draw_arrays_instanced_impl(t_vao, t_vertex_count, t_instance_count);
+        get_renderer()->draw_arrays_instanced_impl(t_vao, t_vertex_count, t_instance_count, t_primitive);
         t_shader->unbind();
     }
 
-    inline static void draw_arrays_instanced_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, int t_instance_count, const std::vector<ref<texture_api>>& t_texture) {
+    inline static void draw_arrays_instanced_textured(const ref<vertex_array_api>& t_vao, const ref<shader_api>& t_shader, int t_vertex_count, int t_instance_count, const std::vector<ref<texture_api>>& t_texture, primitive t_primitive = primitive::TRIANGLES) {
         t_shader->bind();
         set_uniforms(t_shader);
         set_uniform_textures(t_shader, t_texture);
-        get_renderer()->draw_arrays_instanced_impl(t_vao, t_vertex_count, t_instance_count);
+        get_renderer()->draw_arrays_instanced_impl(t_vao, t_vertex_count, t_instance_count, t_primitive);
         unbind_textures(t_texture);
         t_shader->unbind();
     }
@@ -240,10 +250,10 @@ private:
 
     virtual void pre_window_setup_impl() = 0;
 
-    virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao) = 0;
-    virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) = 0;
-    virtual void draw_indexed_instanced_impl(const ref<vertex_array_api>& t_vao, int t_instance_count) = 0;
-    virtual void draw_arrays_instanced_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count, int t_instance_count) = 0;
+    virtual void draw_indexed_impl(const ref<vertex_array_api>& t_vao, primitive t_primitive) = 0;
+    virtual void draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count, primitive t_primitive) = 0;
+    virtual void draw_indexed_instanced_impl(const ref<vertex_array_api>& t_vao, int t_instance_count, primitive t_primitive) = 0;
+    virtual void draw_arrays_instanced_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count, int t_instance_count, primitive t_primitive) = 0;
 
 };
 

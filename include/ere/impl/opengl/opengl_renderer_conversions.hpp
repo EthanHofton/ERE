@@ -104,6 +104,25 @@ extern inline GLenum get_gl_stencil_operation(render_api::stencil_operation t_op
     }
 }
 
+extern inline GLenum get_gl_primitive(render_api::primitive t_primitive) {
+    switch (t_primitive) {
+        case render_api::primitive::POINTS:
+            return GL_POINTS;
+        case render_api::primitive::LINES:
+            return GL_LINES;
+        case render_api::primitive::LINE_LOOP:
+            return GL_LINE_LOOP;
+        case render_api::primitive::LINE_STRIP:
+            return GL_LINE_STRIP;
+        case render_api::primitive::TRIANGLES:
+            return GL_TRIANGLES;
+        case render_api::primitive::TRIANGLE_STRIP:
+            return GL_TRIANGLE_STRIP;
+        case render_api::primitive::TRIANGLE_FAN:
+            return GL_TRIANGLE_FAN;
+    }
+}
+
 }
 
 #endif
