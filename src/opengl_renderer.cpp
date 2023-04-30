@@ -148,7 +148,7 @@ void opengl_renderer::pre_window_setup_impl() {
 #endif
 }
 
-void opengl_renderer::draw_indexed_impl(const ref<vertex_array_api>& t_vao) {
+void opengl_renderer::draw_indexed_impl(const ref<vertex_array_api>& t_vao, render_api::primitive t_primitive) {
     // simple error checking
     GLenum err;
     while((err = glGetError()) != GL_NO_ERROR) {
@@ -159,12 +159,12 @@ void opengl_renderer::draw_indexed_impl(const ref<vertex_array_api>& t_vao) {
         ERE_ERROR("No index buffer defined!");
     } else {
         t_vao->bind();
-        glDrawElements(GL_TRIANGLES, t_vao->get_index_buffer()->get_count(), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(get_gl_primitive(t_primitive), t_vao->get_index_buffer()->get_count(), GL_UNSIGNED_INT, nullptr);
         t_vao->unbind();
     }
 }
 
-void opengl_renderer::draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count) {
+void opengl_renderer::draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t_vertex_count, render_api::primitive t_primitive) {
     // simple error checking
     GLenum err;
     while((err = glGetError()) != GL_NO_ERROR) {
@@ -172,11 +172,11 @@ void opengl_renderer::draw_arrays_impl(const ref<vertex_array_api>& t_vao, int t
     }
 
     t_vao->bind();
-    glDrawArrays(GL_TRIANGLES, 0, t_vertex_count);
+    glDrawArrays(get_gl_primitive(t_primitive), 0, t_vertex_count);
     t_vao->unbind();
 }
 
-void opengl_renderer::draw_indexed_instanced_impl(const ref<vertex_array_api> &t_vao, int t_instance_count) {
+void opengl_renderer::draw_indexed_instanced_impl(const ref<vertex_array_api> &t_vao, int t_instance_count, render_api::primitive t_primitive) {
     // simple error checking
     GLenum err;
     while((err = glGetError()) != GL_NO_ERROR) {
@@ -187,12 +187,12 @@ void opengl_renderer::draw_indexed_instanced_impl(const ref<vertex_array_api> &t
         ERE_ERROR("No index buffer defined!");
     } else {
         t_vao->bind();
-        glDrawElementsInstanced(GL_TRIANGLES, t_vao->get_index_buffer()->get_count(), GL_UNSIGNED_INT, nullptr, t_instance_count);
+        glDrawElementsInstanced(get_gl_primitive(t_primitive), t_vao->get_index_buffer()->get_count(), GL_UNSIGNED_INT, nullptr, t_instance_count);
         t_vao->unbind();
     }
 }
 
-void opengl_renderer::draw_arrays_instanced_impl(const ref<vertex_array_api> &t_vao, int t_vertex_count, int t_instance_count) {
+void opengl_renderer::draw_arrays_instanced_impl(const ref<vertex_array_api> &t_vao, int t_vertex_count, int t_instance_count, render_api::primitive t_primitive) {
     // simple error checking
     GLenum err;
     while((err = glGetError()) != GL_NO_ERROR) {
@@ -200,7 +200,7 @@ void opengl_renderer::draw_arrays_instanced_impl(const ref<vertex_array_api> &t_
     }
 
     t_vao->bind();
-    glDrawArraysInstanced(GL_TRIANGLES, 0, t_vertex_count, t_instance_count);
+    glDrawArraysInstanced(get_gl_primitive(t_primitive), 0, t_vertex_count, t_instance_count);
     t_vao->unbind();
 }
 
