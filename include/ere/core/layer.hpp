@@ -30,6 +30,7 @@ public:
     inline virtual bool on_window_minimized(window_minimized_event& t_event) { return false; }
     inline virtual bool on_window_maximized(window_maximized_event& t_event) { return false; }
     inline virtual bool on_window_restored(window_restored_event& t_event) { return false; }
+    inline virtual bool on_file_dropped(file_dropped_event& t_event) { return false; }
 
     /* -- key events -- */
     inline virtual bool on_key_pressed(key_pressed_event &t_event) { return false; }

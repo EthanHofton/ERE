@@ -6,6 +6,7 @@
 
 #include <glm/glm.hpp> 
 #include <sstream>
+#include <vector>
 #include "events.hpp"
 
 namespace ere {
@@ -176,6 +177,34 @@ public:
 private:
 
     glm::vec2 m_windowSize;
+};
+
+/**
+* @brief file_dropped event
+*/
+class file_dropped_event : public ere_event {
+public:
+
+    file_dropped_event(const std::vector<std::string>& t_filePaths) : m_filePaths(t_filePaths) {}
+
+    std::vector<std::string> get_file_paths() const { return m_filePaths; }
+
+    inline std::string toString() const override {
+        std::stringstream ss;
+        ss << "file_dropped_event: ";
+        for (auto& path : m_filePaths) {
+            ss << path << " ";
+        }
+
+        return ss.str();
+    }
+
+
+    EVENT_CLASS_TYPE(ere_events, file_dropped)
+
+private:
+
+    std::vector<std::string> m_filePaths;
 };
 
 }
