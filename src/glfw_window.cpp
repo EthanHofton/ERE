@@ -185,6 +185,16 @@ void glfw_window::create_window(const window_props &t_props) {
         wdata.m_fn(e);
     });
 
+    glfwSetDropCallback(m_window, [](GLFWwindow *t_window, int t_count, const char **t_paths) {
+        driver_data &wdata = *(driver_data*)glfwGetWindowUserPointer(t_window);
+        std::vector<std::string> paths;
+        for (int i = 0; i < t_count; i++) {
+            paths.push_back(t_paths[i]);
+        }
+        file_dropped_event e(paths);
+        wdata.m_fn(e);
+    });
+
 
     // * mouse moved callback
     glfwSetCursorPosCallback(m_window, [](GLFWwindow *t_window, double t_x, double t_y) {

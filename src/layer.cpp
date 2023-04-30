@@ -21,6 +21,7 @@ void layer::on_event(ere_event& t_event) {
     dispatcher.dispatch<window_maximized_event>(std::bind(&layer::on_window_maximized, this, std::placeholders::_1));
     dispatcher.dispatch<window_minimized_event>(std::bind(&layer::on_window_minimized, this, std::placeholders::_1));
     dispatcher.dispatch<window_restored_event>(std::bind(&layer::on_window_restored, this, std::placeholders::_1));
+    dispatcher.dispatch<file_dropped_event>(std::bind(&layer::on_file_dropped, this, std::placeholders::_1));
 
     /* -- key events -- */
     dispatcher.dispatch<key_pressed_event>(std::bind(&layer::on_key_pressed, this, std::placeholders::_1));
