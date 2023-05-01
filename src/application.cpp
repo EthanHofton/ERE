@@ -25,6 +25,12 @@ application::application() {
 }
 
 application::~application() {
+    for (auto& layer : m_layers) {
+        // trigger an on detach event
+        detach_event e;
+        layer->on_event(e);
+    }
+
     ERE_INFO("Application destroyed");
 
     m_window_driver->destroy_window();
