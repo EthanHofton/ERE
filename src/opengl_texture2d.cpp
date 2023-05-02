@@ -7,8 +7,8 @@
 
 namespace ere {
 
-ref<texture2d_api> texture2d_api::create_texture2d_api(const std::string& path) {
-    return std::make_shared<opengl_texture2d>(path);
+ref<texture2d_api> texture2d_api::create_texture2d_api(const std::string& path, bool flip_on_load) {
+    return std::make_shared<opengl_texture2d>(path, flip_on_load);
 }
 
 ref<texture2d_api> texture2d_api::create_texture2d_api(const format& t_format, uint32_t width, uint32_t height) {
@@ -19,13 +19,13 @@ ref<texture2d_api> texture2d_api::create_texture2d_api(unsigned char* data, cons
     return std::make_shared<opengl_texture2d>(data, t_format, width, height);
 }
 
-opengl_texture2d::opengl_texture2d(const std::string& path) {
+opengl_texture2d::opengl_texture2d(const std::string& path, bool flip_on_load) {
     m_width = 0;
     m_height = 0;
     m_texture_id = 0;
     int depth;
 
-    stbi_set_flip_vertically_on_load(1);
+    stbi_set_flip_vertically_on_load((int)flip_on_load);
     unsigned char* data = stbi_load(path.c_str(), (int*)&m_width, (int*)&m_height, (int*)&depth, 0);
 
     if (data) {
