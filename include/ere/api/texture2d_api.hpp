@@ -33,7 +33,7 @@ public:
     virtual void set_wrap_s(wrap wrap_s) = 0;
     virtual void set_wrap_t(wrap wrap_t) = 0;
 
-    static ref<texture2d_api> create_texture2d_api(const std::string& path);
+    static ref<texture2d_api> create_texture2d_api(const std::string& path, bool flip_on_load = true);
     static ref<texture2d_api> create_texture2d_api(const format& t_format, uint32_t width, uint32_t height);
     static ref<texture2d_api> create_texture2d_api(unsigned char* data, const format& format, uint32_t width, uint32_t height);
 
