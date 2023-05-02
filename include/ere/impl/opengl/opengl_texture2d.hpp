@@ -14,7 +14,7 @@ namespace ere {
 class opengl_texture2d : public texture2d_api {
 public:
 
-    opengl_texture2d(const std::string& path);
+    opengl_texture2d(const std::string& path, bool flip_on_load);
     opengl_texture2d(const texture_api::format& t_format, uint32_t width, uint32_t height);
     opengl_texture2d(unsigned char* data, const texture_api::format& t_format, uint32_t width, uint32_t height);
     virtual ~opengl_texture2d() override;
